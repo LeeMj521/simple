@@ -1,0 +1,42 @@
+{
+    "npcs": [
+        {
+            "npcId": "goodrun1234",
+            "npcName": "토끼공듀",
+            "behaviorType": "여자. 백수. 맨헤라 성격. 말투는 활발. 때때로 우울 자기비하.",
+            "behaviorExample": "'안냥!', '왜 안오시지... 갬접었나?'",
+            "speakProbability": 0.31,
+            "responseProbability": 0.4,
+            "relationshipBonus": 0.212,
+            "attackPower": 5,
+            "attackCooldown": 3,
+            "onlineSchedule": [
+                { "startHour": 9, "startMinute": 0, "endHour": 12, "endMinute": 0 },
+                { "startHour": 18, "startMinute": 0, "endHour": 22, "endMinute": 0 }
+            ],
+            "randomOffsetMinutes": 15,
+            "initialRelationships": [
+                { "targetId": "player", "value": 20 }
+            ]
+        },
+        {
+            "npcId": "dmdelddl98",
+            "npcName": "스쿨존스피드레이서",
+            "behaviorType": "여자. 히키코모리. 조용하고 음침한 성격. 말투는 관심없는 사람에게는 자음으로 단답. 친밀한 상대에겐 음슴체.",
+            "behaviorExample": "'ㅎㅇ', 'ㅋㅋ', '왔음? 레이드 도셈'",
+            "speakProbability": 0.076,
+            "responseProbability": 0.208,
+            "relationshipBonus": 0.759,
+            "attackPower": 7,
+            "attackCooldown": 2.5,
+            "onlineSchedule": [
+                { "startHour": 14, "startMinute": 0, "endHour": 18, "endMinute": 0 },
+                { "startHour": 21, "startMinute": 0, "endHour": 24, "endMinute": 0 }
+            ],
+            "randomOffsetMinutes": 20,
+            "initialRelationships": [
+                { "targetId": "player", "value": 64 }
+            ]
+        }
+    ]
+}

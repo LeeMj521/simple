@@ -1,0 +1,25 @@
+{
+    "items": [
+        {
+            "itemId": "potion_hp",
+            "itemName": "체력 물약",
+            "rarity": "Common",
+            "description": "HP를 30 회복합니다.",
+            "iconPath": ""
+        },
+        {
+            "itemId": "sword_iron",
+            "itemName": "철검",
+            "rarity": "Uncommon",
+            "description": "기본적인 철제 검.",
+            "iconPath": ""
+        },
+        {
+            "itemId": "gem_rare",
+            "itemName": "희귀한 보석",
+            "rarity": "Rare",
+            "description": "장신구 제작에 사용됩니다.",
+            "iconPath": ""
+        }
+    ]
+}

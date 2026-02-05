@@ -1,0 +1,13 @@
+{
+    "monsters": [
+        {
+            "monsterId": "Mushroom",
+            "monsterName": "머쉬룸",
+            "prefabPath": "Prefabs/Monster/mushroom",
+            "maxHP": 30,
+            "level": 1,
+            "expReward": 10,
+            "goldReward": 5
+        }
+    ]
+}

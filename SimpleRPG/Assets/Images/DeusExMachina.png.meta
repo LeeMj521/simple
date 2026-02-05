@@ -1,0 +1,2387 @@
+fileFormatVersion: 2
+guid: c4c3f7ecdd9d86c4da2fef1412d71e41
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -5027234653433493813
+    second: DeusExMachina_0
+  - first:
+      213: 8999973998564139350
+    second: DeusExMachina_1
+  - first:
+      213: 8046524504062746503
+    second: DeusExMachina_2
+  - first:
+      213: 6478657376933384333
+    second: DeusExMachina_3
+  - first:
+      213: -6465068252997705587
+    second: DeusExMachina_4
+  - first:
+      213: -3648948788279691790
+    second: DeusExMachina_5
+  - first:
+      213: 1648219593694742780
+    second: DeusExMachina_6
+  - first:
+      213: 3967986987769115500
+    second: DeusExMachina_7
+  - first:
+      213: -4773014429022692074
+    second: DeusExMachina_8
+  - first:
+      213: -740858669199766110
+    second: DeusExMachina_9
+  - first:
+      213: -2491518361859098329
+    second: DeusExMachina_10
+  - first:
+      213: 8986684539982704063
+    second: DeusExMachina_11
+  - first:
+      213: 4348724092553399026
+    second: DeusExMachina_12
+  - first:
+      213: 558461148500220160
+    second: DeusExMachina_13
+  - first:
+      213: 1912826681034794758
+    second: DeusExMachina_14
+  - first:
+      213: 7395538855269081841
+    second: DeusExMachina_15
+  - first:
+      213: -5875788938016844753
+    second: DeusExMachina_16
+  - first:
+      213: 4932197283409753329
+    second: DeusExMachina_17
+  - first:
+      213: -2207204484372126529
+    second: DeusExMachina_18
+  - first:
+      213: -4520465427827198234
+    second: DeusExMachina_19
+  - first:
+      213: -2906262823015531902
+    second: DeusExMachina_20
+  - first:
+      213: -1105220763256585776
+    second: DeusExMachina_21
+  - first:
+      213: -704120512587549232
+    second: DeusExMachina_22
+  - first:
+      213: 2780266740292101599
+    second: DeusExMachina_23
+  - first:
+      213: 7967619182144576707
+    second: DeusExMachina_24
+  - first:
+      213: 2647283698382960310
+    second: DeusExMachina_25
+  - first:
+      213: -1906876834531736141
+    second: DeusExMachina_26
+  - first:
+      213: 819963851856717859
+    second: DeusExMachina_27
+  - first:
+      213: 3861957617581573848
+    second: DeusExMachina_28
+  - first:
+      213: 8918290967249210169
+    second: DeusExMachina_29
+  - first:
+      213: 3011787597870758360
+    second: DeusExMachina_30
+  - first:
+      213: 3967221848740744600
+    second: DeusExMachina_31
+  - first:
+      213: 8031040653019280369
+    second: DeusExMachina_32
+  - first:
+      213: -4665003110182707379
+    second: DeusExMachina_33
+  - first:
+      213: -3162506595073914615
+    second: DeusExMachina_34
+  - first:
+      213: -363853178502889475
+    second: DeusExMachina_35
+  - first:
+      213: -351743096583594284
+    second: DeusExMachina_36
+  - first:
+      213: 7990550699026610178
+    second: DeusExMachina_37
+  - first:
+      213: 7669913454915050619
+    second: DeusExMachina_38
+  - first:
+      213: -3036743195298806079
+    second: DeusExMachina_39
+  - first:
+      213: -2392423840562156727
+    second: DeusExMachina_40
+  - first:
+      213: -6350616434800095590
+    second: DeusExMachina_41
+  - first:
+      213: 5888070876189304772
+    second: DeusExMachina_42
+  - first:
+      213: 8811304439372966708
+    second: DeusExMachina_43
+  - first:
+      213: 7412255867343390893
+    second: DeusExMachina_44
+  - first:
+      213: -2150889702744810140
+    second: DeusExMachina_45
+  - first:
+      213: -1515897797595619422
+    second: DeusExMachina_46
+  - first:
+      213: 9066636149366616789
+    second: DeusExMachina_47
+  - first:
+      213: -6111572454493179831
+    second: DeusExMachina_48
+  - first:
+      213: -1945110237284862371
+    second: DeusExMachina_49
+  - first:
+      213: -1309700547825573965
+    second: DeusExMachina_50
+  - first:
+      213: 2172907576229753621
+    second: DeusExMachina_51
+  - first:
+      213: -7987546640049522483
+    second: DeusExMachina_52
+  - first:
+      213: 3800773892633615912
+    second: DeusExMachina_53
+  - first:
+      213: -7365616334558486145
+    second: DeusExMachina_54
+  - first:
+      213: 7415753130366416414
+    second: DeusExMachina_55
+  - first:
+      213: 666547319879477062
+    second: DeusExMachina_56
+  - first:
+      213: 1393250083592140004
+    second: DeusExMachina_57
+  - first:
+      213: 5920697812102231888
+    second: DeusExMachina_58
+  - first:
+      213: -5068379494441812555
+    second: DeusExMachina_59
+  - first:
+      213: -5691569178239209369
+    second: DeusExMachina_60
+  - first:
+      213: -7302570785774199972
+    second: DeusExMachina_61
+  - first:
+      213: -7364121317655646649
+    second: DeusExMachina_62
+  - first:
+      213: -1393210966366991140
+    second: DeusExMachina_63
+  - first:
+      213: 4650419371766888644
+    second: DeusExMachina_64
+  - first:
+      213: -8418572335342148982
+    second: DeusExMachina_65
+  - first:
+      213: 6753438834603351111
+    second: DeusExMachina_66
+  - first:
+      213: 8922290968880978482
+    second: DeusExMachina_67
+  - first:
+      213: 8476944241142044688
+    second: DeusExMachina_68
+  - first:
+      213: 2015082954543463437
+    second: DeusExMachina_69
+  - first:
+      213: 2469417094172366450
+    second: DeusExMachina_70
+  - first:
+      213: -6232297527609823910
+    second: DeusExMachina_71
+  - first:
+      213: -4774615395685353066
+    second: DeusExMachina_72
+  - first:
+      213: 4849689328874966567
+    second: DeusExMachina_73
+  - first:
+      213: 5395425159232722525
+    second: DeusExMachina_74
+  - first:
+      213: -4138259308902703785
+    second: DeusExMachina_75
+  - first:
+      213: -3743684672871501087
+    second: DeusExMachina_76
+  - first:
+      213: -8062684022812406562
+    second: DeusExMachina_77
+  - first:
+      213: -3734517123041940998
+    second: DeusExMachina_78
+  - first:
+      213: -5394194648336245300
+    second: DeusExMachina_79
+  - first:
+      213: -3034139976164219477
+    second: DeusExMachina_80
+  - first:
+      213: -1019277550441323880
+    second: DeusExMachina_81
+  - first:
+      213: 4609527253942280265
+    second: DeusExMachina_82
+  - first:
+      213: -284527124598021647
+    second: DeusExMachina_83
+  - first:
+      213: -3149665073665150528
+    second: DeusExMachina_84
+  - first:
+      213: 2944738517889729459
+    second: DeusExMachina_85
+  - first:
+      213: -2989441102422142852
+    second: DeusExMachina_86
+  - first:
+      213: -1433306063724632503
+    second: DeusExMachina_87
+  - first:
+      213: 9117959054681519891
+    second: DeusExMachina_88
+  - first:
+      213: 5741600919542210604
+    second: DeusExMachina_89
+  - first:
+      213: -7768469696720228442
+    second: DeusExMachina_90
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 80
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: DeusExMachina_0
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 299
+        width: 110
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc60097d7bcab3ab0800000000000000
+      internalID: -5027234653433493813
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_1
+      rect:
+        serializedVersion: 2
+        x: 299
+        y: 324
+        width: 48
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 651ea24faa456ec70800000000000000
+      internalID: 8999973998564139350
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_2
+      rect:
+        serializedVersion: 2
+        x: 342
+        y: 390
+        width: 21
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78fd225776ffaaf60800000000000000
+      internalID: 8046524504062746503
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_3
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 361
+        width: 14
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d8014951f80d8e950800000000000000
+      internalID: 6478657376933384333
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_4
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 349
+        width: 11
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d80aa636da67746a0800000000000000
+      internalID: -6465068252997705587
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_5
+      rect:
+        serializedVersion: 2
+        x: 312
+        y: 346
+        width: 34
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f53ff6f8645c5dc0800000000000000
+      internalID: -3648948788279691790
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_6
+      rect:
+        serializedVersion: 2
+        x: 369
+        y: 347
+        width: 44
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf88302ecf6afd610800000000000000
+      internalID: 1648219593694742780
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_7
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 352
+        width: 9
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c63b95f542f111730800000000000000
+      internalID: 3967986987769115500
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_8
+      rect:
+        serializedVersion: 2
+        x: 43
+        y: 340
+        width: 32
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 61dd9425aa8d2cdb0800000000000000
+      internalID: -4773014429022692074
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_9
+      rect:
+        serializedVersion: 2
+        x: 70
+        y: 280
+        width: 98
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ad449137f0f7b5f0800000000000000
+      internalID: -740858669199766110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_10
+      rect:
+        serializedVersion: 2
+        x: 175
+        y: 348
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 729760220495c6dd0800000000000000
+      internalID: -2491518361859098329
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_11
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 348
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fbde922c9fd17bc70800000000000000
+      internalID: 8986684539982704063
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_12
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 338
+        width: 10
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2fa04da8585c95c30800000000000000
+      internalID: 4348724092553399026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_13
+      rect:
+        serializedVersion: 2
+        x: 198
+        y: 348
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0095639a47d00c700800000000000000
+      internalID: 558461148500220160
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_14
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 348
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 607e7f75bb9bb8a10800000000000000
+      internalID: 1912826681034794758
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_15
+      rect:
+        serializedVersion: 2
+        x: 214
+        y: 348
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1f2a9e6d76b32a660800000000000000
+      internalID: 7395538855269081841
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_16
+      rect:
+        serializedVersion: 2
+        x: 219
+        y: 348
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f2416569711057ea0800000000000000
+      internalID: -5875788938016844753
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_17
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 338
+        width: 13
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1f4f8cf1c4fa27440800000000000000
+      internalID: 4932197283409753329
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_18
+      rect:
+        serializedVersion: 2
+        x: 236
+        y: 348
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fb4a95a373f6e51e0800000000000000
+      internalID: -2207204484372126529
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_19
+      rect:
+        serializedVersion: 2
+        x: 244
+        y: 348
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6e6fce2d4a41441c0800000000000000
+      internalID: -4520465427827198234
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_20
+      rect:
+        serializedVersion: 2
+        x: 255
+        y: 299
+        width: 48
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 28a3c3a4c51eaa7d0800000000000000
+      internalID: -2906262823015531902
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_21
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 348
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d184bf429779a0f0800000000000000
+      internalID: -1105220763256585776
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_22
+      rect:
+        serializedVersion: 2
+        x: 355
+        y: 333
+        width: 30
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d53728df167a36f0800000000000000
+      internalID: -704120512587549232
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_23
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 338
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd5a1fbaedd759620800000000000000
+      internalID: 2780266740292101599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_24
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 338
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ccd0519e6ba29e60800000000000000
+      internalID: 7967619182144576707
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_25
+      rect:
+        serializedVersion: 2
+        x: 201
+        y: 338
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6b67ccd6f7a0db420800000000000000
+      internalID: 2647283698382960310
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_26
+      rect:
+        serializedVersion: 2
+        x: 209
+        y: 338
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b5805f3f996985e0800000000000000
+      internalID: -1906876834531736141
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_27
+      rect:
+        serializedVersion: 2
+        x: 233
+        y: 338
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 328a49667c8116b00800000000000000
+      internalID: 819963851856717859
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_28
+      rect:
+        serializedVersion: 2
+        x: 241
+        y: 338
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d6409dddfd689530800000000000000
+      internalID: 3861957617581573848
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_29
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 338
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93bc672326224cb70800000000000000
+      internalID: 8918290967249210169
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_30
+      rect:
+        serializedVersion: 2
+        x: 314
+        y: 320
+        width: 46
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d97306fcd40cc920800000000000000
+      internalID: 3011787597870758360
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_31
+      rect:
+        serializedVersion: 2
+        x: 140
+        y: 261
+        width: 44
+        height: 59
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 89d4c5f80476e0730800000000000000
+      internalID: 3967221848740744600
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_32
+      rect:
+        serializedVersion: 2
+        x: 179
+        y: 270
+        width: 72
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1f37fe37cecf37f60800000000000000
+      internalID: 8031040653019280369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_33
+      rect:
+        serializedVersion: 2
+        x: 246
+        y: 261
+        width: 44
+        height: 59
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d4f97753364924fb0800000000000000
+      internalID: -4665003110182707379
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_34
+      rect:
+        serializedVersion: 2
+        x: 262
+        y: 295
+        width: 53
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9090ac8e1058c14d0800000000000000
+      internalID: -3162506595073914615
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_35
+      rect:
+        serializedVersion: 2
+        x: 315
+        y: 311
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dff30f0467553faf0800000000000000
+      internalID: -363853178502889475
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_36
+      rect:
+        serializedVersion: 2
+        x: 317
+        y: 317
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4de50fb648b5e1bf0800000000000000
+      internalID: -351743096583594284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_37
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 282
+        width: 91
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 208fa37668324ee60800000000000000
+      internalID: 7990550699026610178
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_38
+      rect:
+        serializedVersion: 2
+        x: 118
+        y: 269
+        width: 27
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7c533a76a1017a60800000000000000
+      internalID: 7669913454915050619
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_39
+      rect:
+        serializedVersion: 2
+        x: 199
+        y: 235
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c6412a37225bd5d0800000000000000
+      internalID: -3036743195298806079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_40
+      rect:
+        serializedVersion: 2
+        x: 285
+        y: 291
+        width: 75
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94bed1f41376cced0800000000000000
+      internalID: -2392423840562156727
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_41
+      rect:
+        serializedVersion: 2
+        x: 294
+        y: 257
+        width: 45
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a9e8bf2eff31ed7a0800000000000000
+      internalID: -6350616434800095590
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_42
+      rect:
+        serializedVersion: 2
+        x: 352
+        y: 287
+        width: 75
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c7269bf341a6b150800000000000000
+      internalID: 5888070876189304772
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_43
+      rect:
+        serializedVersion: 2
+        x: 229
+        y: 236
+        width: 72
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43be5ac04ba084a70800000000000000
+      internalID: 8811304439372966708
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_44
+      rect:
+        serializedVersion: 2
+        x: 294
+        y: 278
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da8ce45807f9dd660800000000000000
+      internalID: 7412255867343390893
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_45
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 249
+        width: 22
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46d99d416318622e0800000000000000
+      internalID: -2150889702744810140
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_46
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 253
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2af14821cf276fae0800000000000000
+      internalID: -1515897797595619422
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_47
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 200
+        width: 84
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d276be6a8923dd70800000000000000
+      internalID: 9066636149366616789
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_48
+      rect:
+        serializedVersion: 2
+        x: 130
+        y: 235
+        width: 38
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9403fdeab355f2ba0800000000000000
+      internalID: -6111572454493179831
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_49
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 250
+        width: 26
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d56f8a97b849105e0800000000000000
+      internalID: -1945110237284862371
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_50
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 229
+        width: 36
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3bfd8b47a4203dde0800000000000000
+      internalID: -1309700547825573965
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_51
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 254
+        width: 31
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 513fde29de7b72e10800000000000000
+      internalID: 2172907576229753621
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_52
+      rect:
+        serializedVersion: 2
+        x: 225
+        y: 229
+        width: 36
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc8bbf496a8862190800000000000000
+      internalID: -7987546640049522483
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_53
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 214
+        width: 81
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82e510ec7bf0fb430800000000000000
+      internalID: 3800773892633615912
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_54
+      rect:
+        serializedVersion: 2
+        x: 326
+        y: 251
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f71a3dae7f218c990800000000000000
+      internalID: -7365616334558486145
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_55
+      rect:
+        serializedVersion: 2
+        x: 332
+        y: 249
+        width: 16
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e163b758e2c0ae660800000000000000
+      internalID: 7415753130366416414
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_56
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 200
+        width: 29
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 647a763814d004900800000000000000
+      internalID: 666547319879477062
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_57
+      rect:
+        serializedVersion: 2
+        x: 179
+        y: 137
+        width: 30
+        height: 97
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e4facbb191d55310800000000000000
+      internalID: 1393250083592140004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_58
+      rect:
+        serializedVersion: 2
+        x: 179
+        y: 217
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 05739c87a4b8a2250800000000000000
+      internalID: 5920697812102231888
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_59
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 128
+        width: 42
+        height: 106
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5bdfbe604bf79a9b0800000000000000
+      internalID: -5068379494441812555
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_60
+      rect:
+        serializedVersion: 2
+        x: 243
+        y: 217
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7607d74dcfb7301b0800000000000000
+      internalID: -5691569178239209369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_61
+      rect:
+        serializedVersion: 2
+        x: 244
+        y: 195
+        width: 14
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5b98ce9f8e08aa90800000000000000
+      internalID: -7302570785774199972
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_62
+      rect:
+        serializedVersion: 2
+        x: 249
+        y: 210
+        width: 62
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 74ee04aada26dc990800000000000000
+      internalID: -7364121317655646649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_63
+      rect:
+        serializedVersion: 2
+        x: 258
+        y: 200
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cdc4484f1025aace0800000000000000
+      internalID: -1393210966366991140
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_64
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 155
+        width: 50
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c8b2c697cb998040800000000000000
+      internalID: 4650419371766888644
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_65
+      rect:
+        serializedVersion: 2
+        x: 167
+        y: 147
+        width: 14
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a82200480193b2b80800000000000000
+      internalID: -8418572335342148982
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_66
+      rect:
+        serializedVersion: 2
+        x: 172
+        y: 195
+        width: 12
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 74c5cdcb6d809bd50800000000000000
+      internalID: 6753438834603351111
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_67
+      rect:
+        serializedVersion: 2
+        x: 249
+        y: 150
+        width: 14
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23a93d62d5852db70800000000000000
+      internalID: 8922290968880978482
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_68
+      rect:
+        serializedVersion: 2
+        x: 263
+        y: 173
+        width: 52
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0189012efd724a570800000000000000
+      internalID: 8476944241142044688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_69
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 156
+        width: 26
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0cf182554307fb10800000000000000
+      internalID: 2015082954543463437
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_70
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 167
+        width: 8
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 276db6c73c1254220800000000000000
+      internalID: 2469417094172366450
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_71
+      rect:
+        serializedVersion: 2
+        x: 174
+        y: 171
+        width: 8
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a5d65443b6e6289a0800000000000000
+      internalID: -6232297527609823910
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_72
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 151
+        width: 33
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 699301938982dbdb0800000000000000
+      internalID: -4774615395685353066
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_73
+      rect:
+        serializedVersion: 2
+        x: 211
+        y: 170
+        width: 15
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 72e4896ffbe8d4340800000000000000
+      internalID: 4849689328874966567
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_74
+      rect:
+        serializedVersion: 2
+        x: 248
+        y: 171
+        width: 8
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d56954c989660ea40800000000000000
+      internalID: 5395425159232722525
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_75
+      rect:
+        serializedVersion: 2
+        x: 259
+        y: 167
+        width: 8
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 75d96608513f196c0800000000000000
+      internalID: -4138259308902703785
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_76
+      rect:
+        serializedVersion: 2
+        x: 265
+        y: 150
+        width: 40
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1e27b6aff92cb0cc0800000000000000
+      internalID: -3743684672871501087
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_77
+      rect:
+        serializedVersion: 2
+        x: 266
+        y: 143
+        width: 28
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: edc8c0469979b1090800000000000000
+      internalID: -8062684022812406562
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_78
+      rect:
+        serializedVersion: 2
+        x: 307
+        y: 156
+        width: 26
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af9a87186745c2cc0800000000000000
+      internalID: -3734517123041940998
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_79
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 159
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ccdda980c88f325b0800000000000000
+      internalID: -5394194648336245300
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_80
+      rect:
+        serializedVersion: 2
+        x: 328
+        y: 159
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba56be964c194e5d0800000000000000
+      internalID: -3034139976164219477
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_81
+      rect:
+        serializedVersion: 2
+        x: 123
+        y: 129
+        width: 6
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8922a6ed77ccad1f0800000000000000
+      internalID: -1019277550441323880
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_82
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 128
+        width: 22
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94026b97d9458ff30800000000000000
+      internalID: 4609527253942280265
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_83
+      rect:
+        serializedVersion: 2
+        x: 194
+        y: 136
+        width: 14
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1f12f5176182d0cf0800000000000000
+      internalID: -284527124598021647
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_84
+      rect:
+        serializedVersion: 2
+        x: 247
+        y: 124
+        width: 14
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c1fbba9d442a44d0800000000000000
+      internalID: -3149665073665150528
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_85
+      rect:
+        serializedVersion: 2
+        x: 250
+        y: 133
+        width: 8
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b34a338410ddd820800000000000000
+      internalID: 2944738517889729459
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_86
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 148
+        width: 8
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c701d25f72f5386d0800000000000000
+      internalID: -2989441102422142852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_87
+      rect:
+        serializedVersion: 2
+        x: 173
+        y: 67
+        width: 16
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 946a741aabfdb1ce0800000000000000
+      internalID: -1433306063724632503
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_88
+      rect:
+        serializedVersion: 2
+        x: 178
+        y: 131
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 31739d2837f798e70800000000000000
+      internalID: 9117959054681519891
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_89
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 7
+        width: 62
+        height: 135
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c20ae53bd934eaf40800000000000000
+      internalID: 5741600919542210604
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeusExMachina_90
+      rect:
+        serializedVersion: 2
+        x: 123
+        y: 94
+        width: 6
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6afaa9e48f9d03490800000000000000
+      internalID: -7768469696720228442
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      DeusExMachina_0: -5027234653433493813
+      DeusExMachina_1: 8999973998564139350
+      DeusExMachina_10: -2491518361859098329
+      DeusExMachina_11: 8986684539982704063
+      DeusExMachina_12: 4348724092553399026
+      DeusExMachina_13: 558461148500220160
+      DeusExMachina_14: 1912826681034794758
+      DeusExMachina_15: 7395538855269081841
+      DeusExMachina_16: -5875788938016844753
+      DeusExMachina_17: 4932197283409753329
+      DeusExMachina_18: -2207204484372126529
+      DeusExMachina_19: -4520465427827198234
+      DeusExMachina_2: 8046524504062746503
+      DeusExMachina_20: -2906262823015531902
+      DeusExMachina_21: -1105220763256585776
+      DeusExMachina_22: -704120512587549232
+      DeusExMachina_23: 2780266740292101599
+      DeusExMachina_24: 7967619182144576707
+      DeusExMachina_25: 2647283698382960310
+      DeusExMachina_26: -1906876834531736141
+      DeusExMachina_27: 819963851856717859
+      DeusExMachina_28: 3861957617581573848
+      DeusExMachina_29: 8918290967249210169
+      DeusExMachina_3: 6478657376933384333
+      DeusExMachina_30: 3011787597870758360
+      DeusExMachina_31: 3967221848740744600
+      DeusExMachina_32: 8031040653019280369
+      DeusExMachina_33: -4665003110182707379
+      DeusExMachina_34: -3162506595073914615
+      DeusExMachina_35: -363853178502889475
+      DeusExMachina_36: -351743096583594284
+      DeusExMachina_37: 7990550699026610178
+      DeusExMachina_38: 7669913454915050619
+      DeusExMachina_39: -3036743195298806079
+      DeusExMachina_4: -6465068252997705587
+      DeusExMachina_40: -2392423840562156727
+      DeusExMachina_41: -6350616434800095590
+      DeusExMachina_42: 5888070876189304772
+      DeusExMachina_43: 8811304439372966708
+      DeusExMachina_44: 7412255867343390893
+      DeusExMachina_45: -2150889702744810140
+      DeusExMachina_46: -1515897797595619422
+      DeusExMachina_47: 9066636149366616789
+      DeusExMachina_48: -6111572454493179831
+      DeusExMachina_49: -1945110237284862371
+      DeusExMachina_5: -3648948788279691790
+      DeusExMachina_50: -1309700547825573965
+      DeusExMachina_51: 2172907576229753621
+      DeusExMachina_52: -7987546640049522483
+      DeusExMachina_53: 3800773892633615912
+      DeusExMachina_54: -7365616334558486145
+      DeusExMachina_55: 7415753130366416414
+      DeusExMachina_56: 666547319879477062
+      DeusExMachina_57: 1393250083592140004
+      DeusExMachina_58: 5920697812102231888
+      DeusExMachina_59: -5068379494441812555
+      DeusExMachina_6: 1648219593694742780
+      DeusExMachina_60: -5691569178239209369
+      DeusExMachina_61: -7302570785774199972
+      DeusExMachina_62: -7364121317655646649
+      DeusExMachina_63: -1393210966366991140
+      DeusExMachina_64: 4650419371766888644
+      DeusExMachina_65: -8418572335342148982
+      DeusExMachina_66: 6753438834603351111
+      DeusExMachina_67: 8922290968880978482
+      DeusExMachina_68: 8476944241142044688
+      DeusExMachina_69: 2015082954543463437
+      DeusExMachina_7: 3967986987769115500
+      DeusExMachina_70: 2469417094172366450
+      DeusExMachina_71: -6232297527609823910
+      DeusExMachina_72: -4774615395685353066
+      DeusExMachina_73: 4849689328874966567
+      DeusExMachina_74: 5395425159232722525
+      DeusExMachina_75: -4138259308902703785
+      DeusExMachina_76: -3743684672871501087
+      DeusExMachina_77: -8062684022812406562
+      DeusExMachina_78: -3734517123041940998
+      DeusExMachina_79: -5394194648336245300
+      DeusExMachina_8: -4773014429022692074
+      DeusExMachina_80: -3034139976164219477
+      DeusExMachina_81: -1019277550441323880
+      DeusExMachina_82: 4609527253942280265
+      DeusExMachina_83: -284527124598021647
+      DeusExMachina_84: -3149665073665150528
+      DeusExMachina_85: 2944738517889729459
+      DeusExMachina_86: -2989441102422142852
+      DeusExMachina_87: -1433306063724632503
+      DeusExMachina_88: 9117959054681519891
+      DeusExMachina_89: 5741600919542210604
+      DeusExMachina_9: -740858669199766110
+      DeusExMachina_90: -7768469696720228442
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
