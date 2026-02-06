@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -48,26 +49,104 @@ public class ChatManager : MonoBehaviour
     [Tooltip("일반 메시지 색상")]
     [SerializeField] private Color normalMessageColor = Color.white;
     [Tooltip("시스템 메시지 색상")]
-    [SerializeField] private Color systemMessageColor = new Color(1f, 0.8f, 0.4f); // 노란색 계열
+    [SerializeField] private Color systemMessageColor = new Color(1f, 0.8f, 0.4f);
+
+    [Header("채팅 버블")]
+    [Tooltip("유저 머리 위 버블 표시 시간(초)")]
+    [SerializeField] private float chatBubbleDuration = 4f;
+
+    [Header("플레이어 채팅")]
+    [Tooltip("플레이어 UserObject (이름·채팅 버블 등 여기서 사용)")]
+    [SerializeField] private UserObject playerUserObject;
+    [Tooltip("인풋필드+전송버튼 부모. 비활성 시 숨김, 엔터/클릭 시 활성화")]
+    [SerializeField] private GameObject chatInputFieldRoot;
+    [Tooltip("채팅 입력 필드")]
+    [SerializeField] private TMP_InputField chatInputField;
+    [Tooltip("NPC 답장 연쇄용. 비어 있으면 씬에서 찾음")]
+    [SerializeField] private NPCChatSystem npcChatSystem;
 
     private List<ChatMessage> _messages = new List<ChatMessage>();
     private GameTimeManager _gameTime;
+    private bool _chatGroupJustClosed;
+
+    public float ChatBubbleDuration => chatBubbleDuration;
 
     private void Awake()
     {
         if (chatContent == null)
         {
-            // 자동으로 찾기 시도
-            GameObject scrollView = GameObject.Find("Scroll View");
-            if (scrollView != null)
-            {
-                Transform content = scrollView.transform.Find("Content");
-                if (content != null)
-                    chatContent = content;
-            }
+            var content = GameObject.Find("Scroll View")?.transform.Find("Content");
+            if (content != null) chatContent = content;
         }
-
         _gameTime = FindFirstObjectByType<GameTimeManager>();
+        if (npcChatSystem == null) npcChatSystem = FindFirstObjectByType<NPCChatSystem>();
+        SetChatGroupActive(false);
+    }
+
+    private void Start()
+    {
+        StartCoroutine(HideChatGroupAfterFirstFrame());
+    }
+
+    private IEnumerator HideChatGroupAfterFirstFrame()
+    {
+        yield return null;
+        SetChatGroupActive(false);
+    }
+
+    private void Update()
+    {
+        if (chatInputFieldRoot == null) return;
+        if (_chatGroupJustClosed) { _chatGroupJustClosed = false; return; }
+
+        bool enter = Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter);
+        if (!enter) return;
+
+        if (chatInputFieldRoot.activeSelf)
+        {
+            if (chatInputField != null) TrySendPlayerMessage(chatInputField.text);
+            SetChatGroupActive(false);
+            _chatGroupJustClosed = true;
+        }
+        else
+        {
+            SetChatGroupActive(true);
+        }
+    }
+
+    public void OpenChatGroup() => SetChatGroupActive(true);
+    public void CloseChatGroup() => SetChatGroupActive(false);
+
+    private void SetChatGroupActive(bool active)
+    {
+        if (chatInputFieldRoot != null) chatInputFieldRoot.SetActive(active);
+        if (active && chatInputField != null) chatInputField.ActivateInputField();
+    }
+
+    public void SendPlayerMessage()
+    {
+        if (chatInputField == null) return;
+        TrySendPlayerMessage(chatInputField.text);
+        SetChatGroupActive(false);
+        _chatGroupJustClosed = true;
+    }
+
+    private void TrySendPlayerMessage(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text)) return;
+        text = text.Trim();
+
+        string senderName = playerUserObject != null ? playerUserObject.DisplayName : "나";
+        AddNormalMessage(senderName, text);
+        if (playerUserObject != null && chatBubbleDuration > 0f)
+            playerUserObject.ShowChatBubble(text, chatBubbleDuration);
+        npcChatSystem?.OnMessageReceived("player", text);
+
+        if (chatInputField != null)
+        {
+            chatInputField.text = "";
+            chatInputField.ReleaseSelection();
+        }
     }
 
     /// <summary>
@@ -90,117 +169,54 @@ public class ChatManager : MonoBehaviour
         AddMessage(msg);
     }
 
-    /// <summary>
-    /// 메시지 추가 및 UI 업데이트
-    /// </summary>
     private void AddMessage(ChatMessage message)
     {
-        if (chatContent == null)
-        {
-            Debug.LogWarning("[ChatManager] chatContent가 설정되지 않았습니다.");
-            return;
-        }
+        if (chatContent == null) return;
 
         _messages.Add(message);
-
-        // 최대 메시지 수 초과 시 오래된 메시지 제거
         while (_messages.Count > maxMessages)
         {
-            if (chatContent.childCount > 0)
-            {
-                Transform oldest = chatContent.GetChild(0);
-                if (oldest != null)
-                    Destroy(oldest.gameObject);
-            }
+            if (chatContent.childCount > 0) Destroy(chatContent.GetChild(0).gameObject);
             _messages.RemoveAt(0);
         }
-
-        // UI에 메시지 아이템 생성
         CreateMessageItem(message);
     }
 
-    /// <summary>
-    /// 메시지 UI 아이템 생성
-    /// </summary>
     private void CreateMessageItem(ChatMessage message)
     {
-        GameObject itemObj = Instantiate(messageItemPrefab, chatContent);
-        TextMeshProUGUI textComponent = itemObj.GetComponentInChildren<TextMeshProUGUI>();
-        if (textComponent == null)
-        {
-            Debug.LogWarning("[ChatManager] 메시지 아이템에 TextMeshProUGUI 컴포넌트를 찾을 수 없습니다.");
-            return;
-        }
+        var itemObj = Instantiate(messageItemPrefab, chatContent);
+        var textComponent = itemObj.GetComponentInChildren<TextMeshProUGUI>();
+        if (textComponent == null) return;
 
-        // 메시지 포맷팅
-        string formattedMessage = FormatMessage(message);
-        textComponent.text = formattedMessage;
+        textComponent.text = FormatMessage(message);
         textComponent.color = message.type == ChatMessageType.System ? systemMessageColor : normalMessageColor;
-
-        // Layout Element 추가 (필요시)
-        LayoutElement layout = itemObj.GetComponent<LayoutElement>();
-        if (layout == null)
-            layout = itemObj.AddComponent<LayoutElement>();
-        layout.preferredHeight = -1;
-        layout.flexibleHeight = 0;
+        if (itemObj.GetComponent<LayoutElement>() == null)
+        {
+            var layout = itemObj.AddComponent<LayoutElement>();
+            layout.preferredHeight = -1;
+            layout.flexibleHeight = 0;
+        }
     }
 
-    /// <summary>
-    /// 메시지 포맷팅
-    /// </summary>
     private string FormatMessage(ChatMessage message)
     {
         if (message.type == ChatMessageType.System)
-        {
-            // 시스템 메시지: [시스템] 메시지 내용
-            return string.IsNullOrEmpty(message.timestamp) 
-                ? $"[시스템] {message.content}" 
-                : $"[{message.timestamp}] [시스템] {message.content}";
-        }
-        else
-        {
-            // 일반 메시지: [시간] 발신자: 메시지 내용
-            if (string.IsNullOrEmpty(message.senderName))
-                return string.IsNullOrEmpty(message.timestamp) 
-                    ? message.content 
-                    : $"[{message.timestamp}] {message.content}";
-            else
-                return string.IsNullOrEmpty(message.timestamp) 
-                    ? $"{message.senderName}: {message.content}" 
-                    : $"[{message.timestamp}] {message.senderName}: {message.content}";
-        }
+            return string.IsNullOrEmpty(message.timestamp) ? $"[시스템] {message.content}" : $"[{message.timestamp}] [시스템] {message.content}";
+        string namePart = string.IsNullOrEmpty(message.senderName) ? "" : $"{message.senderName}: ";
+        return string.IsNullOrEmpty(message.timestamp) ? $"{namePart}{message.content}" : $"[{message.timestamp}] {namePart}{message.content}";
     }
 
-    /// <summary>
-    /// 모든 메시지 제거
-    /// </summary>
     public void ClearMessages()
     {
         _messages.Clear();
-        if (chatContent != null)
-        {
-            for (int i = chatContent.childCount - 1; i >= 0; i--)
-            {
-                Transform child = chatContent.GetChild(i);
-                if (child != null)
-                    Destroy(child.gameObject);
-            }
-        }
+        if (chatContent == null) return;
+        for (int i = chatContent.childCount - 1; i >= 0; i--)
+            Destroy(chatContent.GetChild(i).gameObject);
     }
 
-    /// <summary>
-    /// 최근 메시지 목록 가져오기 (컨텍스트용)
-    /// </summary>
     public List<ChatMessage> GetRecentMessages(int count)
     {
-        var recent = new List<ChatMessage>();
-        int startIndex = Mathf.Max(0, _messages.Count - count);
-        
-        for (int i = startIndex; i < _messages.Count; i++)
-        {
-            recent.Add(_messages[i]);
-        }
-        
-        return recent;
+        int start = Mathf.Max(0, _messages.Count - count);
+        return _messages.GetRange(start, _messages.Count - start);
     }
 }

@@ -25,8 +25,6 @@ public class NPCChatSystem : MonoBehaviour
 
     private float _nextRandomCycleTime;
     private bool _isResponseChainActive = false; // 답장 연쇄 진행 중 여부
-    private Queue<string> _responseChainQueue = new Queue<string>(); // 답장 연쇄 대기열
-    private Coroutine _currentResponseChainCoroutine;
 
     private void Awake()
     {
@@ -74,22 +72,32 @@ public class NPCChatSystem : MonoBehaviour
 
         // 접속 중인 NPC 목록 가져오기
         var onlineNPCs = GetOnlineNPCs();
-        if (onlineNPCs.Count == 0)
+        if (onlineNPCs.Count == 0){
+            Debug.Log("[NPCChatSystem] 접속 중인 NPC가 없습니다.");
             return;
+        }
 
         // 가중치 기반으로 NPC 선택
         string selectedNPCId = SelectNPCByWeight(onlineNPCs);
-        if (string.IsNullOrEmpty(selectedNPCId))
+        if (string.IsNullOrEmpty(selectedNPCId)){
+            Debug.Log("[NPCChatSystem] 가중치 기반으로 NPC 선택 실패");
             return;
+        }
 
         // 선택된 NPC가 말할 확률 체크
         var npc = npcManager.GetNPC(selectedNPCId);
-        if (npc == null)
+        if (npc == null){
+            Debug.Log("[NPCChatSystem] NPC 데이터를 찾을 수 없습니다.");
             return;
+        }
 
         float speakWeight = npc.GetSpeakWeight();
-        if (Random.value > speakWeight)
-            return; // 말하지 않음
+        float randomValue = Random.value;
+        if (randomValue > speakWeight){
+            Debug.Log($"[NPCChatSystem] {npc.name}는 말하려다 말하지 않음: {speakWeight}/{randomValue}");
+            return;
+        }
+        Debug.Log($"[NPCChatSystem] {npc.name}는 말함: {speakWeight}/{randomValue}");
 
         // AI API로 채팅 생성
         GenerateNPCChat(selectedNPCId, npc, null, null);
@@ -197,12 +205,11 @@ public class NPCChatSystem : MonoBehaviour
     {
         if (chatManager != null)
         {
-            // 채팅 메시지 추가
             chatManager.AddNormalMessage(npcName, chatMessage);
-
-            // 답장 연쇄 체크
             CheckResponseChain(npcId, chatMessage);
         }
+        if (npcManager != null && chatManager != null && chatManager.ChatBubbleDuration > 0f)
+            npcManager.ShowChatBubbleForUser(npcId, chatMessage, chatManager.ChatBubbleDuration);
     }
 
     /// <summary>

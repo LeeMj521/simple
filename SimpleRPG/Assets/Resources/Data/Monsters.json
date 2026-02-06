@@ -8,6 +8,15 @@
             "level": 1,
             "expReward": 10,
             "goldReward": 5
+        },
+        {
+            "monsterId": "monster_f016454c",
+            "monsterName": "DeusExMachina",
+            "prefabPath": "Prefabs/Monster/DeusExMachina",
+            "maxHP": 11111111,
+            "level": 999,
+            "expReward": 500000,
+            "goldReward": 150000
         }
     ]
 }

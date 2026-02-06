@@ -314,6 +314,18 @@ public class NPCManager : MonoBehaviour
         return new Dictionary<string, NPCData>(_npcs);
     }
 
+    /// <summary>
+    /// 해당 NPC(유저) 머리 위에 채팅 버블 표시. 일정 시간 후 자동 숨김.
+    /// </summary>
+    public void ShowChatBubbleForUser(string npcId, string text, float durationSeconds)
+    {
+        if (string.IsNullOrEmpty(npcId) || durationSeconds <= 0f)
+            return;
+        if (!_spawnedUsers.TryGetValue(npcId, out UserObject user) || user == null)
+            return;
+        user.ShowChatBubble(text, durationSeconds);
+    }
+
     private void OnDrawGizmos()
     {
         Transform parent = userSpawnParent != null ? userSpawnParent : transform;
