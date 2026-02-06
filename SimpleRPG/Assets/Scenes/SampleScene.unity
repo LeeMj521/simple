@@ -393,6 +393,74 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1 &298218443
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 298218444}
+  - component: {fileID: 298218446}
+  - component: {fileID: 298218445}
+  m_Layer: 0
+  m_Name: NPCChatSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &298218444
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 298218443}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 58.467426, y: -208.75331, z: -14.632163}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 422349511}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &298218445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 298218443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a60762262bc828a41a86873769216313, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  apiEndpoint: https://api.openai.com/v1/chat/completions
+  modelName: gpt-4o-mini
+  maxTokens: 100
+  enableLogging: 1
+--- !u!114 &298218446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 298218443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68538267fa7d49a4baf79c0c720c98f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  npcManager: {fileID: 1890644069}
+  chatManager: {fileID: 2080164465}
+  gameTime: {fileID: 530366858}
+  aiAPIService: {fileID: 298218445}
+  randomCycleMin: 30
+  randomCycleMax: 120
+  contextMessageCount: 5
 --- !u!1 &365116233
 GameObject:
   m_ObjectHideFlags: 0
@@ -516,6 +584,8 @@ Transform:
   - {fileID: 1890644070}
   - {fileID: 1994722511}
   - {fileID: 530366857}
+  - {fileID: 2080164466}
+  - {fileID: 298218444}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
@@ -1060,7 +1130,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &883623664
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1077,10 +1147,10 @@ RectTransform:
   - {fileID: 1859010765}
   m_Father: {fileID: 664723958}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 337.13605, y: -132.1938}
+  m_SizeDelta: {x: 674.2721, y: 38}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &883623665
 MonoBehaviour:
@@ -1204,7 +1274,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -113.19381}
+  m_AnchoredPosition: {x: 0, y: -151.19383}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1033769103
@@ -2915,6 +2985,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dataManager: {fileID: 1560215630}
   gameTime: {fileID: 530366858}
+  chatManager: {fileID: 0}
   userPrefab: {fileID: 4934449404533942506, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
   userSpawnParent: {fileID: 1485143716}
   spawnAreaCenter: {x: 0, y: 0}
@@ -3113,6 +3184,55 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Padding: {x: -8, y: -5, z: -8, w: -5}
   m_Softness: {x: 0, y: 0}
+--- !u!1 &2080164464
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2080164466}
+  - component: {fileID: 2080164465}
+  m_Layer: 0
+  m_Name: ChatManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2080164465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2080164464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f378fd0cc524ef47bf5e80a392c718b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chatContent: {fileID: 1033769102}
+  messageItemPrefab: {fileID: 8067228712491921821, guid: 96e179fc303256842bcadfce2ca6dd14, type: 3}
+  maxMessages: 100
+  normalMessageColor: {r: 1, g: 1, b: 1, a: 1}
+  systemMessageColor: {r: 1, g: 0.8, b: 0.4, a: 1}
+--- !u!4 &2080164466
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2080164464}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 12.07883, y: -0.8867486, z: -10.096838}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 422349511}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2102888418
 GameObject:
   m_ObjectHideFlags: 0

@@ -48,7 +48,7 @@ public class GameTimeManager : MonoBehaviour
     /// <summary>게임 시간을 "HH:MM" 형식으로 반환</summary>
     public string GetTimeString()
     {
-        return $"{Hour:D2}:{Minute:D2}";
+        return $"{Hour:D2}시 {Minute:D2}분";
     }
 
     private string GetTimeString12()
@@ -58,6 +58,6 @@ public class GameTimeManager : MonoBehaviour
         bool pm = h >= 12;
         if (h == 0) h = 12;
         else if (h > 12) h -= 12;
-        return $"{h:D2}:{m:D2} {(pm ? "PM" : "AM")}";
+        return $"{(pm ? "오후" : "오전")} {h:D2}시 {m:D2}분";
     }
 }

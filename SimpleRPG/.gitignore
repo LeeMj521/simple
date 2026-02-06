@@ -97,3 +97,7 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+
+# Secrets (API keys, etc.)
+/[Aa]ssets/Resources/secrets.json
+/[Aa]ssets/Resources/secrets.json.meta

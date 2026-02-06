@@ -10,20 +10,21 @@ public class NPCManager : MonoBehaviour
     [Header("참조")]
     [SerializeField] private DataManager dataManager;
     [SerializeField] private GameTimeManager gameTime;
+    [SerializeField] private ChatManager chatManager;
 
     [Header("접속 시 User 생성")]
     [Tooltip("Resources 경로 또는 인스펙터에서 할당된 프리팹")]
     [SerializeField] private GameObject userPrefab;
     [SerializeField] private Transform userSpawnParent;
-    [Tooltip("오목 형태 중심. ■☆■ / ■■■ 에서 ☆ = 몬스터 구역(위쪽 가운데만 빈칸)")]
+    [Tooltip("중심")]
     [SerializeField] private Vector2 spawnAreaCenter = Vector2.zero;
     [Tooltip("전체 너비")]
     [SerializeField] private float spawnAreaTotalWidth = 12f;
     [Tooltip("전체 높이")]
     [SerializeField] private float spawnAreaTotalHeight = 8f;
-    [Tooltip("위쪽 가운데 빈 구역(☆) 너비")]
+    [Tooltip("위쪽 가운데 빈 구역 너비")]
     [SerializeField] private float spawnAreaGapWidth = 4f;
-    [Tooltip("위쪽 가운데 빈 구역(☆) 높이")]
+    [Tooltip("위쪽 가운데 빈 구역 높이")]
     [SerializeField] private float spawnAreaGapHeight = 3f;
     [Tooltip("다른 User와 이 거리 이상 떨어지게 배치")]
     [SerializeField] private float minDistanceBetweenUsers = 1.5f;
@@ -35,6 +36,7 @@ public class NPCManager : MonoBehaviour
     private int _cachedGameDay = -1;
     private bool _prefabWarningLogged;
     private Dictionary<string, List<(int start, int end)>> _effectiveWindows = new Dictionary<string, List<(int, int)>>();
+    private Dictionary<string, bool> _previousOnlineState = new Dictionary<string, bool>(); // 이전 접속 상태 추적
 
     private void Awake()
     {
@@ -42,6 +44,8 @@ public class NPCManager : MonoBehaviour
             dataManager = FindFirstObjectByType<DataManager>();
         if (gameTime == null)
             gameTime = FindFirstObjectByType<GameTimeManager>();
+        if (chatManager == null)
+            chatManager = FindFirstObjectByType<ChatManager>();
         if (userSpawnParent == null)
             userSpawnParent = transform;
     }
@@ -83,7 +87,23 @@ public class NPCManager : MonoBehaviour
                 if (s <= e && now >= s && now < e) { online = true; break; }
                 if (s > e && (now >= s || now < e)) { online = true; break; }
             }
+            // 접속 상태 변경 감지 및 시스템 메시지 전송
+            bool wasOnline = _previousOnlineState.TryGetValue(npcId, out bool prev) && prev;
+            if (online && !wasOnline)
+            {
+                // 접속 시
+                if (chatManager != null)
+                    chatManager.AddSystemMessage($"{npc.name}님이 접속했습니다.");
+            }
+            else if (!online && wasOnline)
+            {
+                // 접속 해제 시 (선택사항)
+                // if (chatManager != null)
+                //     chatManager.AddSystemMessage($"{npc.name}님이 접속을 종료했습니다.");
+            }
+
             npc.isOnline = online;
+            _previousOnlineState[npcId] = online;
 
             if (online)
                 TrySpawnUser(npcId, npc);
@@ -223,6 +243,7 @@ public class NPCManager : MonoBehaviour
         _spawnedUsers.Clear();
         _npcs.Clear();
         _effectiveWindows.Clear();
+        _previousOnlineState.Clear();
         _cachedGameDay = -1;
         if (dataManager != null)
         {
@@ -283,6 +304,14 @@ public class NPCManager : MonoBehaviour
                 if (npc.isOnline) n++;
             return n;
         }
+    }
+
+    /// <summary>
+    /// 로드된 모든 NPC 데이터 가져오기
+    /// </summary>
+    public Dictionary<string, NPCData> GetLoadedNPCs()
+    {
+        return new Dictionary<string, NPCData>(_npcs);
     }
 
     private void OnDrawGizmos()
