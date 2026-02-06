@@ -117,6 +117,9 @@ public class NPCDataEditor : EditorWindow
         EditorGUILayout.LabelField("기본 정보", EditorStyles.boldLabel);
         npc.npcId = EditorGUILayout.TextField("NPC ID", npc.npcId);
         npc.npcName = EditorGUILayout.TextField("NPC 이름", npc.npcName);
+        Job currentJob = System.Enum.TryParse(npc.job, true, out Job parsed) ? parsed : Job.무직;
+        Job newJob = (Job)EditorGUILayout.EnumPopup("직업", currentJob);
+        npc.job = newJob.ToString();
         
         EditorGUILayout.LabelField("성격 설명", EditorStyles.miniLabel);
         npc.behaviorType = EditorGUILayout.TextArea(npc.behaviorType ?? "", GUILayout.Height(40), GUILayout.ExpandHeight(false));
@@ -228,17 +231,28 @@ public class NPCDataEditor : EditorWindow
         {
             npc.initialRelationships = new List<RelationshipJson>();
         }
+
+        var targetIdOptions = new System.Collections.Generic.List<string> { "(선택)" };
+        targetIdOptions.Add("player");
+        for (int k = 0; k < npcData.npcs.Count; k++)
+        {
+            if (npcData.npcs[k].npcId != npc.npcId)
+                targetIdOptions.Add(npcData.npcs[k].npcId);
+        }
+        string[] targetIdLabels = targetIdOptions.ToArray();
         
         for (int i = 0; i < npc.initialRelationships.Count; i++)
         {
             EditorGUILayout.BeginHorizontal();
-            string oldTargetId = npc.initialRelationships[i].targetId;
-            npc.initialRelationships[i].targetId = EditorGUILayout.TextField("대상 ID", npc.initialRelationships[i].targetId);
+            string currentTargetId = npc.initialRelationships[i].targetId;
+            int selectedIndex = targetIdOptions.IndexOf(currentTargetId);
+            if (selectedIndex < 0) selectedIndex = 0;
             
-            // 대상 ID 변경 시 중복 체크
-            if (npc.initialRelationships[i].targetId != oldTargetId)
+            int newIndex = EditorGUILayout.Popup("대상", selectedIndex, targetIdLabels);
+            string newTargetId = newIndex == 0 ? "" : targetIdOptions[newIndex];
+            
+            if (newTargetId != currentTargetId)
             {
-                string newTargetId = npc.initialRelationships[i].targetId;
                 bool isDuplicate = false;
                 for (int j = 0; j < npc.initialRelationships.Count; j++)
                 {
@@ -249,10 +263,9 @@ public class NPCDataEditor : EditorWindow
                     }
                 }
                 if (isDuplicate)
-                {
                     EditorUtility.DisplayDialog("중복 관계", $"'{newTargetId}'와의 관계가 이미 존재합니다.", "확인");
-                    npc.initialRelationships[i].targetId = oldTargetId;
-                }
+                else
+                    npc.initialRelationships[i].targetId = newTargetId;
             }
             
             npc.initialRelationships[i].value = EditorGUILayout.Slider("호감도", npc.initialRelationships[i].value, -100f, 100f);
@@ -266,16 +279,7 @@ public class NPCDataEditor : EditorWindow
         
         if (GUILayout.Button("관계 추가"))
         {
-            string newTargetId = "player";
-            // 중복 체크
-            if (npc.initialRelationships != null && npc.initialRelationships.Exists(r => r.targetId == newTargetId))
-            {
-                EditorUtility.DisplayDialog("중복 관계", $"'{newTargetId}'와의 관계가 이미 존재합니다.", "확인");
-            }
-            else
-            {
-                npc.initialRelationships.Add(new RelationshipJson { targetId = newTargetId, value = 0f });
-            }
+            npc.initialRelationships.Add(new RelationshipJson { targetId = "", value = 0f });
         }
         
         if (EditorGUI.EndChangeCheck())
@@ -298,6 +302,7 @@ public class NPCDataEditor : EditorWindow
         {
             npcId = $"npc_{System.Guid.NewGuid().ToString().Substring(0, 8)}",
             npcName = "새 NPC",
+            job = "None",
             behaviorType = "",
             behaviorExample = "",
             speakProbability = 0.3f,

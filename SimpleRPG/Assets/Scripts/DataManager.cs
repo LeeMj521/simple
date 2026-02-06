@@ -224,6 +224,7 @@ public class NPCJson
 {
     public string npcId;
     public string npcName;
+    public string job;
     public string behaviorType;
     public string behaviorExample;
     public float speakProbability = 0.3f; // 말할 확률
@@ -244,8 +245,13 @@ public class NPCJson
     
     public NPCData ToRuntimeData()
     {
+        Job jobEnum = Job.무직;
+        if (!string.IsNullOrEmpty(job) && !System.Enum.TryParse(job, true, out jobEnum))
+            jobEnum = Job.무직;
+
         NPCData data = new NPCData(npcId, npcName)
         {
+            job = jobEnum,
             behaviorType = behaviorType,
             behaviorExample = behaviorExample,
             speakProbability = speakProbability,
@@ -281,7 +287,7 @@ public class NPCJson
         {
             foreach (var rel in initialRelationships)
             {
-                // 관계 값이 -100~100 범위로 제한
+                if (string.IsNullOrEmpty(rel.targetId)) continue;
                 float relationshipValue = Mathf.Clamp(rel.value, -100f, 100f);
                 data.SetRelationship(rel.targetId, relationshipValue);
             }

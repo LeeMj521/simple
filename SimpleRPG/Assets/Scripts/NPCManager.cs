@@ -26,8 +26,8 @@ public class NPCManager : MonoBehaviour
     [SerializeField] private float spawnAreaGapWidth = 4f;
     [Tooltip("위쪽 가운데 빈 구역 높이")]
     [SerializeField] private float spawnAreaGapHeight = 3f;
-    [Tooltip("다른 User와 이 거리 이상 떨어지게 배치")]
-    [SerializeField] private float minDistanceBetweenUsers = 1.5f;
+    [Tooltip("User 원 강체 반지름. 스폰 전 겹침 검사에 사용")]
+    [SerializeField] private float userCircleRadius = 1.2f;
     [Tooltip("겹치지 않는 위치 찾기 최대 시도 횟수")]
     [SerializeField] private int spawnPositionAttempts = 25;
 
@@ -117,37 +117,60 @@ public class NPCManager : MonoBehaviour
         if (_spawnedUsers.ContainsKey(npcId)) return;
 
         GameObject prefab = userPrefab;
-        if (prefab == null)
-            prefab = Resources.Load<GameObject>("Prefabs/User");
-        if (prefab == null)
-        {
-            if (!_prefabWarningLogged)
-            {
-                _prefabWarningLogged = true;
-                Debug.LogWarning("[NPCManager] User 프리팹이 없습니다. NPCManager 인스펙터에 User Prefab을 할당하거나 Resources/Prefabs/User 에 프리팹을 두세요.");
-            }
-            return;
-        }
 
         Transform parent = userSpawnParent != null ? userSpawnParent : transform;
-        Vector3 localPos = GetRandomSpawnPosition(parent);
+        if (!TryGetFreeSpawnPosition(parent, out Vector3 localPos))
+            return;
+
         GameObject go = Instantiate(prefab, parent);
         go.transform.localPosition = localPos;
 
         UserObject user = go.GetComponent<UserObject>();
         if (user == null) user = go.AddComponent<UserObject>();
         user.SetDisplayName(npc.name);
+        user.SetJob(npc.job);
         user.SetAttack(npc.attackPower, npc.attackCooldown);
 
         _spawnedUsers[npcId] = user;
     }
 
     /// <summary>
+    /// 스폰 전 Physics2D.OverlapCircle(반지름 userCircleRadius)로 겹침 검사.
+    /// </summary>
+    private bool TryGetFreeSpawnPosition(Transform parent, out Vector3 localPos)
+    {
+        for (int attempt = 0; attempt < spawnPositionAttempts; attempt++)
+        {
+            Vector2 candidate = GetRandomPointInArea();
+            Vector2 candidateWorld = parent.TransformPoint(candidate.x, candidate.y, 0f);
+
+            Collider2D[] hits = Physics2D.OverlapCircleAll(candidateWorld, userCircleRadius);
+            bool overlapsUser = false;
+            foreach (var col in hits)
+            {
+                if (col == null) continue;
+                var u = col.GetComponent<UserObject>();
+                if (u != null)
+                {
+                    overlapsUser = true;
+                    break;
+                }
+            }
+            if (!overlapsUser)
+            {
+                localPos = new Vector3(candidate.x, candidate.y, 0f);
+                return true;
+            }
+        }
+        localPos = default;
+        return false;
+    }
+
+    /// <summary>
     /// 오목 형태 ■☆■/■■■: 좌열·우열·아래막대 중 한 구역에서 랜덤. 위쪽 가운데(☆)는 몬스터 구역.
     /// </summary>
-    private Vector3 GetRandomSpawnPosition(Transform parent)
+    private Vector2 GetRandomPointInArea()
     {
-        float minDist = Mathf.Max(0.1f, minDistanceBetweenUsers);
         float halfW = spawnAreaTotalWidth * 0.5f;
         float halfH = spawnAreaTotalHeight * 0.5f;
         float halfGapW = Mathf.Clamp(spawnAreaGapWidth * 0.5f, 0f, halfW - 0.1f);
@@ -161,37 +184,24 @@ public class NPCManager : MonoBehaviour
         float yTop = spawnAreaCenter.y + halfH;
         float yGapBottom = yTop - gapH;
 
-        for (int attempt = 0; attempt < spawnPositionAttempts; attempt++)
+        float x, y;
+        float zone = Random.value;
+        if (zone < 1f / 3f)
         {
-            float x, y;
-            float zone = Random.value;
-            if (zone < 1f / 3f)
-            {
-                x = Random.Range(leftMin, leftMax);
-                y = Random.Range(yBottom, yTop);
-            }
-            else if (zone < 2f / 3f)
-            {
-                x = Random.Range(rightMin, rightMax);
-                y = Random.Range(yBottom, yTop);
-            }
-            else
-            {
-                x = Random.Range(spawnAreaCenter.x - halfGapW, spawnAreaCenter.x + halfGapW);
-                y = Random.Range(yBottom, yGapBottom);
-            }
-            Vector2 local2 = new Vector2(x, y);
-
-            bool ok = true;
-            foreach (var u in _spawnedUsers.Values)
-            {
-                if (u == null || u.transform == null) continue;
-                Vector2 other = new Vector2(u.transform.localPosition.x, u.transform.localPosition.y);
-                if (Vector2.Distance(local2, other) < minDist) { ok = false; break; }
-            }
-            if (ok) return new Vector3(local2.x, local2.y, 0f);
+            x = Random.Range(leftMin, leftMax);
+            y = Random.Range(yBottom, yTop);
         }
-        return new Vector3(spawnAreaCenter.x - halfGapW - 0.5f, spawnAreaCenter.y, 0f);
+        else if (zone < 2f / 3f)
+        {
+            x = Random.Range(rightMin, rightMax);
+            y = Random.Range(yBottom, yTop);
+        }
+        else
+        {
+            x = Random.Range(spawnAreaCenter.x - halfGapW, spawnAreaCenter.x + halfGapW);
+            y = Random.Range(yBottom, yGapBottom);
+        }
+        return new Vector2(x, y);
     }
 
     private void TryRemoveUser(string npcId)

@@ -25,6 +25,7 @@ public class UserObject : MonoBehaviour
 
     [Header("표시 이름")]
     [SerializeField] private string displayName = "유저";
+    [SerializeField] private Job job = Job.무직;
 
     private float _cooldownRemaining;
     private Coroutine _hideBubbleCoroutine;
@@ -35,7 +36,7 @@ public class UserObject : MonoBehaviour
             monsterManager = FindFirstObjectByType<MonsterManager>();
 
         if (nameText != null)
-            nameText.text = displayName;
+            nameText.text = $"{displayName}";
 
         if (cooldownBar != null)
         {
@@ -82,7 +83,13 @@ public class UserObject : MonoBehaviour
     public void SetDisplayName(string name)
     {
         displayName = name ?? "플레이어";
-        if (nameText != null) nameText.text = displayName;
+        if (nameText != null) nameText.text = $"{displayName}";
+    }
+
+    /// <summary>직업 설정. 이름 옆에 [직업] 표시용.</summary>
+    public void SetJob(Job jobType)
+    {
+        job = jobType;
     }
 
     /// <summary>공격력/쿨타임 설정</summary>

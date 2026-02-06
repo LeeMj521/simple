@@ -10,8 +10,8 @@
             "goldReward": 5
         },
         {
-            "monsterId": "monster_f016454c",
-            "monsterName": "DeusExMachina",
+            "monsterId": "DeusExMachina",
+            "monsterName": "데우스 엑스 마키나",
             "prefabPath": "Prefabs/Monster/DeusExMachina",
             "maxHP": 11111111,
             "level": 999,

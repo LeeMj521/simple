@@ -1407,7 +1407,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 900523002649048375, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.6800001
+      value: -0.65
       objectReference: {fileID: 0}
     - target: {fileID: 900523002649048375, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1441,6 +1441,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3750394109076180511, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3750394109076180511, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3750394109076180511, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3750394109076180511, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3750394109076180511, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3750394109076180511, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4934449404533942506, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
       propertyPath: m_Name
       value: Player
@@ -1451,6 +1475,38 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5305899322505960207, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5878326409245407063, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5878326409245407063, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7479666483850395955, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7479666483850395955, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7479666483850395955, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7479666483850395955, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7479666483850395955, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7479666483850395955, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -2383,7 +2439,7 @@ MonoBehaviour:
   spawnAreaTotalHeight: 6.82
   spawnAreaGapWidth: 6.1
   spawnAreaGapHeight: 3.88
-  minDistanceBetweenUsers: 2
+  userCircleRadius: 1.2
   spawnPositionAttempts: 25
 --- !u!4 &1890644070
 Transform:
@@ -2445,7 +2501,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPoint: {fileID: 1523557310}
-  monsterIdOrder: []
+  monsterIdOrder:
+  - Mushroom
   dataManager: {fileID: 1560215630}
 --- !u!1 &2027249477
 GameObject:

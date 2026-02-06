@@ -9,7 +9,7 @@ public class MonsterManager : MonoBehaviour
 {
     [Header("스폰 설정")]
     [SerializeField] private Transform spawnPoint;
-    [Tooltip("비어 있으면 DataManager의 몬스터 목록 순서대로 사용")]
+    [Tooltip("몬스터 id, 비어 있으면 DataManager의 몬스터 목록 순서대로 사용")]
     [SerializeField] private List<string> monsterIdOrder = new List<string>();
 
     [Header("참조")]

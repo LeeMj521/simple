@@ -3,6 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
+/// 유저/NPC 직업
+/// </summary>
+public enum Job
+{
+    무직,
+
+    전사,
+    용기사,
+
+    메이지,
+    아크위저드,
+
+    프리스트,
+    비숍,
+
+    궁수,
+    샤프슈터,
+    
+    도적,
+    나이트로드,
+}
+
+/// <summary>
 /// NPC 데이터 클래스
 /// </summary>
 [Serializable]
@@ -10,6 +33,7 @@ public class NPCData
 {
     public string npcId;
     public string name;
+    public Job job;
     public bool isOnline;
     public bool isFriend;
     public string behaviorType;
@@ -38,6 +62,7 @@ public class NPCData
     {
         npcId = id;
         name = npcName;
+        job = Job.무직;
         isOnline = false;
         isFriend = false;
         behaviorType = "";
