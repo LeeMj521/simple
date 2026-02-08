@@ -12,7 +12,9 @@ public class NPCDataEditor : EditorWindow
     private NPCJsonData npcData;
     private string jsonFilePath;
     private bool isDirty = false;
-    
+    private List<string> _skillIds = new List<string>();
+    private List<string> _skillLabels = new List<string>();
+
     [MenuItem("DataManager/NPC 데이터 관리")]
     public static void ShowWindow()
     {
@@ -22,6 +24,7 @@ public class NPCDataEditor : EditorWindow
     private void OnEnable()
     {
         LoadNPCData();
+        LoadSkillOptions();
     }
     
     private void OnGUI()
@@ -197,9 +200,31 @@ public class NPCDataEditor : EditorWindow
         EditorGUILayout.LabelField("전투 설정", EditorStyles.boldLabel);
         npc.attackPower = EditorGUILayout.IntField("공격력", npc.attackPower);
         npc.attackCooldown = EditorGUILayout.FloatField("공격 쿨타임 초", npc.attackCooldown);
-        
+
         EditorGUILayout.Space(5);
-        
+        EditorGUILayout.LabelField("장착 스킬 (Skills.json의 skillId)", EditorStyles.boldLabel);
+        if (npc.equippedSkillIds == null)
+            npc.equippedSkillIds = new List<string>();
+        for (int i = 0; i < npc.equippedSkillIds.Count; i++)
+        {
+            EditorGUILayout.BeginHorizontal();
+            string currentId = npc.equippedSkillIds[i];
+            int sel = _skillIds.IndexOf(currentId);
+            if (sel < 0) sel = 0;
+            int newSel = EditorGUILayout.Popup("스킬", sel, _skillLabels.ToArray());
+            npc.equippedSkillIds[i] = newSel == 0 ? "" : _skillIds[newSel];
+            if (GUILayout.Button("삭제", GUILayout.Width(50)))
+            {
+                npc.equippedSkillIds.RemoveAt(i);
+                i--;
+            }
+            EditorGUILayout.EndHorizontal();
+        }
+        if (GUILayout.Button("스킬 추가"))
+            npc.equippedSkillIds.Add(_skillIds.Count > 0 ? _skillIds[0] : "");
+
+        EditorGUILayout.Space(5);
+
         // 접속 시간대 (게임 시간)
         EditorGUILayout.LabelField("접속 시간대 (게임 시간)", EditorStyles.boldLabel);
         if (npc.onlineSchedule == null)
@@ -316,13 +341,41 @@ public class NPCDataEditor : EditorWindow
             initialRelationships = new List<RelationshipJson>
             {
                 new RelationshipJson { targetId = "player", value = 0f }
-            }
+            },
+            equippedSkillIds = new List<string>()
         };
-        
+
         npcData.npcs.Add(newNPC);
         isDirty = true;
     }
     
+    private void LoadSkillOptions()
+    {
+        _skillIds.Clear();
+        _skillLabels.Clear();
+        _skillIds.Add("");
+        _skillLabels.Add("(없음)");
+        string path = "Assets/Resources/Data/Skills.json";
+        if (!File.Exists(path)) return;
+        try
+        {
+            string json = File.ReadAllText(path);
+            SkillJsonData skillData = JsonUtility.FromJson<SkillJsonData>(json);
+            if (skillData?.skills != null)
+            {
+                foreach (var s in skillData.skills)
+                {
+                    _skillIds.Add(s.skillId ?? "");
+                    _skillLabels.Add($"{s.skillId} - {s.skillName}");
+                }
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogWarning($"[NPCDataEditor] 스킬 목록 로드 실패: {e.Message}");
+        }
+    }
+
     private void LoadNPCData()
     {
         jsonFilePath = "Assets/Resources/Data/NPCs.json";

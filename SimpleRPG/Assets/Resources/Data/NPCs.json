@@ -30,6 +30,9 @@
             "randomOffsetMinutes": 15,
             "attackPower": 5,
             "attackCooldown": 3.0,
+            "equippedSkillIds": [
+                "skill_1"
+            ],
             "spritePath": ""
         },
         {
@@ -62,6 +65,9 @@
             "randomOffsetMinutes": 20,
             "attackPower": 7,
             "attackCooldown": 2.5,
+            "equippedSkillIds": [
+                "skill_1"
+            ],
             "spritePath": ""
         },
         {
@@ -90,6 +96,9 @@
             "randomOffsetMinutes": 15,
             "attackPower": 1,
             "attackCooldown": 10.0,
+            "equippedSkillIds": [
+                "skill_1"
+            ],
             "spritePath": ""
         }
     ]

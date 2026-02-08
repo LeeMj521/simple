@@ -307,7 +307,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &298218444
 Transform:
   m_ObjectHideFlags: 0
@@ -707,7 +707,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 00000000
+  m_ApplyToSortingLayers: 000000002154f132c920298a
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -1082,7 +1082,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 5, y: -113.19383}
+  m_AnchoredPosition: {x: 5, y: -113.19382}
   m_SizeDelta: {x: -15, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1033769103
@@ -1441,6 +1441,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3021994239085269488, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3750394109076180511, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1468,6 +1472,14 @@ PrefabInstance:
     - target: {fileID: 4934449404533942506, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 5035558886631453454, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
+      propertyPath: equippedSkillIds.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5035558886631453454, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
+      propertyPath: 'equippedSkillIds.Array.data[0]'
+      value: skill_1
       objectReference: {fileID: 0}
     - target: {fileID: 5305899322505960207, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1829,6 +1841,7 @@ MonoBehaviour:
   npcJsonPath: Data/NPCs
   itemJsonPath: Data/Items
   monsterJsonPath: Data/Monsters
+  skillJsonPath: Data/Skills
 --- !u!4 &1560215631
 Transform:
   m_ObjectHideFlags: 0
@@ -2101,7 +2114,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1390976834}
   m_HandleRect: {fileID: 1390976833}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -2145,50 +2158,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1765292478}
   m_CullTransparentMesh: 1
---- !u!1 &1811445483
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1811445485}
-  - component: {fileID: 1811445484}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1811445484
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1811445483}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5aeb0610a75e0149bc827e22c883620, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1811445485
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1811445483}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1859010764
 GameObject:
   m_ObjectHideFlags: 0
@@ -2664,4 +2633,3 @@ SceneRoots:
   - {fileID: 422349511}
   - {fileID: 1523557310}
   - {fileID: 1485143716}
-  - {fileID: 1811445485}

@@ -11,10 +11,12 @@ public class DataManager : MonoBehaviour
     [SerializeField] private string npcJsonPath = "Data/NPCs";
     [SerializeField] private string itemJsonPath = "Data/Items";
     [SerializeField] private string monsterJsonPath = "Data/Monsters";
-    
+    [SerializeField] private string skillJsonPath = "Data/Skills";
+
     private Dictionary<string, NPCData> loadedNPCs = new Dictionary<string, NPCData>();
     private Dictionary<string, ItemData> loadedItems = new Dictionary<string, ItemData>();
     private Dictionary<string, MonsterData> loadedMonsters = new Dictionary<string, MonsterData>();
+    private Dictionary<string, SkillData> loadedSkills = new Dictionary<string, SkillData>();
     
     private void Awake()
     {
@@ -29,10 +31,12 @@ public class DataManager : MonoBehaviour
         loadedNPCs.Clear();
         loadedItems.Clear();
         loadedMonsters.Clear();
-        
+        loadedSkills.Clear();
+
         LoadNPCsFromJSON();
         LoadItemsFromJSON();
         LoadMonstersFromJSON();
+        LoadSkillsFromJSON();
     }
     
     /// <summary>
@@ -199,6 +203,50 @@ public class DataManager : MonoBehaviour
     {
         return loadedMonsters.ContainsKey(monsterId) ? loadedMonsters[monsterId] : null;
     }
+
+    /// <summary>
+    /// JSON에서 스킬 데이터 로드
+    /// </summary>
+    private void LoadSkillsFromJSON()
+    {
+        TextAsset jsonFile = Resources.Load<TextAsset>(skillJsonPath);
+        if (jsonFile == null)
+        {
+            Debug.LogWarning($"스킬 JSON 파일을 찾을 수 없습니다: {skillJsonPath}");
+            return;
+        }
+        try
+        {
+            SkillJsonData jsonData = JsonUtility.FromJson<SkillJsonData>(jsonFile.text);
+            if (jsonData != null && jsonData.skills != null)
+            {
+                foreach (var skillJson in jsonData.skills)
+                {
+                    SkillData data = skillJson.ToRuntimeData();
+                    if (!string.IsNullOrEmpty(data.skillId) && !loadedSkills.ContainsKey(data.skillId))
+                    {
+                        loadedSkills[data.skillId] = data;
+                    }
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"스킬 JSON 파싱 오류: {e.Message}\n{e.StackTrace}");
+        }
+    }
+
+    /// <summary>로드된 스킬 딕셔너리</summary>
+    public Dictionary<string, SkillData> GetLoadedSkills()
+    {
+        return new Dictionary<string, SkillData>(loadedSkills);
+    }
+
+    /// <summary>특정 스킬 데이터 가져오기</summary>
+    public SkillData GetSkill(string skillId)
+    {
+        return loadedSkills != null && loadedSkills.TryGetValue(skillId, out var data) ? data : null;
+    }
 }
 
 /// <summary>
@@ -239,7 +287,9 @@ public class NPCJson
     // 전투 관련 (선택사항, 없으면 기본값 사용)
     public int attackPower = 0; // 0이면 기본값 사용
     public float attackCooldown = 0f; // 0이면 기본값 사용
-    
+    /// <summary>장착한 스킬 ID 목록 (Skills.json의 skillId)</summary>
+    public List<string> equippedSkillIds;
+
     // 시각적 표현
     public string spritePath = ""; // Resources 폴더 기준 스프라이트 경로
     
@@ -266,7 +316,18 @@ public class NPCJson
             data.attackPower = attackPower;
         if (attackCooldown > 0)
             data.attackCooldown = attackCooldown;
-        
+        if (equippedSkillIds != null && equippedSkillIds.Count > 0)
+        {
+            data.equippedSkillIds = new List<string>();
+            foreach (string id in equippedSkillIds)
+            {
+                if (!string.IsNullOrEmpty(id))
+                    data.equippedSkillIds.Add(id);
+            }
+        }
+        if (data.equippedSkillIds == null)
+            data.equippedSkillIds = new List<string>();
+
         // 접속 시간대 변환 (시+분 → 자정 기준 분 0~1440)
         if (onlineSchedule != null && onlineSchedule.Count > 0)
         {

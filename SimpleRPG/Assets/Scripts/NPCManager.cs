@@ -130,6 +130,8 @@ public class NPCManager : MonoBehaviour
         user.SetDisplayName(npc.name);
         user.SetJob(npc.job);
         user.SetAttack(npc.attackPower, npc.attackCooldown);
+        if (npc.equippedSkillIds != null && npc.equippedSkillIds.Count > 0)
+            user.SetEquippedSkills(npc.equippedSkillIds);
 
         _spawnedUsers[npcId] = user;
     }

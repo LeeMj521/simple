@@ -46,6 +46,8 @@ public class NPCData
     // 전투 관련 (JSON에서 설정)
     public int attackPower = 5; // NPC 공격력
     public float attackCooldown = 3f; // NPC 공격 쿨타임 (초)
+    /// <summary>장착한 스킬 ID 목록 (Skills.json의 skillId). 비어 있으면 기본 공격만 사용</summary>
+    public List<string> equippedSkillIds;
     
     // 시각적 표현 (JSON에서 설정)
     public string spritePath; // Resources 폴더 기준 스프라이트 경로
@@ -69,6 +71,7 @@ public class NPCData
         behaviorExample = "";
         relationships = new Dictionary<string, float>();
         onlineSchedule = null;
+        equippedSkillIds = new List<string>();
     }
     
     /// <summary>
