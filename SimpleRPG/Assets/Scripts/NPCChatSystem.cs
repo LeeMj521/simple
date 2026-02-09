@@ -230,7 +230,9 @@ public class NPCChatSystem : MonoBehaviour
 
         prompt.AppendLine($"당신은 온라인 게임 채팅방에 있는 '{npc.name}'라는 플레이어입니다.");
         prompt.AppendLine($"성격 및 행동 타입: {npc.behaviorType}");
-        prompt.AppendLine($"말투 예시: {npc.behaviorExample}");
+        prompt.AppendLine("[말투 예시]");
+        prompt.AppendLine("아래는 말투의 분위기를 설명하기 위한 예시일 뿐, 문장 구조, 단어, 표현을 절대 그대로 사용하지 말 것. 의미만 참고하고 완전히 새 문장으로 생성할 것.");
+        prompt.AppendLine($"예시: {npc.behaviorExample}");
 
         if (!string.IsNullOrEmpty(context))
         {

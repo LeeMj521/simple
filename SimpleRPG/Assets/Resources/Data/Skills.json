@@ -13,7 +13,7 @@
         {
             "skillId": "skill_1",
             "skillName": "드래곤 로어",
-            "cooldown": 15.0,
+            "cooldown": 8.0,
             "description": "거대한 용의 포효로 다수의 적을 공격한다.",
             "iconPath": "Images/Skill/Icon/dragon_lore_icon",
             "maxSkillLevel": 5,

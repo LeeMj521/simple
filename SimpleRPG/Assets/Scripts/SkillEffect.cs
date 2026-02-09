@@ -6,17 +6,25 @@ using UnityEngine;
 /// </summary>
 public class SkillEffect : MonoBehaviour
 {
-    [Header("애니메이션 이벤트 (Function: OnApplyDamage / OnSpawnProjectile / OnAnimationEnd)")]
+    [Header("애니메이션 이벤트 (Function: OnApplyDamage / OnSpawnProjectile / OnSpawnHitAnimation / OnAnimationEnd)")]
 
     [Header("타이밍 (폴백)")]
     [Tooltip("애니메이션 종료 이벤트 없을 때 이 시간 후 자동 종료")]
     [SerializeField] private float effectDuration = 5f;
 
+    [Header("타겟 향하기")]
+    [Tooltip("true면 이펙트가 타겟을 향하도록 회전")]
+    [SerializeField] private bool faceTarget = false;
+
     [Header("프로젝타일 (OnSpawnProjectile 사용 시)")]
     [SerializeField] private GameObject projectilePrefab;
     [Tooltip("프로젝타일 생성 위치. 비어 있으면 이 오브젝트 위치")]
     [SerializeField] private Transform projectileSpawnPoint;
-    [SerializeField] private float projectileSpeed = 10f;
+
+    [Header("히트 이펙트 (OnSpawnHitAnimation 사용 시)")]
+    [SerializeField] private GameObject hitAnimationPrefab;
+    [Tooltip("히트 이펙트 생성 위치. 비어 있으면 몬스터 위치")]
+    [SerializeField] private Transform hitSpawnPoint;
 
     private UserObject _owner;
     private SkillData _skill;
@@ -42,6 +50,17 @@ public class SkillEffect : MonoBehaviour
         _damage = Mathf.Max(0, damage);
         _finished = false;
 
+        // 타겟을 향하도록 회전
+        if (faceTarget && _monsterManager != null && _monsterManager.CurrentMonster != null)
+        {
+            Vector3 direction = (_monsterManager.CurrentMonster.transform.position - transform.position).normalized;
+            if (direction != Vector3.zero)
+            {
+                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            }
+        }
+
         if (_safetyRoutine != null)
             StopCoroutine(_safetyRoutine);
         _safetyRoutine = StartCoroutine(SafetyTimeoutRoutine());
@@ -62,6 +81,7 @@ public class SkillEffect : MonoBehaviour
     public void OnApplyDamage()
     {
         ApplyDamage();
+        SpawnHitAnimation();
     }
 
     /// <summary>
@@ -70,6 +90,14 @@ public class SkillEffect : MonoBehaviour
     public void OnSpawnProjectile()
     {
         SpawnProjectile();
+    }
+
+    /// <summary>
+    /// 애니메이션 이벤트: 히트 애니메이션 생성 시점에 호출.
+    /// </summary>
+    public void OnSpawnHitAnimation()
+    {
+        SpawnHitAnimation();
     }
 
     /// <summary>
@@ -99,10 +127,58 @@ public class SkillEffect : MonoBehaviour
             return;
 
         Vector3 spawnPos = projectileSpawnPoint != null ? projectileSpawnPoint.position : transform.position;
-        GameObject go = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
+        Quaternion rotation = Quaternion.identity;
+        
+        // 타겟을 향하도록 회전
+        if (faceTarget)
+        {
+            Vector3 direction = (_monsterManager.CurrentMonster.transform.position - spawnPos).normalized;
+            if (direction != Vector3.zero)
+            {
+                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            }
+        }
+
+        GameObject go = Instantiate(projectilePrefab, spawnPos, rotation);
         SkillProjectile proj = go.GetComponent<SkillProjectile>();
         if (proj == null) proj = go.AddComponent<SkillProjectile>();
-        proj.Run(_damage, _monsterManager.CurrentMonster, projectileSpeed);
+        proj.Run(_damage, _monsterManager.CurrentMonster);
+    }
+
+    private void SpawnHitAnimation()
+    {
+        if (hitAnimationPrefab == null)
+            return;
+
+        Vector3 spawnPos;
+        if (hitSpawnPoint != null)
+        {
+            spawnPos = hitSpawnPoint.position;
+        }
+        else if (_monsterManager != null && _monsterManager.CurrentMonster != null)
+        {
+            spawnPos = _monsterManager.CurrentMonster.transform.position;
+        }
+        else
+        {
+            spawnPos = transform.position;
+        }
+
+        Quaternion rotation = Quaternion.identity;
+        
+        // 타겟을 향하도록 회전
+        if (faceTarget && _monsterManager != null && _monsterManager.CurrentMonster != null)
+        {
+            Vector3 direction = (_monsterManager.CurrentMonster.transform.position - spawnPos).normalized;
+            if (direction != Vector3.zero)
+            {
+                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            }
+        }
+
+        Instantiate(hitAnimationPrefab, spawnPos, rotation);
     }
 
     private void FinishEffect(UserObject owner, SkillData skill)

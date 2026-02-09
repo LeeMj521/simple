@@ -47,9 +47,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectDuration: 5
+  faceTarget: 0
   projectilePrefab: {fileID: 0}
   projectileSpawnPoint: {fileID: 0}
   projectileSpeed: 10
+  hitAnimationPrefab: {fileID: 202942965678379231, guid: f6a2213c589744b42bcf2bfbc70848b7, type: 3}
+  hitSpawnPoint: {fileID: 0}
 --- !u!212 &5380984929591400908
 SpriteRenderer:
   m_ObjectHideFlags: 0
