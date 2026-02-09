@@ -1,22 +1,25 @@
 fileFormatVersion: 2
-guid: 68e0a334e8960084fab0c40ea3a3f57b
+guid: f4b824e8d1ece0d4888dbfca16b77a0d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5759128305481833619
-    second: dragon_lore_hit_0
+      213: -3726091604572033416
+    second: poem_of_storm_2_0
   - first:
-      213: 4854239073275423069
-    second: dragon_lore_hit_1
+      213: 3976159565344481126
+    second: poem_of_storm_2_1
   - first:
-      213: -5894283893644809163
-    second: dragon_lore_hit_2
+      213: 8370849094303048895
+    second: poem_of_storm_2_2
   - first:
-      213: 4290825112895511898
-    second: dragon_lore_hit_3
+      213: 5387405414775287542
+    second: poem_of_storm_2_3
   - first:
-      213: -7976116335878408084
-    second: dragon_lore_hit_4
+      213: -271612295409002452
+    second: poem_of_storm_2_4
+  - first:
+      213: -4614916096610941068
+    second: poem_of_storm_2_5
   externalObjects: {}
   serializedVersion: 12
   mipmaps:
@@ -110,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: dragon_lore_hit_0
+      name: poem_of_storm_2_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 104
-        height: 105
+        width: 127
+        height: 276
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -124,20 +127,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 39c54204ea88cef40800000000000000
-      internalID: 5759128305481833619
+      spriteID: 87e2be46d634a4cc0800000000000000
+      internalID: -3726091604572033416
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: dragon_lore_hit_1
+      name: poem_of_storm_2_1
       rect:
         serializedVersion: 2
-        x: 104
+        x: 127
         y: 0
-        width: 104
-        height: 105
+        width: 127
+        height: 276
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -145,20 +148,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d592761e7b8bd5340800000000000000
-      internalID: 4854239073275423069
+      spriteID: 66f11aede082e2730800000000000000
+      internalID: 3976159565344481126
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: dragon_lore_hit_2
+      name: poem_of_storm_2_2
       rect:
         serializedVersion: 2
-        x: 208
+        x: 254
         y: 0
-        width: 104
-        height: 105
+        width: 127
+        height: 276
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -166,8 +169,71 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 53caef9270c433ea0800000000000000
-      internalID: -5894283893644809163
+      spriteID: fb4655e86ea3b2470800000000000000
+      internalID: 8370849094303048895
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: poem_of_storm_2_3
+      rect:
+        serializedVersion: 2
+        x: 381
+        y: 0
+        width: 127
+        height: 276
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6fe62b85ea8e3ca40800000000000000
+      internalID: 5387405414775287542
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: poem_of_storm_2_4
+      rect:
+        serializedVersion: 2
+        x: 508
+        y: 0
+        width: 127
+        height: 276
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c28948f6e0a0b3cf0800000000000000
+      internalID: -271612295409002452
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: poem_of_storm_2_5
+      rect:
+        serializedVersion: 2
+        x: 635
+        y: 0
+        width: 127
+        height: 276
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 477c541d24684ffb0800000000000000
+      internalID: -4614916096610941068
       vertices: []
       indices: 
       edges: []
@@ -175,7 +241,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 812d964d2bda05d4c922de82d09419c9
+    spriteID: c7ed7296a14a22e4e996a901c2682136
     internalID: 0
     vertices: []
     indices: 
@@ -183,9 +249,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      dragon_lore_hit_0: 5759128305481833619
-      dragon_lore_hit_1: 4854239073275423069
-      dragon_lore_hit_2: -5894283893644809163
+      poem_of_storm_2_0: -3726091604572033416
+      poem_of_storm_2_1: 3976159565344481126
+      poem_of_storm_2_2: 8370849094303048895
+      poem_of_storm_2_3: 5387405414775287542
+      poem_of_storm_2_4: -271612295409002452
+      poem_of_storm_2_5: -4614916096610941068
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

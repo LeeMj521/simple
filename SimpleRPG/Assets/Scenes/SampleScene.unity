@@ -1082,7 +1082,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 5, y: -113.19382}
+  m_AnchoredPosition: {x: 5, y: -113.19383}
   m_SizeDelta: {x: -15, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1033769103
@@ -1403,11 +1403,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 900523002649048375, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 7.09
       objectReference: {fileID: 0}
     - target: {fileID: 900523002649048375, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.65
+      value: 0.88
       objectReference: {fileID: 0}
     - target: {fileID: 900523002649048375, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1479,7 +1479,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5035558886631453454, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
       propertyPath: 'equippedSkillIds.Array.data[0]'
-      value: skill_1
+      value: skill_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5035558886631453454, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
+      propertyPath: 'equippedSkillIds.Array.data[1]'
+      value: skill_2
       objectReference: {fileID: 0}
     - target: {fileID: 5305899322505960207, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2114,7 +2118,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1390976834}
   m_HandleRect: {fileID: 1390976833}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
