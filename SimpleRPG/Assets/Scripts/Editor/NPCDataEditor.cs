@@ -94,19 +94,27 @@ public class NPCDataEditor : EditorWindow
         
         GUILayout.FlexibleSpace();
         
+        bool shouldDelete = false;
         GUI.color = Color.red;
         if (GUILayout.Button("삭제", GUILayout.Width(50)))
         {
             if (EditorUtility.DisplayDialog("NPC 삭제", $"{npc.npcName}을(를) 삭제하시겠습니까?", "삭제", "취소"))
             {
-                npcData.npcs.RemoveAt(index);
-                isDirty = true;
-                return;
+                shouldDelete = true;
             }
         }
         GUI.color = Color.white;
         
         EditorGUILayout.EndHorizontal();
+        
+        // 삭제 처리는 EndVertical 호출 후에 수행
+        if (shouldDelete)
+        {
+            EditorGUILayout.EndVertical();
+            npcData.npcs.RemoveAt(index);
+            isDirty = true;
+            return;
+        }
         
         if (!foldout)
         {
@@ -163,17 +171,31 @@ public class NPCDataEditor : EditorWindow
         if (!string.IsNullOrEmpty(npc.spritePath))
         {
             Sprite sprite = Resources.Load<Sprite>(npc.spritePath);
-            if (sprite != null)
+            if (sprite != null && sprite.texture != null)
             {
                 EditorGUILayout.LabelField("스프라이트 미리보기", EditorStyles.miniLabel);
                 Texture2D texture = sprite.texture;
-                Rect rect = sprite.textureRect;
-                Texture2D croppedTexture = new Texture2D((int)rect.width, (int)rect.height);
-                Color[] pixels = texture.GetPixels((int)rect.x, (int)rect.y, (int)rect.width, (int)rect.height);
-                croppedTexture.SetPixels(pixels);
-                croppedTexture.Apply();
                 
-                GUILayout.Box(croppedTexture, GUILayout.Width(100), GUILayout.Height(100));
+                // 텍스처가 읽을 수 있는지 확인
+                try
+                {
+                    Rect rect = sprite.textureRect;
+                    Texture2D croppedTexture = new Texture2D((int)rect.width, (int)rect.height);
+                    Color[] pixels = texture.GetPixels((int)rect.x, (int)rect.y, (int)rect.width, (int)rect.height);
+                    croppedTexture.SetPixels(pixels);
+                    croppedTexture.Apply();
+                    
+                    GUILayout.Box(croppedTexture, GUILayout.Width(100), GUILayout.Height(100));
+                    
+                    // 임시 텍스처 정리 (에디터에서는 DestroyImmediate 사용)
+                    DestroyImmediate(croppedTexture);
+                }
+                catch (System.Exception e)
+                {
+                    EditorGUILayout.HelpBox($"텍스처를 읽을 수 없습니다. 텍스처 Import Settings에서 'Read/Write Enabled'를 활성화해주세요.\n오류: {e.Message}", MessageType.Warning);
+                    // 읽을 수 없는 경우 원본 텍스처를 직접 표시 시도
+                    GUILayout.Box(texture, GUILayout.Width(100), GUILayout.Height(100));
+                }
             }
             else
             {

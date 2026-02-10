@@ -381,16 +381,37 @@ public class NPCData
     }
     
     /// <summary>
-    /// 스프라이트 로드
+    /// 스프라이트 로드 (spritePath를 사용하여 Resources에서 로드)
     /// </summary>
     public void LoadSprite()
     {
-        if (!string.IsNullOrEmpty(spritePath))
+        if (string.IsNullOrEmpty(spritePath))
         {
-            npcSprite = Resources.Load<Sprite>(spritePath);
-            if (npcSprite == null)
+            npcSprite = null;
+            return;
+        }
+        
+        // Sprite로 직접 로드 시도
+        npcSprite = Resources.Load<Sprite>(spritePath);
+        
+        // Sprite로 로드 실패 시 Texture2D로 로드 후 Sprite로 변환 시도
+        if (npcSprite == null)
+        {
+            Texture2D texture = Resources.Load<Texture2D>(spritePath);
+            if (texture != null)
             {
-                Debug.LogWarning($"[NPCData] 스프라이트를 찾을 수 없습니다: {spritePath}");
+                // Texture2D를 Sprite로 변환
+                npcSprite = Sprite.Create(
+                    texture,
+                    new Rect(0, 0, texture.width, texture.height),
+                    new Vector2(0.5f, 0.5f),
+                    100f // pixelsPerUnit
+                );
+                Debug.Log($"[NPCData] Texture2D를 Sprite로 변환했습니다: {spritePath}");
+            }
+            else
+            {
+                Debug.LogWarning($"[NPCData] 스프라이트를 찾을 수 없습니다: {spritePath} (Resources 폴더 기준 경로를 확인하세요)");
             }
         }
     }
