@@ -4,7 +4,7 @@
             "monsterId": "Mushroom",
             "monsterName": "머쉬룸",
             "prefabPath": "Prefabs/Monster/Mushroom",
-            "maxHP": 30,
+            "maxHP": 120,
             "level": 1,
             "expReward": 10,
             "goldReward": 5
@@ -22,7 +22,7 @@
             "monsterId": "monster_d3c5ae09",
             "monsterName": "고스트",
             "prefabPath": "Prefabs/Monster/Ghost",
-            "maxHP": 30,
+            "maxHP": 100,
             "level": 1,
             "expReward": 10,
             "goldReward": 5
@@ -31,7 +31,7 @@
             "monsterId": "monster_dccfa8a7",
             "monsterName": "디노",
             "prefabPath": "Prefabs/Monster/Dino",
-            "maxHP": 30,
+            "maxHP": 200,
             "level": 1,
             "expReward": 10,
             "goldReward": 5
@@ -40,7 +40,7 @@
             "monsterId": "monster_a462f4bd",
             "monsterName": "고양이?",
             "prefabPath": "Prefabs/Monster/Cat",
-            "maxHP": 30,
+            "maxHP": 100,
             "level": 1,
             "expReward": 10,
             "goldReward": 5

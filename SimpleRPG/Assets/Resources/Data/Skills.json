@@ -18,7 +18,7 @@
             "iconPath": "Images/Skill/Icon/dragon_lore_icon",
             "maxSkillLevel": 5,
             "prefabPath": "Prefabs/Skill/DragonLore",
-            "damage": 0
+            "damage": 80
         },
         {
             "skillId": "skill_2",
@@ -28,7 +28,7 @@
             "iconPath": "Images/Skill/Icon/poem_of_storm_icon",
             "maxSkillLevel": 5,
             "prefabPath": "Prefabs/Skill/PoemOfStorm",
-            "damage": 0
+            "damage": 9
         },
         {
             "skillId": "skill_3",
