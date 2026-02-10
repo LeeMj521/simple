@@ -33,7 +33,7 @@
             "equippedSkillIds": [
                 "skill_1"
             ],
-            "spritePath": ""
+            "spritePath": "Images/profile"
         },
         {
             "npcId": "dmdelddl98",

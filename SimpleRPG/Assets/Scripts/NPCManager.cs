@@ -127,11 +127,7 @@ public class NPCManager : MonoBehaviour
 
         UserObject user = go.GetComponent<UserObject>();
         if (user == null) user = go.AddComponent<UserObject>();
-        user.SetDisplayName(npc.name);
-        user.SetJob(npc.job);
-        user.SetAttack(npc.attackPower, npc.attackCooldown);
-        if (npc.equippedSkillIds != null && npc.equippedSkillIds.Count > 0)
-            user.SetEquippedSkills(npc.equippedSkillIds);
+        user.Set(npc);
 
         _spawnedUsers[npcId] = user;
     }

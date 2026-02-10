@@ -23,6 +23,7 @@ public class UserObject : MonoBehaviour
     [SerializeField] private Transform cooldownRoot;
     [Tooltip("스킬 아이콘 프리팹")]
     [SerializeField] private GameObject skillIconPrefab;
+    [SerializeField] private SpriteRenderer profileSprite;
 
     [Header("채팅 버블")]
     [SerializeField] private GameObject chatBubbleRoot;
@@ -89,6 +90,56 @@ public class UserObject : MonoBehaviour
 
         UpdateCooldownUI();
         TryCastNextSkill();
+    }
+
+    /// <summary>표시 이름 (채팅/UI용)</summary>
+    public string DisplayName => displayName;
+
+    public void Set(NPCData npc){
+        displayName = npc.name ?? "플레이어";
+        if (nameText != null) nameText.text = $"{displayName}";
+        
+        // 스프라이트 설정: spritePath가 있으면 로드 시도, 없으면 기존 스프라이트 유지
+        if (profileSprite != null)
+        {
+            // NPC 데이터에서 스프라이트가 로드되지 않았고 spritePath가 있으면 다시 시도
+            if (npc.npcSprite == null && !string.IsNullOrEmpty(npc.spritePath))
+            {
+                npc.LoadSprite();
+            }
+            
+            profileSprite.sprite = npc.npcSprite;
+            
+            // 스프라이트가 여전히 null이면 경고 로그
+            if (npc.npcSprite == null && !string.IsNullOrEmpty(npc.spritePath))
+            {
+                Debug.LogWarning($"[UserObject] NPC '{displayName}'의 스프라이트를 로드할 수 없습니다. 경로: {npc.spritePath}");
+            }
+        }
+        
+        job = npc.job;
+        defaultAttackPower = Mathf.Max(0, npc.attackPower);
+        if (npc.equippedSkillIds != null && npc.equippedSkillIds.Count > 0)
+            SetEquippedSkills(npc.equippedSkillIds);
+    }
+
+    /// <summary>장착 스킬 ID 목록 설정</summary>
+    public void SetEquippedSkills(IList<string> skillIds)
+    {
+        equippedSkillIds.Clear();
+        if (skillIds != null)
+        {
+            foreach (string id in skillIds)
+            {
+                if (!string.IsNullOrEmpty(id))
+                {
+                    equippedSkillIds.Add(id);
+                    if (!_skillCooldownRemaining.ContainsKey(id))
+                        _skillCooldownRemaining[id] = 0f;
+                }
+            }
+        }
+        BuildSkillCooldownUIs();
     }
 
     private void TryCastNextSkill()
@@ -194,53 +245,6 @@ public class UserObject : MonoBehaviour
         SkillData skill = dataManager != null ? dataManager.GetSkill(skillId) : null;
         float cooldown = skill != null ? skill.cooldown : 1f;
         _skillCooldownRemaining[skillId] = cooldown;
-    }
-
-    /// <summary>표시 이름 (채팅/UI용)</summary>
-    public string DisplayName => displayName;
-
-    /// <summary>표시 이름 설정 (채팅/UI용)</summary>
-    public void SetDisplayName(string name)
-    {
-        displayName = name ?? "플레이어";
-        if (nameText != null) nameText.text = $"{displayName}";
-    }
-
-    /// <summary>직업 설정. 이름 옆에 [직업] 표시용.</summary>
-    public void SetJob(Job jobType)
-    {
-        job = jobType;
-    }
-
-    /// <summary>기본 공격력 설정 (스킬 damage가 0일 때 사용)</summary>
-    public void SetDefaultAttackPower(int power)
-    {
-        defaultAttackPower = Mathf.Max(0, power);
-    }
-
-    /// <summary>공격력 설정 (NPC 등 호환용, 쿨타임은 스킬별로 관리)</summary>
-    public void SetAttack(int power, float cooldown)
-    {
-        defaultAttackPower = Mathf.Max(0, power);
-    }
-
-    /// <summary>장착 스킬 ID 목록 설정</summary>
-    public void SetEquippedSkills(IList<string> skillIds)
-    {
-        equippedSkillIds.Clear();
-        if (skillIds != null)
-        {
-            foreach (string id in skillIds)
-            {
-                if (!string.IsNullOrEmpty(id))
-                {
-                    equippedSkillIds.Add(id);
-                    if (!_skillCooldownRemaining.ContainsKey(id))
-                        _skillCooldownRemaining[id] = 0f;
-                }
-            }
-        }
-        BuildSkillCooldownUIs();
     }
 
     /// <summary>해당 유저 머리 위에 채팅 버블 표시. 일정 시간 후 자동 숨김.</summary>
