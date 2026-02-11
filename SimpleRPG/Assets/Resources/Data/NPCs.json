@@ -23,11 +23,12 @@
                 {
                     "startHour": 0,
                     "startMinute": 0,
-                    "endHour": 24,
-                    "endMinute": 0
+                    "durationHours": 24,
+                    "durationMinutes": 0,
+                    "startOffsetMinutes": 15,
+                    "endOffsetMinutes": 15
                 }
             ],
-            "randomOffsetMinutes": 15,
             "attackPower": 5,
             "attackCooldown": 3.0,
             "equippedSkillIds": [
@@ -56,13 +57,14 @@
             ],
             "onlineSchedule": [
                 {
-                    "startHour": 2,
-                    "startMinute": 0,
-                    "endHour": 22,
-                    "endMinute": 0
+                    "startHour": 0,
+                    "startMinute": 10,
+                    "durationHours": 20,
+                    "durationMinutes": 0,
+                    "startOffsetMinutes": 15,
+                    "endOffsetMinutes": 15
                 }
             ],
-            "randomOffsetMinutes": 20,
             "attackPower": 7,
             "attackCooldown": 2.5,
             "equippedSkillIds": [
@@ -89,11 +91,12 @@
                 {
                     "startHour": 9,
                     "startMinute": 0,
-                    "endHour": 20,
-                    "endMinute": 0
+                    "durationHours": 11,
+                    "durationMinutes": 0,
+                    "startOffsetMinutes": 15,
+                    "endOffsetMinutes": 15
                 }
             ],
-            "randomOffsetMinutes": 15,
             "attackPower": 1,
             "attackCooldown": 10.0,
             "equippedSkillIds": [

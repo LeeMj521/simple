@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class AnimationEvent : MonoBehaviour
 {
-    public void AnimationRemove(){
-        if(gameObject != null)
-            Destroy(gameObject);
-    }
+  public void OnAnimationEnd(){
+    if(gameObject != null)
+      Destroy(gameObject);
+  }
 }

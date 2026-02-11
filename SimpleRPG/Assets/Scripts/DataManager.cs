@@ -263,8 +263,12 @@ public class OnlineWindowJson
 {
     public int startHour;
     public int startMinute;
-    public int endHour;
-    public int endMinute;
+    public int durationHours; // 머무는 시간 (시간)
+    public int durationMinutes; // 머무는 시간 (분)
+    /// <summary>접속 시간에 적용할 랜덤 오프셋(분). 같은 날에는 고정.</summary>
+    public int startOffsetMinutes = 15;
+    /// <summary>나가는 시간에 적용할 랜덤 오프셋(분). 같은 날에는 고정.</summary>
+    public int endOffsetMinutes = 15;
 }
 
 [Serializable]
@@ -282,7 +286,6 @@ public class NPCJson
 
     // 접속 시간대 (게임 시간). 비어 있으면 스케줄 없음
     public List<OnlineWindowJson> onlineSchedule;
-    public int randomOffsetMinutes = 15;
     
     // 전투 관련 (선택사항, 없으면 기본값 사용)
     public int attackPower = 0; // 0이면 기본값 사용
@@ -307,8 +310,7 @@ public class NPCJson
             speakProbability = speakProbability,
             responseProbability = responseProbability,
             relationshipBonus = relationshipBonus,
-            spritePath = spritePath ?? "",
-            randomOffsetMinutes = randomOffsetMinutes > 0 ? randomOffsetMinutes : 15
+            spritePath = spritePath ?? ""
         };
         
         // 전투 관련 설정 (JSON에 없으면 기본값 사용)
@@ -328,16 +330,25 @@ public class NPCJson
         if (data.equippedSkillIds == null)
             data.equippedSkillIds = new List<string>();
 
-        // 접속 시간대 변환 (시+분 → 자정 기준 분 0~1440)
+        // 접속 시간대 변환 (시작 시간 + 머무는 시간)
         if (onlineSchedule != null && onlineSchedule.Count > 0)
         {
             data.onlineSchedule = new List<OnlineWindow>();
             foreach (var w in onlineSchedule)
             {
                 int start = Mathf.Clamp(w.startHour * 60 + w.startMinute, 0, 1440);
-                int end = Mathf.Clamp(w.endHour * 60 + w.endMinute, 0, 1440);
-                if (start != end)
-                    data.onlineSchedule.Add(new OnlineWindow { startMinute = start, endMinute = end });
+                int duration = w.durationHours * 60 + w.durationMinutes;
+                
+                if (duration > 0)
+                {
+                    data.onlineSchedule.Add(new OnlineWindow 
+                    { 
+                        startMinute = start, 
+                        durationMinutes = duration,
+                        startOffsetMinutes = Mathf.Max(0, w.startOffsetMinutes),
+                        endOffsetMinutes = Mathf.Max(0, w.endOffsetMinutes)
+                    });
+                }
             }
         }
         

@@ -251,25 +251,102 @@ public class NPCDataEditor : EditorWindow
         EditorGUILayout.LabelField("접속 시간대 (게임 시간)", EditorStyles.boldLabel);
         if (npc.onlineSchedule == null)
             npc.onlineSchedule = new List<OnlineWindowJson>();
-        npc.randomOffsetMinutes = EditorGUILayout.IntSlider("랜덤 오프셋 (분)", npc.randomOffsetMinutes, 0, 60);
         for (int i = 0; i < npc.onlineSchedule.Count; i++)
         {
             OnlineWindowJson w = npc.onlineSchedule[i];
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            
+            // 시작 시간
+            EditorGUILayout.LabelField("시작 시간", EditorStyles.miniLabel);
             EditorGUILayout.BeginHorizontal();
-            w.startHour = EditorGUILayout.IntField("시작 시", Mathf.Clamp(w.startHour, 0, 23));
+            w.startHour = EditorGUILayout.IntField("시", Mathf.Clamp(w.startHour, 0, 23));
             w.startMinute = EditorGUILayout.IntField("분", Mathf.Clamp(w.startMinute, 0, 59));
-            GUILayout.Label("~", GUILayout.Width(10));
-            w.endHour = EditorGUILayout.IntField("끝 시", Mathf.Clamp(w.endHour, 0, 24));
-            w.endMinute = EditorGUILayout.IntField("분", Mathf.Clamp(w.endMinute, 0, 59));
+            EditorGUILayout.EndHorizontal();
+            
+            // 머무는 시간 (최대 24시간)
+            EditorGUILayout.LabelField("머무는 시간 (최대 24시간)", EditorStyles.miniLabel);
+            EditorGUILayout.BeginHorizontal();
+            int newDurationHours = EditorGUILayout.IntField("시간", w.durationHours);
+            int newDurationMinutes = EditorGUILayout.IntField("분", w.durationMinutes);
+            
+            // 24시간 제한 적용
+            if (newDurationHours > 24)
+            {
+                newDurationHours = 24;
+                newDurationMinutes = 0;
+            }
+            else if (newDurationHours == 24)
+            {
+                // 정확히 24시간일 때만 분은 0
+                newDurationMinutes = 0;
+            }
+            else if (newDurationHours < 0)
+            {
+                newDurationHours = 0;
+            }
+            
+            // 분 제한 (0-59)
+            newDurationMinutes = Mathf.Clamp(newDurationMinutes, 0, 59);
+            
+            // 24시간을 넘지 않도록 제한
+            int totalMinutes = newDurationHours * 60 + newDurationMinutes;
+            if (totalMinutes > 1440)
+            {
+                newDurationHours = 24;
+                newDurationMinutes = 0;
+            }
+            
+            w.durationHours = newDurationHours;
+            w.durationMinutes = newDurationMinutes;
+            EditorGUILayout.EndHorizontal();
+            
+            // 종료 시간 계산 및 표시
+            int totalDuration = w.durationHours * 60 + w.durationMinutes;
+            int startTotal = w.startHour * 60 + w.startMinute;
+            if (totalDuration > 0)
+            {
+                if (totalDuration == 1440)
+                {
+                    // 정확히 24시간이면 무한 접속
+                    EditorGUILayout.LabelField("종료 시간: 무한 접속 (나가지 않음)", EditorStyles.miniLabel);
+                }
+                else
+                {
+                    int endTotal = startTotal + totalDuration;
+                    int endHour = (endTotal / 60) % 24;
+                    int endMinute = endTotal % 60;
+                    int endDay = endTotal / 1440;
+                    string endTimeStr = endDay > 0 ? $"다음날 {endHour:D2}시 {endMinute:D2}분" : $"{endHour:D2}시 {endMinute:D2}분";
+                    EditorGUILayout.LabelField($"종료 시간: {endTimeStr}", EditorStyles.miniLabel);
+                }
+            }
+            
+            // 랜덤 오프셋
+            EditorGUILayout.LabelField("랜덤 오프셋", EditorStyles.miniLabel);
+            EditorGUILayout.BeginHorizontal();
+            w.startOffsetMinutes = EditorGUILayout.IntSlider("접속 시간 ±", w.startOffsetMinutes, 0, 120);
+            w.endOffsetMinutes = EditorGUILayout.IntSlider("나가는 시간 ±", w.endOffsetMinutes, 0, 120);
+            EditorGUILayout.EndHorizontal();
+            
+            EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("삭제", GUILayout.Width(50)))
             {
                 npc.onlineSchedule.RemoveAt(i);
                 i--;
             }
             EditorGUILayout.EndHorizontal();
+            EditorGUILayout.EndVertical();
         }
         if (GUILayout.Button("접속 시간대 추가"))
-            npc.onlineSchedule.Add(new OnlineWindowJson { startHour = 9, startMinute = 0, endHour = 12, endMinute = 0 });
+            npc.onlineSchedule.Add(new OnlineWindowJson 
+            { 
+                startHour = 9, 
+                startMinute = 0, 
+                durationHours = 3, 
+                durationMinutes = 0,
+                startOffsetMinutes = 15,
+                endOffsetMinutes = 15
+            });
         EditorGUILayout.Space(5);
         
         // 초기 관계 설정
@@ -359,7 +436,6 @@ public class NPCDataEditor : EditorWindow
             attackCooldown = 0f,
             spritePath = "",
             onlineSchedule = new List<OnlineWindowJson>(),
-            randomOffsetMinutes = 15,
             initialRelationships = new List<RelationshipJson>
             {
                 new RelationshipJson { targetId = "player", value = 0f }

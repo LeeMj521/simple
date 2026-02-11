@@ -84,8 +84,25 @@ public class NPCManager : MonoBehaviour
             for (int i = 0; i < windows.Count; i++)
             {
                 int s = windows[i].start, e = windows[i].end;
-                if (s <= e && now >= s && now < e) { online = true; break; }
-                if (s > e && (now >= s || now < e)) { online = true; break; }
+                
+                // 무한 접속 (머무는 시간이 24시간 이상)
+                if (e == int.MaxValue)
+                {
+                    // 시작 시간 이후면 계속 접속 상태
+                    if (now >= s) { online = true; break; }
+                    continue;
+                }
+                
+                // 같은 날 범위 (예: 9시-17시)
+                if (e <= 1440 && now >= s && now < e) { online = true; break; }
+                
+                // 자정을 넘어가는 범위 (예: 18시-다음날 8시)
+                // e가 1440을 넘으면 다음날까지인 경우
+                if (e > 1440)
+                {
+                    // now >= s (시작 시간 이후) 또는 now < (e - 1440) (다음날 종료 시간 이전)
+                    if (now >= s || now < (e - 1440)) { online = true; break; }
+                }
             }
             // 접속 상태 변경 감지 및 시스템 메시지 전송
             bool wasOnline = _previousOnlineState.TryGetValue(npcId, out bool prev) && prev;
@@ -219,19 +236,40 @@ public class NPCManager : MonoBehaviour
         if (_effectiveWindows.TryGetValue(id, out var list))
             return list;
 
-        int offset = Mathf.Min(120, Mathf.Max(0, npc.randomOffsetMinutes));
         var result = new List<(int, int)>();
 
         for (int i = 0; i < npc.onlineSchedule.Count; i++)
         {
-            int s = npc.onlineSchedule[i].startMinute;
-            int e = npc.onlineSchedule[i].endMinute;
-            int deltaS = offset > 0 ? Random.Range(-offset, offset + 1) : 0;
-            int deltaE = offset > 0 ? Random.Range(-offset, offset + 1) : 0;
-            s = Mathf.Clamp(s + deltaS, 0, 1440);
-            e = Mathf.Clamp(e + deltaE, 0, 1440);
-            if (s != e)
+            var window = npc.onlineSchedule[i];
+            int baseStart = window.startMinute;
+            int duration = window.durationMinutes;
+            
+            // 접속 시간 랜덤 오프셋 적용
+            int startOffset = Mathf.Min(120, Mathf.Max(0, window.startOffsetMinutes));
+            int deltaS = startOffset > 0 ? Random.Range(-startOffset, startOffset + 1) : 0;
+            int s = Mathf.Clamp(baseStart + deltaS, 0, 1440);
+            
+            // 머무는 시간이 정확히 24시간(1440분)이면 무한 접속 (랜덤 오프셋 무시)
+            int e;
+            if (duration == 1440)
+            {
+                // 무한 접속: 매우 큰 값으로 설정
+                e = int.MaxValue;
                 result.Add((s, e));
+            }
+            else
+            {
+                // 나가는 시간 랜덤 오프셋 적용
+                int endOffset = Mathf.Min(120, Mathf.Max(0, window.endOffsetMinutes));
+                int deltaE = endOffset > 0 ? Random.Range(-endOffset, endOffset + 1) : 0;
+                int actualDuration = Mathf.Max(0, duration + deltaE);
+                
+                // 종료 시간 계산 (자정을 넘어갈 수 있음)
+                e = s + actualDuration;
+                
+                if (actualDuration > 0)
+                    result.Add((s, e));
+            }
         }
 
         _effectiveWindows[id] = result;

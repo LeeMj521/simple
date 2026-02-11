@@ -57,8 +57,6 @@ public class NPCData
 
     /// <summary>접속 가능 시간대 (게임 시간 0~1440분). 비어 있으면 스케줄 없음.</summary>
     public List<OnlineWindow> onlineSchedule;
-    /// <summary>시간대 시작/끝에 적용할 랜덤 오프셋(분). 같은 날에는 고정.</summary>
-    public int randomOffsetMinutes = 15;
 
     public NPCData(string id, string npcName)
     {
@@ -418,11 +416,15 @@ public class NPCData
 }
 
 /// <summary>
-/// 게임 시간 기준 접속 가능 구간 (자정 기준 분, 0~1440)
+/// 게임 시간 기준 접속 가능 구간 (자정 기준 분)
 /// </summary>
 [Serializable]
 public class OnlineWindow
 {
-    public int startMinute;
-    public int endMinute;
+    public int startMinute; // 시작 시간 (분, 0~1440)
+    public int durationMinutes; // 머무는 시간 (분)
+    /// <summary>접속 시간에 적용할 랜덤 오프셋(분). 같은 날에는 고정.</summary>
+    public int startOffsetMinutes = 15;
+    /// <summary>나가는 시간에 적용할 랜덤 오프셋(분). 같은 날에는 고정.</summary>
+    public int endOffsetMinutes = 15;
 }

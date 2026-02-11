@@ -108,12 +108,15 @@ public class UserObject : MonoBehaviour
                 npc.LoadSprite();
             }
             
-            profileSprite.sprite = npc.npcSprite;
-            
-            // 스프라이트가 여전히 null이면 경고 로그
-            if (npc.npcSprite == null && !string.IsNullOrEmpty(npc.spritePath))
+            // 스프라이트가 성공적으로 로드된 경우에만 설정 (null이면 기존 스프라이트 유지)
+            if (npc.npcSprite != null)
             {
-                Debug.LogWarning($"[UserObject] NPC '{displayName}'의 스프라이트를 로드할 수 없습니다. 경로: {npc.spritePath}");
+                profileSprite.sprite = npc.npcSprite;
+            }
+            else if (!string.IsNullOrEmpty(npc.spritePath))
+            {
+                // 스프라이트 로드 실패 시 경고 로그만 출력 (스프라이트는 변경하지 않음)
+                Debug.LogWarning($"[UserObject] NPC '{displayName}'의 스프라이트를 로드할 수 없습니다. 경로: {npc.spritePath}. 기존 스프라이트를 유지합니다.");
             }
         }
         
