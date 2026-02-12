@@ -15,6 +15,7 @@ public class AIAPIService : MonoBehaviour
     [SerializeField] private string apiEndpoint = "https://api.openai.com/v1/chat/completions";
     [Tooltip("사용할 AI 모델")]
     [SerializeField] private string modelName = "gpt-4o-mini";
+    // [SerializeField] private string modelName = "gemini-2.5-flash";
     [Tooltip("최대 토큰 수")]
     [SerializeField] private int maxTokens = 100;
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 
 /// <summary>
 /// 유저(플레이어) 오브젝트. 장착 스킬 사용, 쿨타임 관리, 이펙트 종료 시 쿨 진행.
@@ -32,11 +33,16 @@ public class UserObject : MonoBehaviour
     [Header("표시 이름")]
     [SerializeField] private string displayName = "유저";
     [SerializeField] private Job job = Job.무직;
+    
+    [Header("이동")]
+    [Tooltip("이동 애니메이션 시간 (초)")]
+    [SerializeField] private float moveDuration = 0.3f;
 
     private Dictionary<string, float> _skillCooldownRemaining = new Dictionary<string, float>();
     private HashSet<string> _skillEffectRunning = new HashSet<string>();
     private Dictionary<string, SkillCooldownUI> _skillCooldownUIs = new Dictionary<string, SkillCooldownUI>();
     private Coroutine _hideBubbleCoroutine;
+    private Tween _moveTween;
 
     private struct SkillCooldownUI
     {
@@ -273,5 +279,23 @@ public class UserObject : MonoBehaviour
         _hideBubbleCoroutine = null;
         if (chatBubbleRoot != null)
             chatBubbleRoot.SetActive(false);
+    }
+    
+    /// <summary>
+    /// 지정된 로컬 위치로 이동 (DOTween 사용)
+    /// </summary>
+    public void MoveToPosition(Vector3 targetLocalPos)
+    {
+        if (_moveTween != null && _moveTween.IsActive())
+            _moveTween.Kill();
+        
+        _moveTween = transform.DOLocalMove(targetLocalPos, moveDuration)
+            .SetEase(Ease.OutQuad);
+    }
+    
+    private void OnDestroy()
+    {
+        if (_moveTween != null && _moveTween.IsActive())
+            _moveTween.Kill();
     }
 }
