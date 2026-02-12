@@ -93,10 +93,10 @@ public class NPCChatSystem : MonoBehaviour
 
         float speakWeight = npc.GetSpeakWeight();
         float randomValue = Random.value;
-        // if (randomValue > speakWeight){
-        //     Debug.Log($"[NPCChatSystem] {npc.name}는 말하려다 말하지 않음: {speakWeight}/{randomValue}");
-        //     return;
-        // }
+        if (randomValue > speakWeight){
+            Debug.Log($"[NPCChatSystem] {npc.name}는 말하려다 말하지 않음: {speakWeight}/{randomValue}");
+            return;
+        }
         Debug.Log($"[NPCChatSystem] {npc.name}는 말함: {speakWeight}/{randomValue}");
 
         // AI API로 채팅 생성

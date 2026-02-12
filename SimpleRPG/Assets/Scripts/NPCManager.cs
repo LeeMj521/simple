@@ -17,14 +17,8 @@ public class NPCManager : MonoBehaviour
     [Tooltip("Resources 경로 또는 인스펙터에서 할당된 프리팹")]
     [SerializeField] private GameObject userPrefab;
     [SerializeField] private Transform userSpawnParent;
-    [Tooltip("고정 스폰 위치 Transform 배열. 이 중에서 랜덤으로 선택하여 생성")]
-    [SerializeField] private Transform[] spawnPoints = new Transform[0];
 
     private Dictionary<string, NPCData> _npcs = new Dictionary<string, NPCData>();
-    private Dictionary<string, UserObject> _spawnedUsers = new Dictionary<string, UserObject>();
-    private Dictionary<string, Transform> _userSpawnPointMap = new Dictionary<string, Transform>(); // NPC ID -> 사용 중인 스폰 위치
-    private HashSet<Transform> _occupiedSpawnPoints = new HashSet<Transform>(); // 사용 중인 스폰 위치 추적
-    private List<Transform> _availablePointsCache = new List<Transform>(); // 재사용 가능한 리스트 (GC 최적화)
     private int _cachedGameDay = -1;
     private bool _prefabWarningLogged;
     private Dictionary<string, List<(int start, int end)>> _effectiveWindows = new Dictionary<string, List<(int, int)>>();
@@ -47,33 +41,10 @@ public class NPCManager : MonoBehaviour
     private void Start()
     {
         RefreshNpcList();
-        
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player == null || spawnPoints == null) return;
-        Transform nearest = null;
-        float minDist = float.MaxValue;
-        foreach (var point in spawnPoints)
-        {
-            if (point == null) continue;
-            float dist = Vector3.Distance(player.transform.position, point.position);
-            if (dist < minDist)
-            {
-                minDist = dist;
-                nearest = point;
-            }
-        }
-        if (nearest != null)
-            _occupiedSpawnPoints.Add(nearest);
     }
 
     private void Update()
     {
-        // 클릭 처리
-        if (Input.GetMouseButtonDown(1))
-        {
-            HandleSpawnPointClick();
-        }
-        
         if (gameTime == null) return;
 
         int day = gameTime.GameDay;
@@ -148,12 +119,22 @@ public class NPCManager : MonoBehaviour
 
     private void TrySpawnUser(string npcId, NPCData npc)
     {
-        if (_spawnedUsers.ContainsKey(npcId)) return;
+        if (gameManager == null) return;
+        if (gameManager.users != null && gameManager.users.ContainsKey(npcId)) return;
 
         GameObject prefab = userPrefab;
+        if (prefab == null)
+        {
+            if (!_prefabWarningLogged)
+            {
+                Debug.LogWarning("[NPCManager] userPrefab이 설정되지 않았습니다. NPC 유저를 생성할 수 없습니다.");
+                _prefabWarningLogged = true;
+            }
+            return;
+        }
 
         Transform parent = userSpawnParent != null ? userSpawnParent : transform;
-        if (!TryGetFreeSpawnPosition(parent, out Vector3 localPos, out Transform spawnPoint))
+        if (!gameManager.TryReserveFreeSpawnPoint(npcId, parent, out Vector3 localPos, out Transform spawnPoint))
             return;
 
         GameObject go = Instantiate(prefab, parent);
@@ -162,65 +143,14 @@ public class NPCManager : MonoBehaviour
         UserObject user = go.GetComponent<UserObject>();
         if (user == null) user = go.AddComponent<UserObject>();
         user.Set(npc);
-
-        _spawnedUsers[npcId] = user;
-        if (spawnPoint != null)
-        {
-            _userSpawnPointMap[npcId] = spawnPoint;
-            _occupiedSpawnPoints.Add(spawnPoint);
-        }
+        gameManager.RegisterUser(user);
     }
-
-    /// <summary>
-    /// 고정 스폰 위치 중 사용 가능한 위치를 랜덤으로 선택. 없으면 false 반환.
-    /// </summary>
-    private bool TryGetFreeSpawnPosition(Transform parent, out Vector3 localPos, out Transform spawnPoint)
-    {
-        spawnPoint = null;
-        localPos = default;
-
-        // 고정 스폰 위치가 설정되어 있지 않으면 생성 불가
-        if (spawnPoints == null || spawnPoints.Length == 0)
-        {
-            return false;
-        }
-
-        // 사용 가능한 위치 목록 생성 (재사용 리스트 사용)
-        _availablePointsCache.Clear();
-        foreach (var point in spawnPoints)
-        {
-            if (point != null && !_occupiedSpawnPoints.Contains(point))
-            {
-                _availablePointsCache.Add(point);
-            }
-        }
-
-        // 사용 가능한 위치가 없으면 생성 불가
-        if (_availablePointsCache.Count == 0)
-        {
-            return false;
-        }
-
-        // 랜덤으로 선택
-        int randomIndex = Random.Range(0, _availablePointsCache.Count);
-        spawnPoint = _availablePointsCache[randomIndex];
-        localPos = parent.InverseTransformPoint(spawnPoint.position);
-        return true;
-    }
-
 
     private void TryRemoveUser(string npcId)
     {
-        if (!_spawnedUsers.TryGetValue(npcId, out UserObject user)) return;
-        _spawnedUsers.Remove(npcId);
-        
-        // 사용 중이던 스폰 위치 해제
-        if (_userSpawnPointMap.TryGetValue(npcId, out Transform spawnPoint))
-        {
-            _userSpawnPointMap.Remove(npcId);
-            if (spawnPoint != null)
-                _occupiedSpawnPoints.Remove(spawnPoint);
-        }
+        if (gameManager == null) return;
+        if (!gameManager.TryGetUser(npcId, out UserObject user) || user == null) return;
+        gameManager.UnregisterUser(npcId);
         
         if (user != null && user.gameObject != null)
             Destroy(user.gameObject);
@@ -280,14 +210,19 @@ public class NPCManager : MonoBehaviour
     /// </summary>
     public void RefreshNpcList()
     {
-        foreach (var u in _spawnedUsers.Values)
+        if (gameManager != null)
         {
-            if (u != null && u.gameObject != null)
-                Destroy(u.gameObject);
+            // NPC로 생성된 유저만 제거(플레이어는 제외)
+            foreach (var kv in dataManager != null ? dataManager.GetLoadedNPCs() : new Dictionary<string, NPCData>())
+            {
+                string npcId = kv.Key;
+                if (gameManager.TryGetUser(npcId, out UserObject user) && user != null && user.gameObject != null)
+                {
+                    gameManager.UnregisterUser(npcId);
+                    Destroy(user.gameObject);
+                }
+            }
         }
-        _spawnedUsers.Clear();
-        _userSpawnPointMap.Clear();
-        _occupiedSpawnPoints.Clear();
         _npcs.Clear();
         _effectiveWindows.Clear();
         _previousOnlineState.Clear();
@@ -323,14 +258,18 @@ public class NPCManager : MonoBehaviour
     {
         foreach (var npc in _npcs.Values)
             npc.isOnline = false;
-        foreach (var u in _spawnedUsers.Values)
+        if (gameManager != null)
         {
-            if (u != null && u.gameObject != null)
-                Destroy(u.gameObject);
+            foreach (var kv in _npcs)
+            {
+                string npcId = kv.Key;
+                if (gameManager.TryGetUser(npcId, out UserObject user) && user != null && user.gameObject != null)
+                {
+                    gameManager.UnregisterUser(npcId);
+                    Destroy(user.gameObject);
+                }
+            }
         }
-        _spawnedUsers.Clear();
-        _userSpawnPointMap.Clear();
-        _occupiedSpawnPoints.Clear();
     }
 
     /// <summary>
@@ -370,145 +309,10 @@ public class NPCManager : MonoBehaviour
     {
         if (string.IsNullOrEmpty(npcId) || durationSeconds <= 0f)
             return;
-        if (!_spawnedUsers.TryGetValue(npcId, out UserObject user) || user == null)
+        if (gameManager == null)
+            return;
+        if (!gameManager.TryGetUser(npcId, out UserObject user) || user == null)
             return;
         user.ShowChatBubble(text, durationSeconds);
-    }
-
-    /// <summary>
-    /// 왼클릭으로 스폰 위치 클릭 처리 (GameManager의 선택된 유저 이동)
-    /// </summary>
-    private void HandleSpawnPointClick()
-    {
-        if (gameManager == null || gameManager.selectedUser == null || spawnPoints == null)
-            return;
-        
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePos.z = 0f;
-        
-        // 클릭된 콜라이더 확인
-        Collider2D hit = Physics2D.OverlapPoint(mousePos);
-        if (hit == null) return;
-        
-        Transform clickedTransform = hit.transform;
-        
-        // 클릭된 Transform이 스폰 위치 중 하나인지 확인
-        foreach (var point in spawnPoints)
-        {
-            if (point == null) continue;
-            if (point == clickedTransform)
-            {
-                // 스폰 위치 클릭됨
-                UserObject selectedUser = gameManager.selectedUser;
-                if (_occupiedSpawnPoints.Contains(point))
-                {
-                    // 점유된 위치 -> 스왑
-                    SwapUserPosition(selectedUser, point);
-                }
-                else
-                {
-                    // 빈 위치 -> 이동
-                    MoveUserToPosition(selectedUser, point);
-                }
-                return;
-            }
-        }
-    }
-    
-    /// <summary>
-    /// UserObject를 빈 위치로 이동
-    /// </summary>
-    private void MoveUserToPosition(UserObject user, Transform targetPoint)
-    {
-        if (user == null || targetPoint == null) return;
-        
-        // 기존 위치 해제
-        string npcId = FindNpcIdByUser(user);
-        if (npcId != null && _userSpawnPointMap.TryGetValue(npcId, out Transform oldPoint))
-        {
-            _occupiedSpawnPoints.Remove(oldPoint);
-            _userSpawnPointMap.Remove(npcId);
-        }
-        
-        // 새 위치 등록
-        _userSpawnPointMap[npcId] = targetPoint;
-        _occupiedSpawnPoints.Add(targetPoint);
-        
-        // 이동 애니메이션
-        Transform parent = userSpawnParent != null ? userSpawnParent : transform;
-        Vector3 targetLocalPos = parent.InverseTransformPoint(targetPoint.position);
-        user.MoveToPosition(targetLocalPos);
-    }
-    
-    /// <summary>
-    /// 두 UserObject의 위치를 스왑
-    /// </summary>
-    private void SwapUserPosition(UserObject user1, Transform point1)
-    {
-        if (user1 == null || point1 == null) return;
-        
-        // point1에 있는 UserObject 찾기
-        UserObject user2 = null;
-        string npcId2 = null;
-        foreach (var kv in _userSpawnPointMap)
-        {
-            if (kv.Value == point1)
-            {
-                npcId2 = kv.Key;
-                _spawnedUsers.TryGetValue(npcId2, out user2);
-                break;
-            }
-        }
-        
-        if (user2 == null) return;
-        
-        // user1의 현재 위치 찾기
-        string npcId1 = FindNpcIdByUser(user1);
-        if (npcId1 == null || !_userSpawnPointMap.TryGetValue(npcId1, out Transform point2))
-            return;
-        
-        // 위치 스왑
-        _userSpawnPointMap[npcId1] = point1;
-        _userSpawnPointMap[npcId2] = point2;
-        
-        // 이동 애니메이션
-        Transform parent = userSpawnParent != null ? userSpawnParent : transform;
-        Vector3 targetLocalPos1 = parent.InverseTransformPoint(point1.position);
-        Vector3 targetLocalPos2 = parent.InverseTransformPoint(point2.position);
-        user1.MoveToPosition(targetLocalPos1);
-        user2.MoveToPosition(targetLocalPos2);
-    }
-    
-    /// <summary>
-    /// UserObject로 NPC ID 찾기
-    /// </summary>
-    private string FindNpcIdByUser(UserObject user)
-    {
-        foreach (var kv in _spawnedUsers)
-        {
-            if (kv.Value == user)
-                return kv.Key;
-        }
-        return null;
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (spawnPoints == null) return;
-        
-        // 고정 스폰 위치 표시
-        foreach (var point in spawnPoints)
-        {
-            if (point == null) continue;
-            
-            bool isOccupied = _occupiedSpawnPoints.Contains(point);
-            
-            // 사용 중인 위치는 빨간색, 사용 가능한 위치는 초록색
-            Gizmos.color = isOccupied 
-                ? new Color(1f, 0.3f, 0.3f, 0.7f) 
-                : new Color(0f, 1f, 0.5f, 0.7f);
-            
-            Gizmos.DrawWireSphere(point.position, 0.3f);
-        }
     }
 }

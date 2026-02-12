@@ -136,11 +136,14 @@ public class ChatManager : MonoBehaviour
         if (string.IsNullOrWhiteSpace(text)) return;
         text = text.Trim();
 
-        string senderName = playerUserObject != null ? playerUserObject.DisplayName : "나";
+        string senderName = playerUserObject != null ? playerUserObject.UserName : "나";
+        string senderId = playerUserObject != null && !string.IsNullOrWhiteSpace(playerUserObject.UserId)
+            ? playerUserObject.UserId
+            : "player";
         AddNormalMessage(senderName, text);
         if (playerUserObject != null && chatBubbleDuration > 0f)
             playerUserObject.ShowChatBubble(text, chatBubbleDuration);
-        npcChatSystem?.OnMessageReceived("player", text);
+        npcChatSystem?.OnMessageReceived(senderId, text);
 
         if (chatInputField != null)
         {

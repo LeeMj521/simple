@@ -303,7 +303,7 @@ GameObject:
   - component: {fileID: 141101502}
   m_Layer: 0
   m_Name: border (12)
-  m_TagString: Untagged
+  m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -434,7 +434,7 @@ GameObject:
   - component: {fileID: 219553205}
   m_Layer: 0
   m_Name: border (22)
-  m_TagString: Untagged
+  m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -673,6 +673,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a60762262bc828a41a86873769216313, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  apiEndpoint: https://api.openai.com/v1/chat/completions
   modelName: gpt-4o-mini
   maxTokens: 100
   enableLogging: 1
@@ -692,8 +693,8 @@ MonoBehaviour:
   chatManager: {fileID: 2080164465}
   gameTime: {fileID: 530366858}
   aiAPIService: {fileID: 298218445}
-  randomCycleMin: 2
-  randomCycleMax: 5
+  randomCycleMin: 10
+  randomCycleMax: 60
   contextMessageCount: 5
 --- !u!1 &302816924
 GameObject:
@@ -708,7 +709,7 @@ GameObject:
   - component: {fileID: 302816927}
   m_Layer: 0
   m_Name: border (15)
-  m_TagString: Untagged
+  m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -967,7 +968,7 @@ GameObject:
   - component: {fileID: 445672222}
   m_Layer: 0
   m_Name: border
-  m_TagString: Untagged
+  m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1098,7 +1099,7 @@ GameObject:
   - component: {fileID: 474698776}
   m_Layer: 0
   m_Name: border (5)
-  m_TagString: Untagged
+  m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1229,7 +1230,7 @@ GameObject:
   - component: {fileID: 475957418}
   m_Layer: 0
   m_Name: border (6)
-  m_TagString: Untagged
+  m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1497,7 +1498,7 @@ GameObject:
   - component: {fileID: 525442846}
   m_Layer: 0
   m_Name: border (21)
-  m_TagString: Untagged
+  m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1676,7 +1677,7 @@ GameObject:
   - component: {fileID: 572221051}
   m_Layer: 0
   m_Name: border (9)
-  m_TagString: Untagged
+  m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1807,7 +1808,7 @@ GameObject:
   - component: {fileID: 615324571}
   m_Layer: 0
   m_Name: border (2)
-  m_TagString: Untagged
+  m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2206,7 +2207,7 @@ GameObject:
   - component: {fileID: 689214656}
   m_Layer: 0
   m_Name: border (13)
-  m_TagString: Untagged
+  m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2337,7 +2338,7 @@ GameObject:
   - component: {fileID: 791133792}
   m_Layer: 0
   m_Name: border (10)
-  m_TagString: Untagged
+  m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2468,7 +2469,7 @@ GameObject:
   - component: {fileID: 818948846}
   m_Layer: 0
   m_Name: border (16)
-  m_TagString: Untagged
+  m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2833,8 +2834,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97fdf8441f417a24eb6fc3586eba12a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  player: {fileID: 1321235732}
   selectedUser: {fileID: 0}
+  spawnPoints:
+  - {fileID: 445672221}
+  - {fileID: 302816926}
+  - {fileID: 818948845}
+  - {fileID: 1445452668}
+  - {fileID: 1167928727}
+  - {fileID: 2027639987}
+  - {fileID: 1719665201}
+  - {fileID: 525442845}
+  - {fileID: 219553204}
+  - {fileID: 1660917587}
+  - {fileID: 572221050}
+  - {fileID: 791133791}
+  - {fileID: 1351086126}
+  - {fileID: 141101501}
+  - {fileID: 689214655}
+  - {fileID: 2030099436}
+  - {fileID: 1644173542}
+  - {fileID: 615324570}
+  - {fileID: 1281276166}
+  - {fileID: 1448462266}
+  - {fileID: 474698775}
+  - {fileID: 475957417}
+  - {fileID: 1442446613}
+  - {fileID: 1530953414}
 --- !u!1 &1074275922
 GameObject:
   m_ObjectHideFlags: 0
@@ -3075,7 +3101,7 @@ GameObject:
   - component: {fileID: 1167928728}
   m_Layer: 0
   m_Name: border (18)
-  m_TagString: Untagged
+  m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3206,7 +3232,7 @@ GameObject:
   - component: {fileID: 1281276167}
   m_Layer: 0
   m_Name: border (3)
-  m_TagString: Untagged
+  m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3547,6 +3573,14 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 5035558886631453454, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
+      propertyPath: userId
+      value: player
+      objectReference: {fileID: 0}
+    - target: {fileID: 5035558886631453454, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
+      propertyPath: userName
+      value: "\uD50C\uB808\uC774\uC5B4"
+      objectReference: {fileID: 0}
+    - target: {fileID: 5035558886631453454, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
       propertyPath: equippedSkillIds.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -3616,12 +3650,17 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5035558886631453454, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
   m_PrefabInstance: {fileID: 1313450142}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1321235732}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 35e06f06dda89f24eb20982c2f19c901, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1321235732 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4934449404533942506, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
+  m_PrefabInstance: {fileID: 1313450142}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1351086124
 GameObject:
   m_ObjectHideFlags: 0
@@ -3635,7 +3674,7 @@ GameObject:
   - component: {fileID: 1351086127}
   m_Layer: 0
   m_Name: border (11)
-  m_TagString: Untagged
+  m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3841,7 +3880,7 @@ GameObject:
   - component: {fileID: 1442446614}
   m_Layer: 0
   m_Name: border (7)
-  m_TagString: Untagged
+  m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3972,7 +4011,7 @@ GameObject:
   - component: {fileID: 1445452669}
   m_Layer: 0
   m_Name: border (17)
-  m_TagString: Untagged
+  m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4103,7 +4142,7 @@ GameObject:
   - component: {fileID: 1448462267}
   m_Layer: 0
   m_Name: border (4)
-  m_TagString: Untagged
+  m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4449,7 +4488,7 @@ GameObject:
   - component: {fileID: 1530953415}
   m_Layer: 0
   m_Name: border (8)
-  m_TagString: Untagged
+  m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4628,7 +4667,7 @@ GameObject:
   - component: {fileID: 1644173543}
   m_Layer: 0
   m_Name: border (1)
-  m_TagString: Untagged
+  m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4759,7 +4798,7 @@ GameObject:
   - component: {fileID: 1660917588}
   m_Layer: 0
   m_Name: border (23)
-  m_TagString: Untagged
+  m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5065,7 +5104,7 @@ GameObject:
   - component: {fileID: 1719665202}
   m_Layer: 0
   m_Name: border (20)
-  m_TagString: Untagged
+  m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5599,31 +5638,6 @@ MonoBehaviour:
   gameManager: {fileID: 0}
   userPrefab: {fileID: 4934449404533942506, guid: 9dc8197c7261561498357fd28417bb34, type: 3}
   userSpawnParent: {fileID: 1485143716}
-  spawnPoints:
-  - {fileID: 445672221}
-  - {fileID: 302816926}
-  - {fileID: 818948845}
-  - {fileID: 1445452668}
-  - {fileID: 1167928727}
-  - {fileID: 2027639987}
-  - {fileID: 1719665201}
-  - {fileID: 525442845}
-  - {fileID: 219553204}
-  - {fileID: 1660917587}
-  - {fileID: 572221050}
-  - {fileID: 791133791}
-  - {fileID: 1351086126}
-  - {fileID: 141101501}
-  - {fileID: 689214655}
-  - {fileID: 2030099436}
-  - {fileID: 1644173542}
-  - {fileID: 615324570}
-  - {fileID: 1281276166}
-  - {fileID: 1448462266}
-  - {fileID: 474698775}
-  - {fileID: 475957417}
-  - {fileID: 1442446613}
-  - {fileID: 1530953414}
 --- !u!4 &1890644070
 Transform:
   m_ObjectHideFlags: 0
@@ -5753,7 +5767,7 @@ GameObject:
   - component: {fileID: 2027639988}
   m_Layer: 0
   m_Name: border (19)
-  m_TagString: Untagged
+  m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5884,7 +5898,7 @@ GameObject:
   - component: {fileID: 2030099437}
   m_Layer: 0
   m_Name: border (14)
-  m_TagString: Untagged
+  m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -10,6 +10,12 @@ using DG.Tweening;
 /// </summary>
 public class UserObject : MonoBehaviour
 {
+    [Header("유저 정보")]
+    [Tooltip("유저 고유 ID (NPC는 npcId, 플레이어는 'player' 등)")]
+    [SerializeField] private string userId = "";
+    [Tooltip("유저 이름 (UI 표시용)")]
+    [SerializeField] private string userName = "유저";
+
     [Header("스킬")]
     [Tooltip("장착한 스킬 ID 목록 (Data/Skills.json의 skillId)")]
     [SerializeField] private List<string> equippedSkillIds = new List<string>();
@@ -30,8 +36,6 @@ public class UserObject : MonoBehaviour
     [SerializeField] private GameObject chatBubbleRoot;
     [SerializeField] private TextMeshProUGUI chatBubbleText;
 
-    [Header("표시 이름")]
-    [SerializeField] private string displayName = "유저";
     [SerializeField] private Job job = Job.무직;
     
     [Header("이동")]
@@ -58,7 +62,7 @@ public class UserObject : MonoBehaviour
             dataManager = FindFirstObjectByType<DataManager>();
 
         if (nameText != null)
-            nameText.text = $"{displayName}";
+            nameText.text = $"{userName}";
 
         _skillCooldownRemaining.Clear();
         _skillCooldownUIs.Clear();
@@ -98,12 +102,31 @@ public class UserObject : MonoBehaviour
         TryCastNextSkill();
     }
 
-    /// <summary>표시 이름 (채팅/UI용)</summary>
-    public string DisplayName => displayName;
+    public string UserId => userId;
+    public string UserName => userName;
+
+    /// <summary>
+    /// 유저 식별자/이름 설정 (NPC 스폰, 플레이어 초기화 등에서 사용)
+    /// </summary>
+    public void SetIdentity(string id, string name)
+    {
+        if (!string.IsNullOrWhiteSpace(id))
+            userId = id.Trim();
+        if (!string.IsNullOrWhiteSpace(name))
+            userName = name.Trim();
+
+        if (nameText != null)
+            nameText.text = userName;
+    }
 
     public void Set(NPCData npc){
-        displayName = npc.name ?? "플레이어";
-        if (nameText != null) nameText.text = $"{displayName}";
+        if (npc == null)
+        {
+            SetIdentity(userId, string.IsNullOrWhiteSpace(userName) ? "플레이어" : userName);
+            return;
+        }
+
+        SetIdentity(npc.npcId, npc.name ?? "플레이어");
         
         // 스프라이트 설정: spritePath가 있으면 로드 시도, 없으면 기존 스프라이트 유지
         if (profileSprite != null)
@@ -122,7 +145,7 @@ public class UserObject : MonoBehaviour
             else if (!string.IsNullOrEmpty(npc.spritePath))
             {
                 // 스프라이트 로드 실패 시 경고 로그만 출력 (스프라이트는 변경하지 않음)
-                Debug.LogWarning($"[UserObject] NPC '{displayName}'의 스프라이트를 로드할 수 없습니다. 경로: {npc.spritePath}. 기존 스프라이트를 유지합니다.");
+                Debug.LogWarning($"[UserObject] NPC '{userName}'의 스프라이트를 로드할 수 없습니다. 경로: {npc.spritePath}. 기존 스프라이트를 유지합니다.");
             }
         }
         
@@ -290,6 +313,18 @@ public class UserObject : MonoBehaviour
             _moveTween.Kill();
         
         _moveTween = transform.DOLocalMove(targetLocalPos, moveDuration)
+            .SetEase(Ease.OutQuad);
+    }
+
+    /// <summary>
+    /// 지정된 월드 위치로 이동 (DOTween 사용)
+    /// </summary>
+    public void MoveToWorldPosition(Vector3 targetWorldPos)
+    {
+        if (_moveTween != null && _moveTween.IsActive())
+            _moveTween.Kill();
+
+        _moveTween = transform.DOMove(targetWorldPos, moveDuration)
             .SetEase(Ease.OutQuad);
     }
     
