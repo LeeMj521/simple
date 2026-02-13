@@ -16,6 +16,7 @@ public class UserObject : MonoBehaviour
     [Tooltip("유저 이름")]
     [SerializeField] private string userName = "유저";
     public int attack;
+    [SerializeField] [Range(0, 100)] private int proficiency = 50;
 
     [Header("스킬")]
     [Tooltip("장착한 스킬 ID 목록 (Data/Skills.json의 skillId)")]
@@ -185,6 +186,19 @@ public class UserObject : MonoBehaviour
         BuildSkillCooldownUIs();
     }
 
+    /// <summary>
+    /// 스킬 데미지 계산. 호출 시마다 숙련도 랜덤이 적용되어 여러 타격 시 각각 다른 데미지.
+    /// </summary>
+    public int CalculateSkillDamage(SkillData skill)
+    {
+        if (skill == null) return 1;
+        float attackMultiplier = skill.damage > 0 ? skill.damage / 100.0f : 1.0f;
+        float baseDamage = attack * attackMultiplier;
+        float minRatio = Mathf.Clamp01(proficiency / 100f);
+        float randomMultiplier = Random.Range(minRatio, 1f);
+        return Mathf.Max(1, Mathf.RoundToInt(baseDamage * randomMultiplier));
+    }
+
     private void TryCastNextSkill()
     {
         if (dataManager == null || monsterManager == null || monsterManager.CurrentMonster == null)
@@ -211,11 +225,7 @@ public class UserObject : MonoBehaviour
                 continue;
             }
 
-            // user의 attack과 스킬의 공격 배수를 곱해서 데미지 계산
-            // skill.damage는 퍼센트 값 (예: 20 = 20%, 80 = 80%)
-            float attackMultiplier = skill.damage > 0 ? skill.damage / 100.0f : 1.0f;
-            int damage = Mathf.RoundToInt(attack * attackMultiplier);
-            effect.Run(this, skill, monsterManager, damage);
+            effect.Run(this, skill, monsterManager);
             _skillEffectRunning.Add(skillId);
             break;
         }

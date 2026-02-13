@@ -16,7 +16,8 @@ public class MonsterObject : MonoBehaviour
     [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private Slider hpBar;
     [Tooltip("데미지 텍스트 프리팹")]
-    [SerializeField] private Canvas canvas;
+    private Canvas _damageCanvas;
+    [SerializeField] private Transform damageTransform;
     [SerializeField] private GameObject damageTextPrefab;
 
     private int _currentHp;
@@ -32,12 +33,17 @@ public class MonsterObject : MonoBehaviour
     /// <summary>
     /// MonsterManager가 스폰 시 호출. 데이터 적용 후 UI 갱신.
     /// </summary>
-    public void Init(MonsterData monsterData)
+    /// <param name="monsterData">몬스터 데이터</param>
+    /// <param name="damageCanvasOverride">데미지 텍스트용 캔버스 (넘기면 몬스터 소멸 후에도 데미지 표시 유지)</param>
+    public void Init(MonsterData monsterData, Canvas damageCanvas = null)
     {
         if (monsterData == null) return;
 
         data = monsterData;
         _currentHp = data.maxHP;
+
+        if (damageCanvas != null)
+            _damageCanvas = damageCanvas;
 
         if (hpBar != null)
         {
@@ -71,18 +77,17 @@ public class MonsterObject : MonoBehaviour
     /// </summary>
     private void ShowDamageText(int damage)
     {
-        if (canvas == null || damageTextPrefab == null)
+        if (_damageCanvas == null || damageTextPrefab == null)
             return;
 
-        GameObject damageTextObj = Instantiate(damageTextPrefab, canvas.transform);
+        GameObject damageTextObj = Instantiate(damageTextPrefab, _damageCanvas.transform);
 
         DamageText damageTextComponent = damageTextObj.GetComponent<DamageText>();
         if (damageTextComponent == null)
             damageTextComponent = damageTextObj.AddComponent<DamageText>();
 
         // 몬스터 위치에서 약간 위로 오프셋
-        Vector3 spawnPos = transform.position + Vector3.up * 0.5f;
-        damageTextComponent.Show(damage, spawnPos);
+        damageTextComponent.Show(damage, damageTransform.position);
     }
 
     private void UpdateUI()

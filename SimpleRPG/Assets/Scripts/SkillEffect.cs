@@ -25,7 +25,6 @@ public class SkillEffect : MonoBehaviour
   private UserObject _owner;
   private SkillData _skill;
   private MonsterManager _monsterManager;
-  private int _damage;
   private bool _finished;
 
   void Update(){
@@ -45,8 +44,9 @@ public class SkillEffect : MonoBehaviour
 
   /// <summary>
   /// 이펙트 실행. 애니메이션 재생 후 이벤트로 OnApplyDamage / OnSpawnProjectile / OnAnimationEnd 호출.
+  /// 데미지는 적용 시점에 owner.CalculateSkillDamage(skill)로 계산.
   /// </summary>
-  public void Run(UserObject owner, SkillData skill, MonsterManager monsterManager, int damage){
+  public void Run(UserObject owner, SkillData skill, MonsterManager monsterManager){
     if (owner == null || skill == null){
       FinishEffect(owner, skill);
       return;
@@ -55,7 +55,6 @@ public class SkillEffect : MonoBehaviour
     _owner = owner;
     _skill = skill;
     _monsterManager = monsterManager;
-    _damage = Mathf.Max(0, damage);
 
     // 타겟을 향하도록 회전
     if (faceTarget && _monsterManager != null && _monsterManager.CurrentMonster != null){
@@ -90,15 +89,15 @@ public class SkillEffect : MonoBehaviour
   }
 
   private void ApplyDamage(){
-    if (_monsterManager != null && _monsterManager.CurrentMonster != null && _damage > 0)
-      _monsterManager.CurrentMonster.TakeDamage(_damage);
+    if (_owner == null || _skill == null || _monsterManager?.CurrentMonster == null)
+      return;
+    int damage = _owner.CalculateSkillDamage(_skill);
+    _monsterManager.CurrentMonster.TakeDamage(damage);
   }
 
   private void SpawnProjectile(){
-    if (projectilePrefab == null || _monsterManager == null || _monsterManager.CurrentMonster == null)
+    if (projectilePrefab == null || _owner == null || _skill == null || _monsterManager == null || _monsterManager.CurrentMonster == null)
       return;
-    // 데미지가 0 이하면 1로 고정
-    int finalDamage = _damage <= 0 ? 1 : _damage;
 
     Vector3 spawnPos = projectileSpawnPoint != null ? projectileSpawnPoint.position : transform.position;
     Quaternion rotation = Quaternion.identity;
@@ -114,7 +113,7 @@ public class SkillEffect : MonoBehaviour
 
     GameObject go = Instantiate(projectilePrefab, spawnPos, rotation);
     SkillProjectile proj = go.GetComponent<SkillProjectile>();
-    if (proj != null) proj.Run(_damage, _monsterManager.CurrentMonster);
+    if (proj != null) proj.Run(_owner, _skill, _monsterManager.CurrentMonster);
   }
 
   private void SpawnHitAnimation(){

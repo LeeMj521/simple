@@ -13,6 +13,7 @@ public class MonsterManager : MonoBehaviour
     [SerializeField] private List<string> monsterIdOrder = new List<string>();
 
     [Header("참조")]
+    [SerializeField] private GameManager gameManager;
     [SerializeField] private DataManager dataManager;
 
     private List<string> _spawnOrder = new List<string>();
@@ -28,6 +29,8 @@ public class MonsterManager : MonoBehaviour
         if (spawnPoint == null)
             spawnPoint = transform;
 
+        if (gameManager == null)
+            gameManager = FindFirstObjectByType<GameManager>();
         if (dataManager == null)
             dataManager = FindFirstObjectByType<DataManager>();
 
@@ -95,7 +98,7 @@ public class MonsterManager : MonoBehaviour
         if (_currentMonster == null)
             _currentMonster = go.AddComponent<MonsterObject>();
 
-        _currentMonster.Init(data);
+        _currentMonster.Init(data, gameManager.damageCanvas);
         _currentMonster.OnDeath += HandleMonsterDeath;
     }
 

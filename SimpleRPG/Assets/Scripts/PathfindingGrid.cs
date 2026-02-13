@@ -18,12 +18,7 @@ public class PathfindingGrid : MonoBehaviour
 
     private bool[,] _walkableGrid; // true = 이동 가능, false = 이동 불가
 
-    private void Awake()
-    {
-        InitializeGrid();
-    }
-
-    private void InitializeGrid()
+    public void InitializeGrid()
     {
         _walkableGrid = new bool[gridWidth, gridHeight];
         

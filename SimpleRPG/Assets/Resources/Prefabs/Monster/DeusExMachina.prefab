@@ -141,6 +141,8 @@ MonoBehaviour:
   nameText: {fileID: 9192755926660289864}
   levelText: {fileID: 5716098897571306170}
   hpBar: {fileID: 750831616556402580}
+  canvas: {fileID: 0}
+  damageTextPrefab: {fileID: 0}
 --- !u!1001 &5072356257320907714
 PrefabInstance:
   m_ObjectHideFlags: 0

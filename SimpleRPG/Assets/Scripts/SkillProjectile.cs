@@ -22,18 +22,20 @@ public class SkillProjectile : MonoBehaviour
     [Tooltip("true면 히트 이펙트가 투사체 각도를 따라감")]
     [SerializeField] private bool hitAnimationFollowProjectileAngle = false;
 
-    private int _damage;
-    public MonsterObject _target;
+    private UserObject _owner;
+    private SkillData _skill;
+    private MonsterObject _target;
     private bool _hit;
     private Vector3 _lastTargetPosition;
     private bool _targetLost = false;
 
     /// <summary>
-    /// 프로젝타일 실행. target으로 이동, 도달 시 데미지 적용 후 삭제.
+    /// 프로젝타일 실행. target으로 이동, 도달 시 owner.CalculateSkillDamage(skill)로 데미지 계산 후 적용.
     /// </summary>
-    public void Run(int damage, MonsterObject target)
+    public void Run(UserObject owner, SkillData skill, MonsterObject target)
     {
-        _damage = Mathf.Max(0, damage);
+        _owner = owner;
+        _skill = skill;
         _target = target;
         _hit = false;
         _targetLost = false;
@@ -86,11 +88,15 @@ public class SkillProjectile : MonoBehaviour
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
 
-        // 타겟이 있고 충돌 거리 이내면 데미지 적용
+        // 타겟이 있고 충돌 거리 이내면 데미지 적용 (호출 시점에 데미지 계산)
         if (!_targetLost && _target != null && dist <= hitRadius)
         {
             _hit = true;
-            _target.TakeDamage(_damage);
+            if (_owner != null && _skill != null)
+            {
+                int damage = _owner.CalculateSkillDamage(_skill);
+                _target.TakeDamage(damage);
+            }
             SpawnHitAnimation();
             Destroy(gameObject);
             return;

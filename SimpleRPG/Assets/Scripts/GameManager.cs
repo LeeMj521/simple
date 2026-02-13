@@ -22,6 +22,10 @@ public class GameManager : MonoBehaviour
     [Tooltip("경로 찾기 그리드 (비어 있으면 자동 검색)")]
     [SerializeField] private PathfindingGrid pathfindingGrid;
 
+    [Header("데미지 UI")]
+    [Tooltip("데미지 텍스트가 생성될 캔버스")]
+    public Canvas damageCanvas;
+
     private readonly Dictionary<string, Transform> _userSpawnPointMap = new Dictionary<string, Transform>(); // userId -> 스폰 위치
     private readonly HashSet<Transform> _occupiedSpawnPoints = new HashSet<Transform>(); // 사용 중인 스폰 위치
     private readonly List<Transform> _availablePointsCache = new List<Transform>(); // 재사용 가능한 리스트 (GC 최적화)
@@ -40,8 +44,12 @@ public class GameManager : MonoBehaviour
         // PathfindingGrid에 spawnPoints 설정
         if (pathfindingGrid != null && spawnPoints != null && spawnPoints.Length > 0)
         {
+            pathfindingGrid.InitializeGrid();
             pathfindingGrid.SetWalkableFromSpawnPoints(spawnPoints);
         }
+
+        if (damageCanvas == null)
+            damageCanvas = FindFirstObjectByType<Canvas>(); // 폴백: 씬의 첫 캔버스
 
         RegisterPlayerIfPossible();
         // NPC 스폰보다 먼저 플레이어 위치를 점유시켜 충돌을 줄임
