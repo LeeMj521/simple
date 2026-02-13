@@ -12,11 +12,11 @@ public class MonsterObject : MonoBehaviour
     [SerializeField] private MonsterData data;
 
     [Header("UI")]
-    [SerializeField] private Canvas canvas;
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private Slider hpBar;
     [Tooltip("데미지 텍스트 프리팹")]
+    [SerializeField] private Canvas canvas;
     [SerializeField] private GameObject damageTextPrefab;
 
     private int _currentHp;
