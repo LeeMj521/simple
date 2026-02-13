@@ -54,9 +54,11 @@ MonoBehaviour:
     expReward: 0
     goldReward: 0
     prefabPath: 
+  canvas: {fileID: 6561534097606291984}
   nameText: {fileID: 8999448336661672661}
   levelText: {fileID: 5486763074008104231}
   hpBar: {fileID: 656453775510003721}
+  damageTextPrefab: {fileID: 0}
 --- !u!1 &4464631092064099232
 GameObject:
   m_ObjectHideFlags: 0
@@ -273,6 +275,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!223 &6561534097606291984 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 2169799339973469775, guid: c1b1bcdcea5c77b4786184686573d643, type: 3}
+  m_PrefabInstance: {fileID: 4977583145601815647}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &8999448336661672661 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4176978614650381962, guid: c1b1bcdcea5c77b4786184686573d643, type: 3}

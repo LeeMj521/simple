@@ -1,22 +1,10 @@
 fileFormatVersion: 2
-guid: 68e0a334e8960084fab0c40ea3a3f57b
+guid: b839cff5c3c2bef4da5b415e813c76c5
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5759128305481833619
-    second: dragon_lore_hit_0
-  - first:
-      213: 4854239073275423069
-    second: dragon_lore_hit_1
-  - first:
-      213: -5894283893644809163
-    second: dragon_lore_hit_2
-  - first:
-      213: 4290825112895511898
-    second: dragon_lore_hit_3
-  - first:
-      213: -7976116335878408084
-    second: dragon_lore_hit_4
+      213: 5871930674989772406
+    second: default_profile_0
   externalObjects: {}
   serializedVersion: 12
   mipmaps:
@@ -49,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -58,12 +46,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 35
+  spritePixelsToUnits: 980
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -87,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -110,13 +98,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: dragon_lore_hit_0
+      name: default_profile_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 104
-        height: 105
+        width: 980
+        height: 980
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -124,50 +112,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 39c54204ea88cef40800000000000000
-      internalID: 5759128305481833619
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: dragon_lore_hit_1
-      rect:
-        serializedVersion: 2
-        x: 104
-        y: 0
-        width: 104
-        height: 105
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: d592761e7b8bd5340800000000000000
-      internalID: 4854239073275423069
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: dragon_lore_hit_2
-      rect:
-        serializedVersion: 2
-        x: 208
-        y: 0
-        width: 104
-        height: 105
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 53caef9270c433ea0800000000000000
-      internalID: -5894283893644809163
+      spriteID: 67e2c7c86d94d7150800000000000000
+      internalID: 5871930674989772406
       vertices: []
       indices: 
       edges: []
@@ -175,7 +121,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 812d964d2bda05d4c922de82d09419c9
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -183,9 +129,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      dragon_lore_hit_0: 5759128305481833619
-      dragon_lore_hit_1: 4854239073275423069
-      dragon_lore_hit_2: -5894283893644809163
+      default_profile_0: 5871930674989772406
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

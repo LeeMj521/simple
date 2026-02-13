@@ -47,6 +47,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35e06f06dda89f24eb20982c2f19c901, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  userId: 
+  userName: "\uC720\uC800"
+  attack: 0
   equippedSkillIds: []
   defaultAttackPower: 5
   monsterManager: {fileID: 0}
@@ -57,8 +60,9 @@ MonoBehaviour:
   profileSprite: {fileID: 6991310138525082071}
   chatBubbleRoot: {fileID: 1771885123234251578}
   chatBubbleText: {fileID: 1407725997534744081}
-  displayName: "\uD50C\uB808\uC774\uC5B4"
   job: 0
+  moveSpeed: 5
+  pathfindingGrid: {fileID: 0}
 --- !u!58 &6215552040743436465
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -168,7 +172,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b839cff5c3c2bef4da5b415e813c76c5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

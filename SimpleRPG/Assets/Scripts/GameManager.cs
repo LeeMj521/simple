@@ -1,5 +1,8 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,9 +13,14 @@ public class GameManager : MonoBehaviour
     public UserObject selectedUser;
     public Dictionary<string, UserObject> users = new Dictionary<string, UserObject>();
 
+    public Image userProfileImage;
+    public TextMeshProUGUI userNameText;
+
     [Header("스폰 포인트")]
     [Tooltip("고정 스폰 위치 Transform 배열")]
     [SerializeField] private Transform[] spawnPoints = new Transform[0];
+    [Tooltip("경로 찾기 그리드 (비어 있으면 자동 검색)")]
+    [SerializeField] private PathfindingGrid pathfindingGrid;
 
     private readonly Dictionary<string, Transform> _userSpawnPointMap = new Dictionary<string, Transform>(); // userId -> 스폰 위치
     private readonly HashSet<Transform> _occupiedSpawnPoints = new HashSet<Transform>(); // 사용 중인 스폰 위치
@@ -26,6 +34,14 @@ public class GameManager : MonoBehaviour
         _mainCamera = Camera.main;
         if (player == null)
             player = GameObject.FindGameObjectWithTag("Player");
+        if (pathfindingGrid == null)
+            pathfindingGrid = FindFirstObjectByType<PathfindingGrid>();
+
+        // PathfindingGrid에 spawnPoints 설정
+        if (pathfindingGrid != null && spawnPoints != null && spawnPoints.Length > 0)
+        {
+            pathfindingGrid.SetWalkableFromSpawnPoints(spawnPoints);
+        }
 
         RegisterPlayerIfPossible();
         // NPC 스폰보다 먼저 플레이어 위치를 점유시켜 충돌을 줄임
@@ -86,6 +102,8 @@ public class GameManager : MonoBehaviour
             {
                 selectedUser = user;
                 RegisterUser(user); // 선택된 유저가 users에 없다면 등록
+                userProfileImage.sprite = user.profileSprite.sprite;
+                userNameText.text = user.UserName;
                 break;
             }
         }
@@ -115,16 +133,9 @@ public class GameManager : MonoBehaviour
             if (hits[i].transform != null && hits[i].transform.CompareTag("SpawnPoint"))
             {
                 Transform clickedPoint = hits[i].transform;
-                if (_occupiedSpawnPoints.Contains(clickedPoint))
-                {
-                    // 점유된 위치 -> 스왑
-                    SwapUserPosition(selectedUser, clickedPoint);
-                }
-                else
-                {
-                    // 빈 위치 -> 이동
-                    MoveUserToPoint(selectedUser, clickedPoint);
-                }
+                
+                // 빈 위치든 점유된 위치든 이동 (경로에 유저가 있으면 한 칸씩 교환)
+                MoveUserToPoint(selectedUser, clickedPoint);
                 return;
             }
         }
@@ -229,54 +240,286 @@ public class GameManager : MonoBehaviour
         if (string.IsNullOrWhiteSpace(userId))
             return;
 
+        // 그리드 기반으로 한 칸씩 할당된 위치로 이동
+        Vector3 targetWorldPos = targetPoint.position;
+        if (pathfindingGrid != null)
+        {
+            // 목표 위치를 그리드 좌표로 변환 후 다시 월드 좌표로 변환 (그리드 셀 중심으로 정렬)
+            Vector2Int gridPos = pathfindingGrid.WorldToGrid(targetWorldPos);
+            targetWorldPos = pathfindingGrid.GridToWorld(gridPos);
+        }
+
+        // 경로 계산
+        List<Vector3> path = new List<Vector3>();
+        if (pathfindingGrid != null)
+        {
+            path = pathfindingGrid.FindPath(user.transform.position, targetWorldPos);
+        }
+        else
+        {
+            path = new List<Vector3> { targetWorldPos };
+        }
+
+        if (path == null || path.Count == 0)
+        {
+            path = new List<Vector3> { targetWorldPos };
+        }
+
+        // 경로의 각 칸을 순차적으로 할당하면서 이동
+        StartCoroutine(MoveUserAlongPath(user, userId, path, targetPoint));
+    }
+
+    /// <summary>
+    /// 경로를 따라 한 칸씩 이동하면서 각 칸을 할당
+    /// </summary>
+    private System.Collections.IEnumerator MoveUserAlongPath(UserObject user, string userId, List<Vector3> path, Transform finalTargetPoint)
+    {
+        if (user == null || path == null || path.Count == 0)
+            yield break;
+
         // 기존 위치 해제
         ReleaseSpawnPoint(userId);
 
-        // 새 위치 등록
-        _userSpawnPointMap[userId] = targetPoint;
-        _occupiedSpawnPoints.Add(targetPoint);
+        // 경로의 각 칸을 순차적으로 할당
+        for (int i = 0; i < path.Count; i++)
+        {
+            Vector3 cellPos = path[i];
+            
+            // 해당 위치에 유저가 있는지 확인
+            UserObject userAtCell = GetUserAtPosition(cellPos);
+            
+            if (userAtCell != null && userAtCell != user)
+            {
+                // 경로에 유저가 있으면 한 칸씩 자리 바꾸기
+                string otherUserId = userAtCell.UserId;
+                if (!string.IsNullOrWhiteSpace(otherUserId))
+                {
+                    // 현재 유저의 이전 위치 가져오기
+                    Vector3 currentUserPos = user.transform.position;
+                    Transform currentUserPoint = _userSpawnPointMap.TryGetValue(userId, out Transform p1) ? p1 : null;
+                    
+                    // 다른 유저의 현재 위치
+                    Vector3 otherUserPos = userAtCell.transform.position;
+                    Transform otherUserPoint = _userSpawnPointMap.TryGetValue(otherUserId, out Transform p2) ? p2 : null;
+                    
+                    // 위치 교환
+                    if (currentUserPoint != null && otherUserPoint != null)
+                    {
+                        _userSpawnPointMap[userId] = otherUserPoint;
+                        _userSpawnPointMap[otherUserId] = currentUserPoint;
+                    }
+                    else if (currentUserPoint != null)
+                    {
+                        _userSpawnPointMap[userId] = otherUserPoint;
+                        if (otherUserPoint != null)
+                        {
+                            _userSpawnPointMap[otherUserId] = currentUserPoint;
+                            _occupiedSpawnPoints.Remove(otherUserPoint);
+                            _occupiedSpawnPoints.Add(currentUserPoint);
+                        }
+                    }
+                    else if (otherUserPoint != null)
+                    {
+                        _userSpawnPointMap[userId] = otherUserPoint;
+                        _userSpawnPointMap[otherUserId] = currentUserPoint;
+                        _occupiedSpawnPoints.Remove(otherUserPoint);
+                        if (currentUserPoint != null)
+                            _occupiedSpawnPoints.Add(currentUserPoint);
+                    }
+                    
+                    // 한 칸씩 위치 교환 (동시에 이동)
+                    yield return StartCoroutine(SwapPositionsOneStep(user, userAtCell, cellPos, currentUserPos));
+                    continue;
+                }
+            }
+            
+            // 해당 위치에 가장 가까운 스폰 포인트 찾기
+            Transform nearestPoint = FindNearestSpawnPoint(cellPos);
+            
+            if (nearestPoint != null)
+            {
+                // 기존 할당 해제
+                if (_userSpawnPointMap.ContainsKey(userId))
+                {
+                    Transform oldPoint = _userSpawnPointMap[userId];
+                    if (oldPoint != null)
+                        _occupiedSpawnPoints.Remove(oldPoint);
+                }
 
-        // 이동 애니메이션 (월드 기준으로 안전하게)
-        user.MoveToWorldPosition(targetPoint.position);
+                // 새 칸 할당
+                _userSpawnPointMap[userId] = nearestPoint;
+                _occupiedSpawnPoints.Add(nearestPoint);
+            }
+
+            // 해당 칸으로 이동
+            float distance = Vector3.Distance(user.transform.position, cellPos);
+            float duration = user.MoveSpeed > 0f ? distance / user.MoveSpeed : 0f;
+            
+            float elapsed = 0f;
+            Vector3 startPos = user.transform.position;
+            
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / duration);
+                user.transform.position = Vector3.Lerp(startPos, cellPos, t);
+                yield return null;
+            }
+            
+            user.transform.position = cellPos;
+        }
+
+        // 최종 목표 지점 할당
+        if (finalTargetPoint != null)
+        {
+            if (_userSpawnPointMap.ContainsKey(userId))
+            {
+                Transform oldPoint = _userSpawnPointMap[userId];
+                if (oldPoint != null)
+                    _occupiedSpawnPoints.Remove(oldPoint);
+            }
+
+            _userSpawnPointMap[userId] = finalTargetPoint;
+            _occupiedSpawnPoints.Add(finalTargetPoint);
+        }
     }
 
-    private void SwapUserPosition(UserObject user1, Transform point1)
+    /// <summary>
+    /// 두 유저의 위치를 한 칸씩 교환합니다
+    /// </summary>
+    private IEnumerator SwapPositionsOneStep(UserObject user1, UserObject user2, Vector3 targetPos1, Vector3 targetPos2)
     {
-        if (user1 == null || point1 == null)
-            return;
+        if (user1 == null || user2 == null)
+            yield break;
 
-        RegisterUser(user1);
-        string userId1 = user1.UserId;
-        if (string.IsNullOrWhiteSpace(userId1))
-            return;
+        float distance1 = Vector3.Distance(user1.transform.position, targetPos1);
+        float distance2 = Vector3.Distance(user2.transform.position, targetPos2);
+        float duration1 = user1.MoveSpeed > 0f ? distance1 / user1.MoveSpeed : 0f;
+        float duration2 = user2.MoveSpeed > 0f ? distance2 / user2.MoveSpeed : 0f;
+        float maxDuration = Mathf.Max(duration1, duration2);
 
-        // point1에 있는 userId 찾기
-        string userId2 = null;
-        foreach (var kv in _userSpawnPointMap)
+        float elapsed = 0f;
+        Vector3 startPos1 = user1.transform.position;
+        Vector3 startPos2 = user2.transform.position;
+
+        while (elapsed < maxDuration)
         {
-            if (kv.Value == point1)
+            elapsed += Time.deltaTime;
+            float t1 = Mathf.Clamp01(elapsed / duration1);
+            float t2 = Mathf.Clamp01(elapsed / duration2);
+
+            user1.transform.position = Vector3.Lerp(startPos1, targetPos1, t1);
+            user2.transform.position = Vector3.Lerp(startPos2, targetPos2, t2);
+            yield return null;
+        }
+
+        user1.transform.position = targetPos1;
+        user2.transform.position = targetPos2;
+    }
+
+    /// <summary>
+    /// 특정 위치에 가장 가까운 스폰 포인트를 찾습니다
+    /// </summary>
+    private Transform FindNearestSpawnPoint(Vector3 position)
+    {
+        if (spawnPoints == null || spawnPoints.Length == 0)
+            return null;
+
+        Transform nearest = null;
+        float minDist = float.MaxValue;
+
+        foreach (Transform point in spawnPoints)
+        {
+            if (point == null) continue;
+            
+            float dist = Vector3.Distance(position, point.position);
+            if (dist < minDist)
             {
-                userId2 = kv.Key;
-                break;
+                minDist = dist;
+                nearest = point;
             }
         }
 
-        if (string.IsNullOrWhiteSpace(userId2) || userId2 == userId1)
+        return nearest;
+    }
+
+    /// <summary>
+    /// 특정 위치에 있는 유저를 찾습니다
+    /// </summary>
+    private UserObject GetUserAtPosition(Vector3 position)
+    {
+        float checkRadius = 0.5f; // 체크 반경
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(position, checkRadius);
+        
+        foreach (Collider2D col in colliders)
+        {
+            if (col == null) continue;
+            
+            UserObject user = col.GetComponent<UserObject>();
+            if (user != null && users.ContainsValue(user))
+            {
+                return user;
+            }
+        }
+        
+        return null;
+    }
+
+    /// <summary>
+    /// 두 유저의 위치를 바꿉니다
+    /// </summary>
+    private void SwapUserPositions(UserObject user1, UserObject user2)
+    {
+        if (user1 == null || user2 == null)
             return;
 
-        if (!TryGetUser(userId2, out UserObject user2) || user2 == null)
+        RegisterUser(user1);
+        RegisterUser(user2);
+        
+        string userId1 = user1.UserId;
+        string userId2 = user2.UserId;
+        
+        if (string.IsNullOrWhiteSpace(userId1) || string.IsNullOrWhiteSpace(userId2))
             return;
 
-        // user1의 현재 스폰 위치 찾기
-        if (!_userSpawnPointMap.TryGetValue(userId1, out Transform point2) || point2 == null)
-            return;
+        // 각 유저의 현재 위치 가져오기
+        Transform point1 = _userSpawnPointMap.TryGetValue(userId1, out Transform p1) ? p1 : null;
+        Transform point2 = _userSpawnPointMap.TryGetValue(userId2, out Transform p2) ? p2 : null;
 
-        // 맵만 스왑(점유 집합은 그대로)
-        _userSpawnPointMap[userId1] = point1;
-        _userSpawnPointMap[userId2] = point2;
-
-        user1.MoveToWorldPosition(point1.position);
-        user2.MoveToWorldPosition(point2.position);
+        // 위치 교환
+        if (point1 != null && point2 != null)
+        {
+            _userSpawnPointMap[userId1] = point2;
+            _userSpawnPointMap[userId2] = point1;
+            
+            user1.MoveToWorldPosition(point2.position);
+            user2.MoveToWorldPosition(point1.position);
+        }
+        else if (point1 != null)
+        {
+            // user1은 위치가 있고 user2는 없음
+            ReleaseSpawnPoint(userId1);
+            _userSpawnPointMap[userId2] = point1;
+            _occupiedSpawnPoints.Add(point1);
+            user1.MoveToWorldPosition(user2.transform.position);
+            user2.MoveToWorldPosition(point1.position);
+        }
+        else if (point2 != null)
+        {
+            // user2는 위치가 있고 user1은 없음
+            ReleaseSpawnPoint(userId2);
+            _userSpawnPointMap[userId1] = point2;
+            _occupiedSpawnPoints.Add(point2);
+            user1.MoveToWorldPosition(point2.position);
+            user2.MoveToWorldPosition(user1.transform.position);
+        }
+        else
+        {
+            // 둘 다 위치가 없음 - 단순 위치 교환
+            Vector3 tempPos = user1.transform.position;
+            user1.MoveToWorldPosition(user2.transform.position);
+            user2.MoveToWorldPosition(tempPos);
+        }
     }
 
     private void RegisterPlayerIfPossible()

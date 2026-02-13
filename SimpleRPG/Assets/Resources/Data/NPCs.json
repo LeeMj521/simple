@@ -29,8 +29,7 @@
                     "endOffsetMinutes": 15
                 }
             ],
-            "attackPower": 5,
-            "attackCooldown": 3.0,
+            "attackPower": 300,
             "equippedSkillIds": [
                 "skill_1"
             ],
@@ -65,8 +64,7 @@
                     "endOffsetMinutes": 15
                 }
             ],
-            "attackPower": 7,
-            "attackCooldown": 2.5,
+            "attackPower": 251,
             "equippedSkillIds": [
                 "skill_1"
             ],
@@ -97,8 +95,7 @@
                     "endOffsetMinutes": 15
                 }
             ],
-            "attackPower": 1,
-            "attackCooldown": 10.0,
+            "attackPower": 80,
             "equippedSkillIds": [
                 "skill_1"
             ],

@@ -23,8 +23,10 @@ public class SkillProjectile : MonoBehaviour
     [SerializeField] private bool hitAnimationFollowProjectileAngle = false;
 
     private int _damage;
-    private MonsterObject _target;
+    public MonsterObject _target;
     private bool _hit;
+    private Vector3 _lastTargetPosition;
+    private bool _targetLost = false;
 
     /// <summary>
     /// 프로젝타일 실행. target으로 이동, 도달 시 데미지 적용 후 삭제.
@@ -34,6 +36,7 @@ public class SkillProjectile : MonoBehaviour
         _damage = Mathf.Max(0, damage);
         _target = target;
         _hit = false;
+        _targetLost = false;
 
         // 타겟을 향하도록 회전
         if (faceTarget && _target != null)
@@ -50,15 +53,31 @@ public class SkillProjectile : MonoBehaviour
     private void Update()
     {
         if (_hit) return;
+
+        Vector3 targetPos;
+        Vector3 dir;
+        float dist;
+
+        // 타겟이 없어진 경우 마지막 위치로 이동
         if (_target == null)
         {
-            Destroy(gameObject);
-            return;
+            if (!_targetLost)
+            {
+                // 타겟이 처음으로 없어진 경우, 마지막 위치 저장
+                _targetLost = true;
+                _lastTargetPosition = transform.position + transform.right * 10f; // 기본값: 현재 방향으로 10유닛
+            }
+            targetPos = _lastTargetPosition;
+        }
+        else
+        {
+            // 타겟이 있는 경우, 마지막 위치 업데이트
+            _lastTargetPosition = _target.transform.position;
+            targetPos = _lastTargetPosition;
         }
 
-        Transform t = _target.transform;
-        Vector3 dir = (t.position - transform.position).normalized;
-        float dist = Vector3.Distance(transform.position, t.position);
+        dir = (targetPos - transform.position).normalized;
+        dist = Vector3.Distance(transform.position, targetPos);
 
         // 타겟을 향하도록 회전 (이동 중에도 업데이트)
         if (faceTarget && dir != Vector3.zero)
@@ -67,10 +86,20 @@ public class SkillProjectile : MonoBehaviour
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
 
-        if (dist <= hitRadius)
+        // 타겟이 있고 충돌 거리 이내면 데미지 적용
+        if (!_targetLost && _target != null && dist <= hitRadius)
         {
             _hit = true;
             _target.TakeDamage(_damage);
+            SpawnHitAnimation();
+            Destroy(gameObject);
+            return;
+        }
+
+        // 마지막 위치에 도달하면 삭제
+        if (_targetLost && dist <= hitRadius)
+        {
+            _hit = true;
             SpawnHitAnimation();
             Destroy(gameObject);
             return;

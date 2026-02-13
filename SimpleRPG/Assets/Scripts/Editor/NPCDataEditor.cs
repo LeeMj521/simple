@@ -221,7 +221,6 @@ public class NPCDataEditor : EditorWindow
         // 전투 설정
         EditorGUILayout.LabelField("전투 설정", EditorStyles.boldLabel);
         npc.attackPower = EditorGUILayout.IntField("공격력", npc.attackPower);
-        npc.attackCooldown = EditorGUILayout.FloatField("공격 쿨타임 초", npc.attackCooldown);
 
         EditorGUILayout.Space(5);
         EditorGUILayout.LabelField("장착 스킬 (Skills.json의 skillId)", EditorStyles.boldLabel);
@@ -433,7 +432,6 @@ public class NPCDataEditor : EditorWindow
             responseProbability = 0.4f,
             relationshipBonus = 0.3f,
             attackPower = 0,
-            attackCooldown = 0f,
             spritePath = "",
             onlineSchedule = new List<OnlineWindowJson>(),
             initialRelationships = new List<RelationshipJson>

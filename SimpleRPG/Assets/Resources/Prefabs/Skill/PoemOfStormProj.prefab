@@ -51,6 +51,7 @@ MonoBehaviour:
   speed: 10
   hitAnimationPrefab: {fileID: 2872458209479115051, guid: 6f6bd57f14b939a41b2c8224c54e4f5e, type: 3}
   hitAnimationFollowProjectileAngle: 0
+  _target: {fileID: 0}
 --- !u!212 &1108657969039935570
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -89,8 +90,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 854676513
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 836239651586040597, guid: ae043474ae3d33643a2aa7e15aa83bcf, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

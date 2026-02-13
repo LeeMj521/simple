@@ -46,7 +46,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5aeb0610a75e0149bc827e22c883620, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectDuration: 5
   faceTarget: 1
   projectilePrefab: {fileID: 8720642028304155908, guid: a92f5ba070d4e0448a17628dafd9a4af, type: 3}
   projectileSpawnPoint: {fileID: 0}
@@ -90,8 +89,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 854676513
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: -5020852554667437629, guid: dc77f282b1284224eaa0f089193b1b8b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

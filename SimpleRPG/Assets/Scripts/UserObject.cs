@@ -11,10 +11,11 @@ using DG.Tweening;
 public class UserObject : MonoBehaviour
 {
     [Header("유저 정보")]
-    [Tooltip("유저 고유 ID (NPC는 npcId, 플레이어는 'player' 등)")]
+    [Tooltip("유저 고유 ID")]
     [SerializeField] private string userId = "";
-    [Tooltip("유저 이름 (UI 표시용)")]
+    [Tooltip("유저 이름")]
     [SerializeField] private string userName = "유저";
+    public int attack;
 
     [Header("스킬")]
     [Tooltip("장착한 스킬 ID 목록 (Data/Skills.json의 skillId)")]
@@ -30,7 +31,7 @@ public class UserObject : MonoBehaviour
     [SerializeField] private Transform cooldownRoot;
     [Tooltip("스킬 아이콘 프리팹")]
     [SerializeField] private GameObject skillIconPrefab;
-    [SerializeField] private SpriteRenderer profileSprite;
+    public SpriteRenderer profileSprite;
 
     [Header("채팅 버블")]
     [SerializeField] private GameObject chatBubbleRoot;
@@ -39,17 +40,24 @@ public class UserObject : MonoBehaviour
     [SerializeField] private Job job = Job.무직;
     
     [Header("이동")]
-    [Tooltip("이동 애니메이션 시간 (초)")]
-    [SerializeField] private float moveDuration = 0.3f;
+    [Tooltip("이동 속도 (초당 유닛)")]
+    [SerializeField] private float moveSpeed = 5f;
+    public float MoveSpeed => moveSpeed;
+    [Tooltip("경로 찾기 그리드 (비어 있으면 자동 검색)")]
+    [SerializeField] private PathfindingGrid pathfindingGrid;
 
     private Dictionary<string, float> _skillCooldownRemaining = new Dictionary<string, float>();
     private HashSet<string> _skillEffectRunning = new HashSet<string>();
     private Dictionary<string, SkillCooldownUI> _skillCooldownUIs = new Dictionary<string, SkillCooldownUI>();
     private Coroutine _hideBubbleCoroutine;
     private Tween _moveTween;
+    
+    // A* 경로 찾기 관련
+    private List<Vector3> _currentPath = new List<Vector3>();
+    private int _currentPathIndex = 0;
+    private bool _isMoving = false;
 
-    private struct SkillCooldownUI
-    {
+    private struct SkillCooldownUI{
         public Image iconImage;
         public Image cooldownFillImage;
     }
@@ -60,6 +68,8 @@ public class UserObject : MonoBehaviour
             monsterManager = FindFirstObjectByType<MonsterManager>();
         if (dataManager == null)
             dataManager = FindFirstObjectByType<DataManager>();
+        if (pathfindingGrid == null)
+            pathfindingGrid = FindFirstObjectByType<PathfindingGrid>();
 
         if (nameText != null)
             nameText.text = $"{userName}";
@@ -151,6 +161,7 @@ public class UserObject : MonoBehaviour
         
         job = npc.job;
         defaultAttackPower = Mathf.Max(0, npc.attackPower);
+        attack = Mathf.Max(0, npc.attackPower);
         if (npc.equippedSkillIds != null && npc.equippedSkillIds.Count > 0)
             SetEquippedSkills(npc.equippedSkillIds);
     }
@@ -200,7 +211,10 @@ public class UserObject : MonoBehaviour
                 continue;
             }
 
-            int damage = skill.damage > 0 ? skill.damage : defaultAttackPower;
+            // user의 attack과 스킬의 공격 배수를 곱해서 데미지 계산
+            // skill.damage는 퍼센트 값 (예: 20 = 20%, 80 = 80%)
+            float attackMultiplier = skill.damage > 0 ? skill.damage / 100.0f : 1.0f;
+            int damage = Mathf.RoundToInt(attack * attackMultiplier);
             effect.Run(this, skill, monsterManager, damage);
             _skillEffectRunning.Add(skillId);
             break;
@@ -305,27 +319,85 @@ public class UserObject : MonoBehaviour
     }
     
     /// <summary>
-    /// 지정된 로컬 위치로 이동 (DOTween 사용)
+    /// 지정된 로컬 위치로 이동 (A* 경로 찾기 사용)
     /// </summary>
     public void MoveToPosition(Vector3 targetLocalPos)
     {
-        if (_moveTween != null && _moveTween.IsActive())
-            _moveTween.Kill();
-        
-        _moveTween = transform.DOLocalMove(targetLocalPos, moveDuration)
-            .SetEase(Ease.OutQuad);
+        Vector3 worldTarget = transform.parent != null ? transform.parent.TransformPoint(targetLocalPos) : targetLocalPos;
+        MoveToWorldPosition(worldTarget);
     }
 
     /// <summary>
-    /// 지정된 월드 위치로 이동 (DOTween 사용)
+    /// 지정된 월드 위치로 이동 (A* 경로 찾기 사용, 한 칸씩 이동)
     /// </summary>
     public void MoveToWorldPosition(Vector3 targetWorldPos)
     {
         if (_moveTween != null && _moveTween.IsActive())
             _moveTween.Kill();
 
-        _moveTween = transform.DOMove(targetWorldPos, moveDuration)
-            .SetEase(Ease.OutQuad);
+        _currentPath.Clear();
+        _currentPathIndex = 0;
+        _isMoving = false;
+
+        // 경로 찾기 그리드가 없으면 직접 이동
+        if (pathfindingGrid == null)
+        {
+            float distance = Vector3.Distance(transform.position, targetWorldPos);
+            float duration = moveSpeed > 0f ? distance / moveSpeed : 0f;
+            _moveTween = transform.DOMove(targetWorldPos, duration)
+                .SetEase(Ease.OutQuad);
+            return;
+        }
+
+        // A* 경로 찾기
+        _currentPath = pathfindingGrid.FindPath(transform.position, targetWorldPos);
+        
+        if (_currentPath == null || _currentPath.Count == 0)
+        {
+            // 경로를 찾지 못하면 직접 이동
+            float distance = Vector3.Distance(transform.position, targetWorldPos);
+            float duration = moveSpeed > 0f ? distance / moveSpeed : 0f;
+            _moveTween = transform.DOMove(targetWorldPos, duration)
+                .SetEase(Ease.OutQuad);
+            return;
+        }
+
+        // 첫 번째 목표 지점으로 이동 시작
+        _isMoving = true;
+        MoveToNextPathPoint();
+    }
+
+    /// <summary>
+    /// 경로의 다음 지점으로 이동
+    /// </summary>
+    private void MoveToNextPathPoint()
+    {
+        if (_currentPath == null || _currentPathIndex >= _currentPath.Count)
+        {
+            _isMoving = false;
+            return;
+        }
+
+        Vector3 targetPos = _currentPath[_currentPathIndex];
+        float distance = Vector3.Distance(transform.position, targetPos);
+        float duration = moveSpeed > 0f ? distance / moveSpeed : 0f;
+
+        _moveTween = transform.DOMove(targetPos, duration)
+            .SetEase(Ease.Linear)
+            .OnComplete(() =>
+            {
+                _currentPathIndex++;
+                if (_currentPathIndex < _currentPath.Count)
+                {
+                    // 다음 지점으로 이동
+                    MoveToNextPathPoint();
+                }
+                else
+                {
+                    // 경로 완료
+                    _isMoving = false;
+                }
+            });
     }
     
     private void OnDestroy()

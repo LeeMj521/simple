@@ -289,7 +289,6 @@ public class NPCJson
     
     // 전투 관련 (선택사항, 없으면 기본값 사용)
     public int attackPower = 0; // 0이면 기본값 사용
-    public float attackCooldown = 0f; // 0이면 기본값 사용
     /// <summary>장착한 스킬 ID 목록 (Skills.json의 skillId)</summary>
     public List<string> equippedSkillIds;
 
@@ -316,8 +315,6 @@ public class NPCJson
         // 전투 관련 설정 (JSON에 없으면 기본값 사용)
         if (attackPower > 0)
             data.attackPower = attackPower;
-        if (attackCooldown > 0)
-            data.attackCooldown = attackCooldown;
         if (equippedSkillIds != null && equippedSkillIds.Count > 0)
         {
             data.equippedSkillIds = new List<string>();

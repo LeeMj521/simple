@@ -12,9 +12,12 @@ public class MonsterObject : MonoBehaviour
     [SerializeField] private MonsterData data;
 
     [Header("UI")]
+    [SerializeField] private Canvas canvas;
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private Slider hpBar;
+    [Tooltip("데미지 텍스트 프리팹")]
+    [SerializeField] private GameObject damageTextPrefab;
 
     private int _currentHp;
 
@@ -56,8 +59,30 @@ public class MonsterObject : MonoBehaviour
         _currentHp = Mathf.Max(0, _currentHp - amount);
         UpdateUI();
 
+        // 데미지 텍스트 팝업
+        ShowDamageText(amount);
+
         if (_currentHp <= 0)
             OnDeath?.Invoke();
+    }
+
+    /// <summary>
+    /// 데미지 텍스트 표시
+    /// </summary>
+    private void ShowDamageText(int damage)
+    {
+        if (canvas == null || damageTextPrefab == null)
+            return;
+
+        GameObject damageTextObj = Instantiate(damageTextPrefab, canvas.transform);
+
+        DamageText damageTextComponent = damageTextObj.GetComponent<DamageText>();
+        if (damageTextComponent == null)
+            damageTextComponent = damageTextObj.AddComponent<DamageText>();
+
+        // 몬스터 위치에서 약간 위로 오프셋
+        Vector3 spawnPos = transform.position + Vector3.up * 0.5f;
+        damageTextComponent.Show(damage, spawnPos);
     }
 
     private void UpdateUI()

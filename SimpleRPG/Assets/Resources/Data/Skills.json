@@ -1,24 +1,14 @@
 {
     "skills": [
         {
-            "skillId": "skill_0",
-            "skillName": "주먹질",
-            "cooldown": 1.0,
-            "description": "최후의 수단.",
-            "iconPath": "",
-            "maxSkillLevel": 5,
-            "prefabPath": "Prefabs/Skill/punching",
-            "damage": 0
-        },
-        {
             "skillId": "skill_1",
             "skillName": "드래곤 로어",
-            "cooldown": 8.0,
+            "cooldown": 10.0,
             "description": "거대한 용의 포효로 다수의 적을 공격한다.",
             "iconPath": "Images/Skill/Icon/dragon_lore_icon",
             "maxSkillLevel": 5,
             "prefabPath": "Prefabs/Skill/DragonLore",
-            "damage": 80
+            "damage": 1000
         },
         {
             "skillId": "skill_2",
@@ -28,17 +18,7 @@
             "iconPath": "Images/Skill/Icon/poem_of_storm_icon",
             "maxSkillLevel": 5,
             "prefabPath": "Prefabs/Skill/PoemOfStorm",
-            "damage": 9
-        },
-        {
-            "skillId": "skill_3",
-            "skillName": "새비지 블로우",
-            "cooldown": 2.0,
-            "description": "단검으로 적에게 최고 6연속 공격을 가한다.",
-            "iconPath": "",
-            "maxSkillLevel": 5,
-            "prefabPath": "Prefabs/Skill/SavageBlow",
-            "damage": 0
+            "damage": 20
         }
     ]
 }

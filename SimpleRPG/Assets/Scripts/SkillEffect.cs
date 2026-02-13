@@ -95,8 +95,10 @@ public class SkillEffect : MonoBehaviour
   }
 
   private void SpawnProjectile(){
-    if (projectilePrefab == null || _monsterManager == null || _monsterManager.CurrentMonster == null || _damage <= 0)
+    if (projectilePrefab == null || _monsterManager == null || _monsterManager.CurrentMonster == null)
       return;
+    // 데미지가 0 이하면 1로 고정
+    int finalDamage = _damage <= 0 ? 1 : _damage;
 
     Vector3 spawnPos = projectileSpawnPoint != null ? projectileSpawnPoint.position : transform.position;
     Quaternion rotation = Quaternion.identity;

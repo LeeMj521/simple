@@ -45,7 +45,6 @@ public class NPCData
     
     // 전투 관련 (JSON에서 설정)
     public int attackPower = 5; // NPC 공격력
-    public float attackCooldown = 3f; // NPC 공격 쿨타임 (초)
     /// <summary>장착한 스킬 ID 목록 (Skills.json의 skillId). 비어 있으면 기본 공격만 사용</summary>
     public List<string> equippedSkillIds;
     
