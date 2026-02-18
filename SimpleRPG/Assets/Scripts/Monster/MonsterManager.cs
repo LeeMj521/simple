@@ -98,7 +98,19 @@ public class MonsterManager : MonoBehaviour
         if (_currentMonster == null)
             _currentMonster = go.AddComponent<MonsterObject>();
 
-        _currentMonster.Init(data, gameManager.damageCanvas);
+        if (_currentMonster is BossMonster boss)
+        {
+            boss.Init(data, gameManager.damageCanvas);
+            if (gameManager.bossHud != null)
+                gameManager.bossHud.Bind(_currentMonster);
+        }
+        else
+        {
+            _currentMonster.Init(data, gameManager.damageCanvas);
+            if (gameManager.bossHud != null)
+                gameManager.bossHud.Unbind();
+        }
+
         _currentMonster.OnDeath += HandleMonsterDeath;
     }
 
@@ -106,6 +118,8 @@ public class MonsterManager : MonoBehaviour
     {
         MonsterObject dying = _currentMonster;
         _currentMonster = null;
+        if (gameManager != null && gameManager.bossHud != null)
+            gameManager.bossHud.Unbind();
         if (dying != null)
         {
             dying.OnDeath -= HandleMonsterDeath;

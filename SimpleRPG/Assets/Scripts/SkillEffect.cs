@@ -6,7 +6,7 @@ using UnityEngine;
 /// </summary>
 public class SkillEffect : MonoBehaviour
 {
-  [Header("애니메이션 이벤트 (Function: OnApplyDamage / OnSpawnProjectile / OnSpawnHitAnimation / OnAnimationEnd)")]
+  [Header("애니메이션 이벤트 (Function: OnApplyDamage / OnApplyDamageAll / OnSpawnProjectile / OnSpawnHitAnimation / OnAnimationEnd)")]
 
   [Header("타겟 향하기")]
   [Tooltip("true면 이펙트가 타겟을 향하도록 회전")]
@@ -71,7 +71,13 @@ public class SkillEffect : MonoBehaviour
   /// </summary>
   public void OnApplyDamage(){
     ApplyDamage();
-    SpawnHitAnimation();
+  }
+
+  /// <summary>
+  /// 애니메이션 이벤트: 데미지 적용 시점에 호출. 씬에 있는 모든 몬스터(현재 몬스터 + 미니언 등)에게 동일 데미지 적용.
+  /// </summary>
+  public void OnApplyDamageAll(){
+    ApplyDamageAll();
   }
 
   /// <summary>
@@ -92,7 +98,28 @@ public class SkillEffect : MonoBehaviour
     if (_owner == null || _skill == null || _monsterManager?.CurrentMonster == null)
       return;
     int damage = _owner.CalculateSkillDamage(_skill);
+    if (damage < 1) damage = 1;
     _monsterManager.CurrentMonster.TakeDamage(damage);
+    SpawnHitAnimation();
+  }
+
+  /// <summary>
+  /// 씬에 있는 모든 몬스터(현재 몬스터 + 미니언)에게 각각 다른 데미지를 적용하고, 각 몬스터 위치에 히트 이펙트 생성.
+  /// </summary>
+  private void ApplyDamageAll(){
+    if (_owner == null || _skill == null)
+      return;
+
+    MonsterObject[] monsters = Object.FindObjectsByType<MonsterObject>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+    for (int i = 0; i < monsters.Length; i++){
+      MonsterObject m = monsters[i];
+      if (m == null || !m.gameObject.activeInHierarchy)
+        continue;
+      int damage = _owner.CalculateSkillDamage(_skill);
+      if (damage < 1) damage = 1;
+      m.TakeDamage(damage);
+      SpawnHitAnimation(m.transform.position);
+    }
   }
 
   private void SpawnProjectile(){
@@ -117,32 +144,28 @@ public class SkillEffect : MonoBehaviour
   }
 
   private void SpawnHitAnimation(){
+    Vector3 spawnPos;
+    if (hitSpawnPoint != null)
+      spawnPos = hitSpawnPoint.position;
+    else if (_monsterManager != null && _monsterManager.CurrentMonster != null)
+      spawnPos = _monsterManager.CurrentMonster.transform.position;
+    else
+      spawnPos = transform.position;
+    SpawnHitAnimation(spawnPos);
+  }
+
+  private void SpawnHitAnimation(Vector3 worldPosition){
     if (hitAnimationPrefab == null)
       return;
-
-    Vector3 spawnPos;
-    if (hitSpawnPoint != null){
-      spawnPos = hitSpawnPoint.position;
-    }
-    else if (_monsterManager != null && _monsterManager.CurrentMonster != null){
-      spawnPos = _monsterManager.CurrentMonster.transform.position;
-    }
-    else{
-      spawnPos = transform.position;
-    }
-
     Quaternion rotation = Quaternion.identity;
-
-    // 타겟을 향하도록 회전
     if (faceTarget && _monsterManager != null && _monsterManager.CurrentMonster != null){
-      Vector3 direction = (_monsterManager.CurrentMonster.transform.position - spawnPos).normalized;
+      Vector3 direction = (_monsterManager.CurrentMonster.transform.position - worldPosition).normalized;
       if (direction != Vector3.zero){
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         rotation = Quaternion.AngleAxis(angle, Vector3.forward);
       }
     }
-
-    Instantiate(hitAnimationPrefab, spawnPos, rotation);
+    Instantiate(hitAnimationPrefab, worldPosition, rotation);
   }
 
   private void FinishEffect(UserObject owner, SkillData skill){

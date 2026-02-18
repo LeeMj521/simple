@@ -4,26 +4,27 @@ using UnityEngine.UI;
 using TMPro;
 
 /// <summary>
-/// 몬스터 프리팹에 붙이는 스크립트. HP바, 레벨, 이름 관리. 캔버스는 프리팹 내부에 있음.
+/// 몬스터 공통: HP, 데미지, 이름·레벨·HP바 UI. 보스/일반 몬스터는 BossMonster, MinionMonster로 구분.
 /// </summary>
 public class MonsterObject : MonoBehaviour
 {
     [Header("몬스터 데이터")]
-    [SerializeField] private MonsterData data;
+    [SerializeField] protected MonsterData data;
 
     [Header("UI")]
-    [SerializeField] private TextMeshProUGUI nameText;
-    [SerializeField] private TextMeshProUGUI levelText;
-    [SerializeField] private Slider hpBar;
-    [Tooltip("데미지 텍스트 프리팹")]
-    private Canvas _damageCanvas;
-    [SerializeField] private Transform damageTransform;
-    [SerializeField] private GameObject damageTextPrefab;
+    [SerializeField] protected TextMeshProUGUI nameText;
+    [SerializeField] protected TextMeshProUGUI levelText;
+    [SerializeField] protected Slider hpBar;
+    [SerializeField] protected Transform damageTransform;
+    [SerializeField] protected GameObject damageTextPrefab;
+    protected Canvas _damageCanvas;
 
-    private int _currentHp;
+    protected int _currentHp;
 
     /// <summary>HP가 0이 되었을 때 발생</summary>
     public event Action OnDeath;
+    /// <summary>HP가 변경될 때 발생 (피격 등)</summary>
+    public event Action OnHpChanged;
 
     /// <summary>현재 HP</summary>
     public int CurrentHp => _currentHp;
@@ -31,19 +32,17 @@ public class MonsterObject : MonoBehaviour
     public MonsterData Data => data;
 
     /// <summary>
-    /// MonsterManager가 스폰 시 호출. 데이터 적용 후 UI 갱신.
+    /// 스폰 시 호출. 데이터 적용 후 UI 갱신. 서브클래스에서 오버라이드해 HUD 캔버스 등 추가 설정.
     /// </summary>
     /// <param name="monsterData">몬스터 데이터</param>
-    /// <param name="damageCanvasOverride">데미지 텍스트용 캔버스 (넘기면 몬스터 소멸 후에도 데미지 표시 유지)</param>
-    public void Init(MonsterData monsterData, Canvas damageCanvas = null)
+    /// <param name="damageCanvas">데미지 텍스트용 캔버스 (null이면 데미지 텍스트 미표시)</param>
+    public virtual void Init(MonsterData monsterData, Canvas damageCanvas = null)
     {
         if (monsterData == null) return;
 
         data = monsterData;
         _currentHp = data.maxHP;
-
-        if (damageCanvas != null)
-            _damageCanvas = damageCanvas;
+        _damageCanvas = damageCanvas;
 
         if (hpBar != null)
         {
@@ -64,6 +63,7 @@ public class MonsterObject : MonoBehaviour
 
         _currentHp = Mathf.Max(0, _currentHp - amount);
         UpdateUI();
+        OnHpChanged?.Invoke();
 
         // 데미지 텍스트 팝업
         ShowDamageText(amount);
@@ -75,10 +75,12 @@ public class MonsterObject : MonoBehaviour
     /// <summary>
     /// 데미지 텍스트 표시
     /// </summary>
-    private void ShowDamageText(int damage)
+    protected void ShowDamageText(int damage)
     {
         if (_damageCanvas == null || damageTextPrefab == null)
             return;
+
+        Vector3 spawnWorldPos = (damageTransform != null) ? damageTransform.position : transform.position;
 
         GameObject damageTextObj = Instantiate(damageTextPrefab, _damageCanvas.transform);
 
@@ -86,11 +88,10 @@ public class MonsterObject : MonoBehaviour
         if (damageTextComponent == null)
             damageTextComponent = damageTextObj.AddComponent<DamageText>();
 
-        // 몬스터 위치에서 약간 위로 오프셋
-        damageTextComponent.Show(damage, damageTransform.position);
+        damageTextComponent.Show(damage, spawnWorldPos);
     }
 
-    private void UpdateUI()
+    protected void UpdateUI()
     {
         if (data == null) return;
 

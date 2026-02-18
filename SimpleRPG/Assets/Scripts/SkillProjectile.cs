@@ -1,7 +1,8 @@
 using UnityEngine;
 
 /// <summary>
-/// 스킬 프로젝타일. 목표(몬스터)로 이동 후 데미지 적용하고 삭제.
+/// 스킬 프로젝타일. 타겟의 저장된 위치로 이동(저장 위치는 타겟이 있는 동안 매 프레임 갱신).
+/// 타겟이 없어져도 마지막으로 저장된 위치까지 이동 후 히트 처리. 도달 시 데미지 적용 후 삭제.
 /// </summary>
 public class SkillProjectile : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class SkillProjectile : MonoBehaviour
     [SerializeField] private float hitRadius = 0.5f;
 
     [Header("타겟 향하기")]
-    [Tooltip("true면 프로젝타일이 타겟을 향하도록 회전")]
+    [Tooltip("true면 프로젝타일이 목표 위치를 향하도록 회전")]
     [SerializeField] private bool faceTarget = true;
 
     [Header("이동 속도")]
@@ -26,11 +27,11 @@ public class SkillProjectile : MonoBehaviour
     private SkillData _skill;
     private MonsterObject _target;
     private bool _hit;
-    private Vector3 _lastTargetPosition;
-    private bool _targetLost = false;
+    /// <summary>이동 목표 위치. 타겟이 있는 동안 매 프레임 갱신, 타겟이 없어지면 갱신 중단 후 마지막 위치 유지.</summary>
+    private Vector3 _storedTargetPosition;
 
     /// <summary>
-    /// 프로젝타일 실행. target으로 이동, 도달 시 owner.CalculateSkillDamage(skill)로 데미지 계산 후 적용.
+    /// 프로젝타일 실행. 타겟의 위치를 저장하고, 그 저장 위치로 이동. 도달 시 데미지 적용 후 삭제.
     /// </summary>
     public void Run(UserObject owner, SkillData skill, MonsterObject target)
     {
@@ -38,12 +39,11 @@ public class SkillProjectile : MonoBehaviour
         _skill = skill;
         _target = target;
         _hit = false;
-        _targetLost = false;
+        _storedTargetPosition = target != null ? target.transform.position : transform.position;
 
-        // 타겟을 향하도록 회전
-        if (faceTarget && _target != null)
+        if (faceTarget)
         {
-            Vector3 direction = (_target.transform.position - transform.position).normalized;
+            Vector3 direction = (_storedTargetPosition - transform.position).normalized;
             if (direction != Vector3.zero)
             {
                 float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
@@ -56,56 +56,27 @@ public class SkillProjectile : MonoBehaviour
     {
         if (_hit) return;
 
-        Vector3 targetPos;
-        Vector3 dir;
-        float dist;
+        // 타겟이 있으면 저장 위치 계속 업데이트, 없으면 업데이트 중단(마지막 저장 위치 유지)
+        if (_target != null)
+            _storedTargetPosition = _target.transform.position;
 
-        // 타겟이 없어진 경우 마지막 위치로 이동
-        if (_target == null)
-        {
-            if (!_targetLost)
-            {
-                // 타겟이 처음으로 없어진 경우, 마지막 위치 저장
-                _targetLost = true;
-                _lastTargetPosition = transform.position + transform.right * 10f; // 기본값: 현재 방향으로 10유닛
-            }
-            targetPos = _lastTargetPosition;
-        }
-        else
-        {
-            // 타겟이 있는 경우, 마지막 위치 업데이트
-            _lastTargetPosition = _target.transform.position;
-            targetPos = _lastTargetPosition;
-        }
+        Vector3 dir = (_storedTargetPosition - transform.position).normalized;
+        float dist = Vector3.Distance(transform.position, _storedTargetPosition);
 
-        dir = (targetPos - transform.position).normalized;
-        dist = Vector3.Distance(transform.position, targetPos);
-
-        // 타겟을 향하도록 회전 (이동 중에도 업데이트)
         if (faceTarget && dir != Vector3.zero)
         {
             float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
 
-        // 타겟이 있고 충돌 거리 이내면 데미지 적용 (호출 시점에 데미지 계산)
-        if (!_targetLost && _target != null && dist <= hitRadius)
+        if (dist <= hitRadius)
         {
             _hit = true;
-            if (_owner != null && _skill != null)
+            if (_target != null && _owner != null && _skill != null)
             {
                 int damage = _owner.CalculateSkillDamage(_skill);
                 _target.TakeDamage(damage);
             }
-            SpawnHitAnimation();
-            Destroy(gameObject);
-            return;
-        }
-
-        // 마지막 위치에 도달하면 삭제
-        if (_targetLost && dist <= hitRadius)
-        {
-            _hit = true;
             SpawnHitAnimation();
             Destroy(gameObject);
             return;
@@ -121,15 +92,8 @@ public class SkillProjectile : MonoBehaviour
         if (hitAnimationPrefab == null)
             return;
 
-        Vector3 spawnPos = _target != null ? _target.transform.position : transform.position;
-        Quaternion rotation = Quaternion.identity;
-
-        // 투사체 각도를 따라가도록 설정
-        if (hitAnimationFollowProjectileAngle)
-        {
-            rotation = transform.rotation;
-        }
-
+        Vector3 spawnPos = _target != null ? _target.transform.position : _storedTargetPosition;
+        Quaternion rotation = hitAnimationFollowProjectileAngle ? transform.rotation : Quaternion.identity;
         Instantiate(hitAnimationPrefab, spawnPos, rotation);
     }
 }

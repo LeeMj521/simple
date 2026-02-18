@@ -25,11 +25,15 @@ public class GameManager : MonoBehaviour
     [Header("데미지 UI")]
     [Tooltip("데미지 텍스트가 생성될 캔버스")]
     public Canvas damageCanvas;
+    [Tooltip("보스 전용 HUD (이름·레벨·HP바 연결). 비어 있으면 씬에서 BossHUD 자동 탐색")]
+    public BossHUD bossHud;
 
     private readonly Dictionary<string, Transform> _userSpawnPointMap = new Dictionary<string, Transform>(); // userId -> 스폰 위치
     private readonly HashSet<Transform> _occupiedSpawnPoints = new HashSet<Transform>(); // 사용 중인 스폰 위치
     private readonly List<Transform> _availablePointsCache = new List<Transform>(); // 재사용 가능한 리스트 (GC 최적화)
     private readonly List<string> _nullUserIdsCache = new List<string>(); // users 정리용
+    private readonly Dictionary<string, Coroutine> _userMoveCoroutines = new Dictionary<string, Coroutine>(); // userId -> 이동 코루틴 (이동 중 다른 곳 클릭 시 경로 변경용)
+    private readonly Dictionary<string, Transform> _pendingMoveTarget = new Dictionary<string, Transform>(); // 이동 중 다른 곳 클릭 시, 한 칸 도착 후 적용할 새 목표
 
     private Camera _mainCamera;
 
@@ -38,8 +42,6 @@ public class GameManager : MonoBehaviour
         _mainCamera = Camera.main;
         if (player == null)
             player = GameObject.FindGameObjectWithTag("Player");
-        if (pathfindingGrid == null)
-            pathfindingGrid = FindFirstObjectByType<PathfindingGrid>();
 
         // PathfindingGrid에 spawnPoints 설정
         if (pathfindingGrid != null && spawnPoints != null && spawnPoints.Length > 0)
@@ -48,8 +50,8 @@ public class GameManager : MonoBehaviour
             pathfindingGrid.SetWalkableFromSpawnPoints(spawnPoints);
         }
 
-        if (damageCanvas == null)
-            damageCanvas = FindFirstObjectByType<Canvas>(); // 폴백: 씬의 첫 캔버스
+        if (bossHud == null)
+            bossHud = FindFirstObjectByType<BossHUD>();
 
         RegisterPlayerIfPossible();
         // NPC 스폰보다 먼저 플레이어 위치를 점유시켜 충돌을 줄임
@@ -141,8 +143,8 @@ public class GameManager : MonoBehaviour
             if (hits[i].transform != null && hits[i].transform.CompareTag("SpawnPoint"))
             {
                 Transform clickedPoint = hits[i].transform;
-                
-                // 빈 위치든 점유된 위치든 이동 (경로에 유저가 있으면 한 칸씩 교환)
+                if (IsSpawnPointOccupiedByMinion(clickedPoint))
+                    return;
                 MoveUserToPoint(selectedUser, clickedPoint);
                 return;
             }
@@ -221,6 +223,10 @@ public class GameManager : MonoBehaviour
         _userSpawnPointMap[userId] = spawnPoint;
         _occupiedSpawnPoints.Add(spawnPoint);
 
+        // 미니언이 점유한 칸은 경로 찾기에서 장애물로 처리 (유저가 겹치거나 스왑 불가)
+        if (pathfindingGrid != null && userId.StartsWith("minion_", System.StringComparison.Ordinal) && spawnPoint != null)
+            pathfindingGrid.SetWalkable(pathfindingGrid.WorldToGrid(spawnPoint.position), false);
+
         localPos = parent != null ? parent.InverseTransformPoint(spawnPoint.position) : spawnPoint.position;
         return true;
     }
@@ -234,13 +240,19 @@ public class GameManager : MonoBehaviour
         {
             _userSpawnPointMap.Remove(userId);
             if (point != null)
+            {
                 _occupiedSpawnPoints.Remove(point);
+                if (pathfindingGrid != null && userId.StartsWith("minion_", System.StringComparison.Ordinal))
+                    pathfindingGrid.SetWalkable(pathfindingGrid.WorldToGrid(point.position), true);
+            }
         }
     }
 
     private void MoveUserToPoint(UserObject user, Transform targetPoint)
     {
         if (user == null || targetPoint == null)
+            return;
+        if (IsSpawnPointOccupiedByMinion(targetPoint))
             return;
 
         RegisterUser(user);
@@ -273,8 +285,15 @@ public class GameManager : MonoBehaviour
             path = new List<Vector3> { targetWorldPos };
         }
 
-        // 경로의 각 칸을 순차적으로 할당하면서 이동
-        StartCoroutine(MoveUserAlongPath(user, userId, path, targetPoint));
+        // 이동 중이면 현재 한 칸은 마저 가고, 그 다음부터 새 경로로 전환할 목표만 등록
+        if (_userMoveCoroutines.TryGetValue(userId, out Coroutine prevCoroutine) && prevCoroutine != null)
+        {
+            _pendingMoveTarget[userId] = targetPoint;
+            return;
+        }
+
+        Coroutine moveCoroutine = StartCoroutine(MoveUserAlongPath(user, userId, path, targetPoint));
+        _userMoveCoroutines[userId] = moveCoroutine;
     }
 
     /// <summary>
@@ -283,10 +302,15 @@ public class GameManager : MonoBehaviour
     private System.Collections.IEnumerator MoveUserAlongPath(UserObject user, string userId, List<Vector3> path, Transform finalTargetPoint)
     {
         if (user == null || path == null || path.Count == 0)
+        {
+            _userMoveCoroutines.Remove(userId);
             yield break;
+        }
 
         // 기존 위치 해제
         ReleaseSpawnPoint(userId);
+
+        Transform currentFinalTarget = finalTargetPoint;
 
         // 경로의 각 칸을 순차적으로 할당
         for (int i = 0; i < path.Count; i++)
@@ -337,24 +361,25 @@ public class GameManager : MonoBehaviour
                     
                     // 한 칸씩 위치 교환 (동시에 이동)
                     yield return StartCoroutine(SwapPositionsOneStep(user, userAtCell, cellPos, currentUserPos));
+                    // 한 칸 완료 후 대기 중인 경로 변경이 있으면 적용
+                    if (ApplyPendingPath(user, userId, ref path, ref currentFinalTarget, ref i))
+                        continue;
                     continue;
                 }
             }
             
-            // 해당 위치에 가장 가까운 스폰 포인트 찾기
             Transform nearestPoint = FindNearestSpawnPoint(cellPos);
-            
+            if (nearestPoint != null && IsSpawnPointOccupiedByMinion(nearestPoint))
+                break;
+
             if (nearestPoint != null)
             {
-                // 기존 할당 해제
                 if (_userSpawnPointMap.ContainsKey(userId))
                 {
                     Transform oldPoint = _userSpawnPointMap[userId];
                     if (oldPoint != null)
                         _occupiedSpawnPoints.Remove(oldPoint);
                 }
-
-                // 새 칸 할당
                 _userSpawnPointMap[userId] = nearestPoint;
                 _occupiedSpawnPoints.Add(nearestPoint);
             }
@@ -375,10 +400,21 @@ public class GameManager : MonoBehaviour
             }
             
             user.transform.position = cellPos;
+            // 한 칸 완료 후 대기 중인 경로 변경이 있으면 적용
+            ApplyPendingPath(user, userId, ref path, ref currentFinalTarget, ref i);
         }
 
-        // 최종 목표 지점 할당
-        if (finalTargetPoint != null)
+        if (!_userSpawnPointMap.ContainsKey(userId))
+        {
+            Transform fallback = FindNearestSpawnPoint(user.transform.position);
+            if (fallback != null && !IsSpawnPointOccupiedByMinion(fallback))
+            {
+                _userSpawnPointMap[userId] = fallback;
+                _occupiedSpawnPoints.Add(fallback);
+            }
+        }
+
+        if (currentFinalTarget != null && !IsSpawnPointOccupiedByMinion(currentFinalTarget))
         {
             if (_userSpawnPointMap.ContainsKey(userId))
             {
@@ -386,10 +422,38 @@ public class GameManager : MonoBehaviour
                 if (oldPoint != null)
                     _occupiedSpawnPoints.Remove(oldPoint);
             }
-
-            _userSpawnPointMap[userId] = finalTargetPoint;
-            _occupiedSpawnPoints.Add(finalTargetPoint);
+            _userSpawnPointMap[userId] = currentFinalTarget;
+            _occupiedSpawnPoints.Add(currentFinalTarget);
         }
+
+        _userMoveCoroutines.Remove(userId);
+    }
+
+    /// <summary>
+    /// 대기 중인 경로 변경이 있으면 새 경로로 갱신하고 인덱스를 리셋. 호출한 쪽에서 i = -1 후 continue 시 다음 반복에서 새 경로로 이동.
+    /// </summary>
+    /// <returns>경로가 적용되어 반복 인덱스를 리셋해야 하면 true</returns>
+    private bool ApplyPendingPath(UserObject user, string userId, ref List<Vector3> path, ref Transform currentFinalTarget, ref int pathIndex)
+    {
+        if (user == null || !_pendingMoveTarget.TryGetValue(userId, out Transform pendingPoint) || pendingPoint == null)
+            return false;
+
+        _pendingMoveTarget.Remove(userId);
+        Vector3 targetWorldPos = pendingPoint.position;
+        if (pathfindingGrid != null)
+        {
+            Vector2Int gridPos = pathfindingGrid.WorldToGrid(targetWorldPos);
+            targetWorldPos = pathfindingGrid.GridToWorld(gridPos);
+        }
+        List<Vector3> newPath = pathfindingGrid != null
+            ? pathfindingGrid.FindPath(user.transform.position, targetWorldPos)
+            : new List<Vector3> { targetWorldPos };
+        if (newPath == null || newPath.Count == 0)
+            newPath = new List<Vector3> { targetWorldPos };
+        path = newPath;
+        currentFinalTarget = pendingPoint;
+        pathIndex = -1;
+        return true;
     }
 
     /// <summary>
@@ -423,6 +487,18 @@ public class GameManager : MonoBehaviour
 
         user1.transform.position = targetPos1;
         user2.transform.position = targetPos2;
+    }
+
+    /// <summary>
+    /// 해당 스폰 포인트가 미니언에게 점유되어 있는지 (유저 이동/스왑 불가인 장애물인지)
+    /// </summary>
+    private bool IsSpawnPointOccupiedByMinion(Transform point)
+    {
+        if (point == null) return false;
+        foreach (var kv in _userSpawnPointMap)
+            if (kv.Key.StartsWith("minion_", System.StringComparison.Ordinal) && kv.Value == point)
+                return true;
+        return false;
     }
 
     /// <summary>
