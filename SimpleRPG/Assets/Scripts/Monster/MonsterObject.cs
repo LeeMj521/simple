@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -18,6 +19,9 @@ public class MonsterObject : MonoBehaviour
     [SerializeField] protected Transform damageTransform;
     [SerializeField] protected GameObject damageTextPrefab;
     protected Canvas _damageCanvas;
+
+    [Header("참조")]
+    [SerializeField] private DataManager dataManager;
 
     protected int _currentHp;
 
@@ -43,6 +47,9 @@ public class MonsterObject : MonoBehaviour
         data = monsterData;
         _currentHp = data.maxHP;
         _damageCanvas = damageCanvas;
+
+        if (dataManager == null)
+            dataManager = FindFirstObjectByType<DataManager>();
 
         if (hpBar != null)
         {
@@ -103,5 +110,58 @@ public class MonsterObject : MonoBehaviour
 
         if (hpBar != null)
             hpBar.value = _currentHp;
+    }
+
+    /// <summary>
+    /// 드랍 테이블을 기반으로 아이템을 드랍하고 로그를 출력합니다.
+    /// </summary>
+    public void ProcessDropTable()
+    {
+        if (data == null || data.dropTable == null || data.dropTable.Count == 0)
+            return;
+
+        if (dataManager == null)
+            dataManager = FindFirstObjectByType<DataManager>();
+
+        if (dataManager == null)
+        {
+            Debug.LogWarning($"[MonsterObject] {data.monsterName} 드랍 처리 실패: DataManager를 찾을 수 없습니다.");
+            return;
+        }
+
+        List<string> droppedItems = new List<string>();
+
+        foreach (var entry in data.dropTable)
+        {
+            if (string.IsNullOrEmpty(entry.itemId))
+                continue;
+
+            // 드랍 확률 계산 (0~100%)
+            float randomValue = UnityEngine.Random.value * 100f; // 0.0 ~ 100.0 범위
+            if (randomValue <= entry.dropRate)
+            {
+                // 아이템 데이터 확인
+                ItemData itemData = dataManager.GetItem(entry.itemId);
+                if (itemData != null)
+                {
+                    droppedItems.Add(itemData.itemName);
+                }
+                else
+                {
+                    Debug.LogWarning($"[MonsterObject] {data.monsterName} 드랍 처리: 아이템 데이터를 찾을 수 없습니다. itemId: {entry.itemId}");
+                }
+            }
+        }
+
+        // 드랍된 아이템 로그 출력
+        if (droppedItems.Count > 0)
+        {
+            string itemsList = string.Join(", ", droppedItems);
+            Debug.Log($"[드랍] {data.monsterName} 처치! 드랍된 아이템: {itemsList}");
+        }
+        else
+        {
+            Debug.Log($"[드랍] {data.monsterName} 처치! 드랍된 아이템 없음.");
+        }
     }
 }

@@ -50,15 +50,15 @@ MonoBehaviour:
   userId: 
   userName: "\uC720\uC800"
   attack: 0
+  proficiency: 50
   equippedSkillIds: []
-  defaultAttackPower: 5
   monsterManager: {fileID: 0}
   dataManager: {fileID: 0}
   nameText: {fileID: 7944949945713538133}
-  cooldownRoot: {fileID: 4641298009242477683}
+  cooldownParent: {fileID: 4641298009242477683}
   skillIconPrefab: {fileID: 6827196528840530995, guid: c4209073b780c9843bd3429e21a3178a, type: 3}
   profileSprite: {fileID: 6991310138525082071}
-  chatBubbleRoot: {fileID: 1771885123234251578}
+  chatBubble: {fileID: 1771885123234251578}
   chatBubbleText: {fileID: 1407725997534744081}
   job: 0
   moveSpeed: 5
@@ -191,6 +191,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 900523002649048375}
     m_Modifications:
+    - target: {fileID: 631325482059858856, guid: 833a96381c2db854fbc5c1a97aa22d10, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 631325482059858856, guid: 833a96381c2db854fbc5c1a97aa22d10, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 631325482059858856, guid: 833a96381c2db854fbc5c1a97aa22d10, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 210
+      objectReference: {fileID: 0}
+    - target: {fileID: 631325482059858856, guid: 833a96381c2db854fbc5c1a97aa22d10, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 631325482059858856, guid: 833a96381c2db854fbc5c1a97aa22d10, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 125
+      objectReference: {fileID: 0}
+    - target: {fileID: 631325482059858856, guid: 833a96381c2db854fbc5c1a97aa22d10, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -22.5
+      objectReference: {fileID: 0}
     - target: {fileID: 1517728309007150738, guid: 833a96381c2db854fbc5c1a97aa22d10, type: 3}
       propertyPath: m_Name
       value: user_HUD_Canvas
@@ -273,6 +297,42 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4237912539001794953, guid: 833a96381c2db854fbc5c1a97aa22d10, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4511468415198066124, guid: 833a96381c2db854fbc5c1a97aa22d10, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 4511468415198066124, guid: 833a96381c2db854fbc5c1a97aa22d10, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 6558338051300183172, guid: 833a96381c2db854fbc5c1a97aa22d10, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6558338051300183172, guid: 833a96381c2db854fbc5c1a97aa22d10, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6558338051300183172, guid: 833a96381c2db854fbc5c1a97aa22d10, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 6558338051300183172, guid: 833a96381c2db854fbc5c1a97aa22d10, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 6558338051300183172, guid: 833a96381c2db854fbc5c1a97aa22d10, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 125
+      objectReference: {fileID: 0}
+    - target: {fileID: 6558338051300183172, guid: 833a96381c2db854fbc5c1a97aa22d10, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -45
+      objectReference: {fileID: 0}
+    - target: {fileID: 8617908393387327905, guid: 833a96381c2db854fbc5c1a97aa22d10, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

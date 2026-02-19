@@ -367,14 +367,19 @@ MonoBehaviour:
     expReward: 0
     goldReward: 0
     prefabPath: 
+    dropTable: []
   nameText: {fileID: 0}
   levelText: {fileID: 0}
   hpBar: {fileID: 2314678600393104563}
   damageTransform: {fileID: 6285414635645922293}
   damageTextPrefab: {fileID: 3995723319310800353, guid: b020d6811e4027b48b7b6c6a1c752df3, type: 3}
-  minionMaxHp: 500
-  minionName: Minion
+  dataManager: {fileID: 0}
+  minionMaxHp: 5000
+  minionName: "\uACE0\uC2A4\uD2B8"
   minionLevel: 1
+  minionDropTable:
+  - itemId: potion_hp
+    dropRate: 100
 --- !u!58 &4824462812102377295
 CircleCollider2D:
   m_ObjectHideFlags: 0

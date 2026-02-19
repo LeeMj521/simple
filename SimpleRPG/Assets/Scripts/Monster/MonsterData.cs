@@ -1,5 +1,29 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+
+/// <summary>
+/// 드랍 테이블 엔트리 (아이템 ID와 드랍 확률)
+/// </summary>
+[Serializable]
+public class DropTableEntry
+{
+    public string itemId;
+    [Tooltip("드랍 확률 (0~100)")]
+    public float dropRate;
+
+    public DropTableEntry()
+    {
+        itemId = "";
+        dropRate = 0f;
+    }
+
+    public DropTableEntry(string id, float rate)
+    {
+        itemId = id;
+        dropRate = Mathf.Clamp(rate, 0f, 100f);
+    }
+}
 
 /// <summary>
 /// 몬스터 데이터 클래스
@@ -19,6 +43,9 @@ public class MonsterData
     
     /// <summary>런타임에서 로드된 프리팹 참조</summary>
     [NonSerialized] public GameObject prefab;
+
+    /// <summary>드랍 테이블 (아이템 ID와 드랍 확률 목록)</summary>
+    public List<DropTableEntry> dropTable = new List<DropTableEntry>();
 
     public MonsterData(string id, string name, int hp, int lv, int exp, int gold, string path)
     {

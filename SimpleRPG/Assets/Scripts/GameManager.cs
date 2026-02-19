@@ -62,12 +62,12 @@ public class GameManager : MonoBehaviour
     {
         PruneNullUsers();
 
-        // 좌클릭: 유저 선택
-        if (Input.GetMouseButtonDown(0))
+        // 우클릭: 유저 선택
+        if (Input.GetMouseButtonDown(1))
             HandleUserSelectClick();
 
-        // 우클릭: 스폰포인트 클릭 이동/스왑
-        if (Input.GetMouseButtonDown(1))
+        // 좌클릭: 스폰포인트 클릭 이동/스왑
+        if (Input.GetMouseButtonDown(0))
             HandleSpawnPointClick();
     }
 
@@ -136,6 +136,21 @@ public class GameManager : MonoBehaviour
         if (hits == null || hits.Length == 0)
             return;
 
+        // 먼저 적(MonsterObject) 클릭 확인 - 타겟 지정 우선
+        for (int i = 0; i < hits.Length; i++)
+        {
+            if (hits[i] == null) continue;
+
+            MonsterObject monster = hits[i].GetComponent<MonsterObject>();
+            if (monster != null)
+            {
+                // 선택된 유저가 있으면 타겟으로 설정
+                selectedUser.SetTargetMonster(monster);
+                return;
+            }
+        }
+
+        // 적이 아니면 스폰포인트 클릭 처리
         for (int i = 0; i < hits.Length; i++)
         {
             if (hits[i] == null) continue;

@@ -122,6 +122,9 @@ public class MonsterManager : MonoBehaviour
             gameManager.bossHud.Unbind();
         if (dying != null)
         {
+            // 드랍 테이블 처리
+            dying.ProcessDropTable();
+            
             dying.OnDeath -= HandleMonsterDeath;
             Destroy(dying.gameObject);
         }

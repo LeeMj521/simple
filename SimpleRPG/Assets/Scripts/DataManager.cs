@@ -417,6 +417,13 @@ public class MonsterJsonData
 }
 
 [Serializable]
+public class DropTableEntryJson
+{
+    public string itemId;
+    public float dropRate;
+}
+
+[Serializable]
 public class MonsterJson
 {
     public string monsterId;
@@ -426,6 +433,7 @@ public class MonsterJson
     public int level;
     public int expReward;
     public int goldReward;
+    public List<DropTableEntryJson> dropTable;
     
     public MonsterData ToRuntimeData()
     {
@@ -438,6 +446,19 @@ public class MonsterJson
             goldReward, 
             prefabPath ?? ""
         );
+        
+        // 드랍 테이블 로드
+        if (dropTable != null && dropTable.Count > 0)
+        {
+            data.dropTable = new List<DropTableEntry>();
+            foreach (var entry in dropTable)
+            {
+                if (!string.IsNullOrEmpty(entry.itemId) && entry.dropRate > 0f)
+                {
+                    data.dropTable.Add(new DropTableEntry(entry.itemId, entry.dropRate));
+                }
+            }
+        }
         
         // 프리팹 로드
         data.LoadPrefab();

@@ -91,6 +91,10 @@ public class BossBehaviorSummonMinion : BossBehaviorBase
         _spawnedMinions.Add(minion);
         minion.OnDeath += () =>
         {
+            // 드랍 테이블 처리
+            if (minion != null)
+                minion.ProcessDropTable();
+            
             _spawnedMinions.Remove(minion);
             OnMinionDeath();
             if (minion != null && minion.gameObject != null)

@@ -13,15 +13,14 @@ public class UserObject : MonoBehaviour
     [Header("유저 정보")]
     [Tooltip("유저 고유 ID")]
     [SerializeField] private string userId = "";
-    [Tooltip("유저 이름")]
     [SerializeField] private string userName = "유저";
     public int attack;
+    public Job job = Job.무직;
     [SerializeField] [Range(0, 100)] private int proficiency = 50;
 
     [Header("스킬")]
     [Tooltip("장착한 스킬 ID 목록 (Data/Skills.json의 skillId)")]
     [SerializeField] private List<string> equippedSkillIds = new List<string>();
-    [SerializeField] private int defaultAttackPower = 5;
 
     [Header("참조")]
     [SerializeField] private MonsterManager monsterManager;
@@ -29,16 +28,16 @@ public class UserObject : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI nameText;
-    [SerializeField] private Transform cooldownRoot;
+    [SerializeField] private Transform cooldownParent;
     [Tooltip("스킬 아이콘 프리팹")]
     [SerializeField] private GameObject skillIconPrefab;
     public SpriteRenderer profileSprite;
 
     [Header("채팅 버블")]
-    [SerializeField] private GameObject chatBubbleRoot;
+    [SerializeField] private GameObject chatBubble;
     [SerializeField] private TextMeshProUGUI chatBubbleText;
 
-    [SerializeField] private Job job = Job.무직;
+    
     
     [Header("이동")]
     [Tooltip("이동 속도 (초당 유닛)")]
@@ -52,6 +51,7 @@ public class UserObject : MonoBehaviour
     private Dictionary<string, SkillCooldownUI> _skillCooldownUIs = new Dictionary<string, SkillCooldownUI>();
     private Coroutine _hideBubbleCoroutine;
     private Tween _moveTween;
+    private MonsterObject _targetMonster; // 수동으로 지정한 타겟 몬스터
     
     // A* 경로 찾기 관련
     private List<Vector3> _currentPath = new List<Vector3>();
@@ -87,8 +87,8 @@ public class UserObject : MonoBehaviour
             }
         }
         BuildSkillCooldownUIs();
-        if (chatBubbleRoot != null)
-            chatBubbleRoot.SetActive(false);
+        if (chatBubble != null)
+            chatBubble.SetActive(false);
     }
 
     private void Update()
@@ -109,12 +109,19 @@ public class UserObject : MonoBehaviour
             }
         }
 
+        // 타겟이 사라졌거나 비활성화되었으면 타겟 해제
+        if (_targetMonster != null && (!_targetMonster.gameObject.activeInHierarchy || _targetMonster.CurrentHp <= 0))
+        {
+            _targetMonster = null;
+        }
+
         UpdateCooldownUI();
         TryCastNextSkill();
     }
 
     public string UserId => userId;
     public string UserName => userName;
+    public MonsterObject TargetMonster => _targetMonster;
 
     /// <summary>
     /// 유저 식별자/이름 설정 (NPC 스폰, 플레이어 초기화 등에서 사용)
@@ -128,6 +135,14 @@ public class UserObject : MonoBehaviour
 
         if (nameText != null)
             nameText.text = userName;
+    }
+
+    /// <summary>
+    /// 타겟 몬스터 설정 (좌클릭으로 적 선택 시 호출)
+    /// </summary>
+    public void SetTargetMonster(MonsterObject target)
+    {
+        _targetMonster = target;
     }
 
     public void Set(NPCData npc){
@@ -161,7 +176,6 @@ public class UserObject : MonoBehaviour
         }
         
         job = npc.job;
-        defaultAttackPower = Mathf.Max(0, npc.attackPower);
         attack = Mathf.Max(0, npc.attackPower);
         if (npc.equippedSkillIds != null && npc.equippedSkillIds.Count > 0)
             SetEquippedSkills(npc.equippedSkillIds);
@@ -201,8 +215,14 @@ public class UserObject : MonoBehaviour
 
     private void TryCastNextSkill()
     {
-        if (dataManager == null || monsterManager == null || monsterManager.CurrentMonster == null)
+        if (dataManager == null || monsterManager == null)
             return;
+        
+        // 타겟이 없으면 스킬 시전하지 않음 (수동 타겟 지정 모드)
+        MonsterObject target = _targetMonster != null ? _targetMonster : monsterManager.CurrentMonster;
+        if (target == null)
+            return;
+        
         if (equippedSkillIds == null) return;
 
         foreach (string skillId in equippedSkillIds)
@@ -225,7 +245,7 @@ public class UserObject : MonoBehaviour
                 continue;
             }
 
-            effect.Run(this, skill, monsterManager);
+            effect.Run(this, skill, monsterManager, target);
             _skillEffectRunning.Add(skillId);
             break;
         }
@@ -233,10 +253,10 @@ public class UserObject : MonoBehaviour
 
     private void BuildSkillCooldownUIs()
     {
-        if (cooldownRoot == null || skillIconPrefab == null || equippedSkillIds == null)
+        if (cooldownParent == null || skillIconPrefab == null || equippedSkillIds == null)
             return;
 
-        foreach (Transform child in cooldownRoot)
+        foreach (Transform child in cooldownParent)
             Destroy(child.gameObject);
         _skillCooldownUIs.Clear();
 
@@ -244,7 +264,7 @@ public class UserObject : MonoBehaviour
         {
             if (string.IsNullOrEmpty(skillId)) continue;
 
-            GameObject go = Instantiate(skillIconPrefab, cooldownRoot);
+            GameObject go = Instantiate(skillIconPrefab, cooldownParent);
             go.name = $"skill_icon_{skillId}";
 
             Image iconImage = go.GetComponent<Image>();
@@ -306,7 +326,7 @@ public class UserObject : MonoBehaviour
     /// <summary>해당 유저 머리 위에 채팅 버블 표시. 일정 시간 후 자동 숨김.</summary>
     public void ShowChatBubble(string text, float durationSeconds)
     {
-        if (chatBubbleRoot == null || chatBubbleText == null)
+        if (chatBubble == null || chatBubbleText == null)
             return;
 
         if (_hideBubbleCoroutine != null)
@@ -316,7 +336,7 @@ public class UserObject : MonoBehaviour
         }
 
         chatBubbleText.text = text;
-        chatBubbleRoot.SetActive(true);
+        chatBubble.SetActive(true);
         _hideBubbleCoroutine = StartCoroutine(HideBubbleAfter(durationSeconds));
     }
 
@@ -324,8 +344,8 @@ public class UserObject : MonoBehaviour
     {
         yield return new WaitForSeconds(seconds);
         _hideBubbleCoroutine = null;
-        if (chatBubbleRoot != null)
-            chatBubbleRoot.SetActive(false);
+        if (chatBubble != null)
+            chatBubble.SetActive(false);
     }
     
     /// <summary>

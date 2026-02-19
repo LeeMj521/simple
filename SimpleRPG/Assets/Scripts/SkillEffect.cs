@@ -25,6 +25,7 @@ public class SkillEffect : MonoBehaviour
   private UserObject _owner;
   private SkillData _skill;
   private MonsterManager _monsterManager;
+  private MonsterObject _targetMonster; // 수동으로 지정한 타겟 (없으면 CurrentMonster 사용)
   private bool _finished;
 
   void Update(){
@@ -33,8 +34,9 @@ public class SkillEffect : MonoBehaviour
       return;
     }
     transform.position = _owner.transform.position;
-    if(faceTarget && _monsterManager != null && _monsterManager.CurrentMonster != null){
-      Vector3 direction = (_monsterManager.CurrentMonster.transform.position - transform.position).normalized;
+    MonsterObject target = GetTarget();
+    if(faceTarget && target != null){
+      Vector3 direction = (target.transform.position - transform.position).normalized;
       if(direction != Vector3.zero){
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
@@ -46,7 +48,7 @@ public class SkillEffect : MonoBehaviour
   /// 이펙트 실행. 애니메이션 재생 후 이벤트로 OnApplyDamage / OnSpawnProjectile / OnAnimationEnd 호출.
   /// 데미지는 적용 시점에 owner.CalculateSkillDamage(skill)로 계산.
   /// </summary>
-  public void Run(UserObject owner, SkillData skill, MonsterManager monsterManager){
+  public void Run(UserObject owner, SkillData skill, MonsterManager monsterManager, MonsterObject targetMonster = null){
     if (owner == null || skill == null){
       FinishEffect(owner, skill);
       return;
@@ -55,15 +57,28 @@ public class SkillEffect : MonoBehaviour
     _owner = owner;
     _skill = skill;
     _monsterManager = monsterManager;
+    _targetMonster = targetMonster;
 
     // 타겟을 향하도록 회전
-    if (faceTarget && _monsterManager != null && _monsterManager.CurrentMonster != null){
-      Vector3 direction = (_monsterManager.CurrentMonster.transform.position - transform.position).normalized;
+    MonsterObject target = GetTarget();
+    if (faceTarget && target != null){
+      Vector3 direction = (target.transform.position - transform.position).normalized;
       if (direction != Vector3.zero){
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
       }
     }
+  }
+
+  /// <summary>
+  /// 현재 타겟을 반환 (수동 타겟이 있으면 그것을, 없으면 CurrentMonster를 반환)
+  /// </summary>
+  private MonsterObject GetTarget(){
+    if (_targetMonster != null)
+      return _targetMonster;
+    if (_monsterManager != null && _monsterManager.CurrentMonster != null)
+      return _monsterManager.CurrentMonster;
+    return null;
   }
 
   /// <summary>
@@ -95,11 +110,12 @@ public class SkillEffect : MonoBehaviour
   }
 
   private void ApplyDamage(){
-    if (_owner == null || _skill == null || _monsterManager?.CurrentMonster == null)
+    MonsterObject target = GetTarget();
+    if (_owner == null || _skill == null || target == null)
       return;
     int damage = _owner.CalculateSkillDamage(_skill);
     if (damage < 1) damage = 1;
-    _monsterManager.CurrentMonster.TakeDamage(damage);
+    target.TakeDamage(damage);
     SpawnHitAnimation();
   }
 
@@ -123,7 +139,8 @@ public class SkillEffect : MonoBehaviour
   }
 
   private void SpawnProjectile(){
-    if (projectilePrefab == null || _owner == null || _skill == null || _monsterManager == null || _monsterManager.CurrentMonster == null)
+    MonsterObject target = GetTarget();
+    if (projectilePrefab == null || _owner == null || _skill == null || target == null)
       return;
 
     Vector3 spawnPos = projectileSpawnPoint != null ? projectileSpawnPoint.position : transform.position;
@@ -131,7 +148,7 @@ public class SkillEffect : MonoBehaviour
         
     // 타겟을 향하도록 회전
     if (faceTarget){
-      Vector3 direction = (_monsterManager.CurrentMonster.transform.position - spawnPos).normalized;
+      Vector3 direction = (target.transform.position - spawnPos).normalized;
       if (direction != Vector3.zero){
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         rotation = Quaternion.AngleAxis(angle, Vector3.forward);
@@ -140,15 +157,16 @@ public class SkillEffect : MonoBehaviour
 
     GameObject go = Instantiate(projectilePrefab, spawnPos, rotation);
     SkillProjectile proj = go.GetComponent<SkillProjectile>();
-    if (proj != null) proj.Run(_owner, _skill, _monsterManager.CurrentMonster);
+    if (proj != null) proj.Run(_owner, _skill, target);
   }
 
   private void SpawnHitAnimation(){
     Vector3 spawnPos;
+    MonsterObject target = GetTarget();
     if (hitSpawnPoint != null)
       spawnPos = hitSpawnPoint.position;
-    else if (_monsterManager != null && _monsterManager.CurrentMonster != null)
-      spawnPos = _monsterManager.CurrentMonster.transform.position;
+    else if (target != null)
+      spawnPos = target.transform.position;
     else
       spawnPos = transform.position;
     SpawnHitAnimation(spawnPos);
@@ -158,8 +176,9 @@ public class SkillEffect : MonoBehaviour
     if (hitAnimationPrefab == null)
       return;
     Quaternion rotation = Quaternion.identity;
-    if (faceTarget && _monsterManager != null && _monsterManager.CurrentMonster != null){
-      Vector3 direction = (_monsterManager.CurrentMonster.transform.position - worldPosition).normalized;
+    MonsterObject target = GetTarget();
+    if (faceTarget && target != null){
+      Vector3 direction = (target.transform.position - worldPosition).normalized;
       if (direction != Vector3.zero){
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         rotation = Quaternion.AngleAxis(angle, Vector3.forward);

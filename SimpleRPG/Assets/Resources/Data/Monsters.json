@@ -7,7 +7,11 @@
             "maxHP": 14000,
             "level": 1,
             "expReward": 10,
-            "goldReward": 5
+            "goldReward": 5,
+            "dropTable": [
+                { "dropRate": 100.0, "itemId": "potion_hp" },
+                { "dropRate": 10.0, "itemId": "sword_iron" }
+            ]
         },
         {
             "monsterId": "monster_dccfa8a7",
@@ -16,7 +20,9 @@
             "maxHP": 10000,
             "level": 1,
             "expReward": 10,
-            "goldReward": 5
+            "goldReward": 5,
+            "dropTable": [
+            ]
         },
         {
             "monsterId": "monster_a462f4bd",
@@ -25,7 +31,9 @@
             "maxHP": 4500,
             "level": 1,
             "expReward": 10,
-            "goldReward": 5
+            "goldReward": 5,
+            "dropTable": [
+            ]
         }
     ]
 }

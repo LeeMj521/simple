@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -10,6 +11,9 @@ public class MinionMonster : MonsterObject
     [SerializeField] private int minionMaxHp = 10;
     [SerializeField] private string minionName = "Minion";
     [SerializeField] private int minionLevel = 1;
+    [Header("드랍 테이블")]
+    [Tooltip("프리팹에서 설정하는 드랍 테이블")]
+    [SerializeField] private List<DropTableEntry> minionDropTable = new List<DropTableEntry>();
 
     private string _minionSpawnId;
     private GameManager _gameManager;
@@ -28,10 +32,18 @@ public class MinionMonster : MonsterObject
 
     /// <summary>
     /// 미니언 전용 초기화. MonsterData 없이 프리팹의 minionMaxHp/minionName/minionLevel으로 스탯 적용.
+    /// 프리팹에 설정된 드랍 테이블을 사용합니다.
     /// </summary>
     public void Init(Canvas damageCanvas, string minionSpawnId, GameManager gameManager)
     {
         var data = new MonsterData("minion", minionName, minionMaxHp, minionLevel, 0, 0, "");
+        
+        // 프리팹에 설정된 드랍 테이블 복사
+        if (minionDropTable != null && minionDropTable.Count > 0)
+        {
+            data.dropTable = new List<DropTableEntry>(minionDropTable);
+        }
+        
         Init(data, damageCanvas, minionSpawnId, gameManager);
     }
 
