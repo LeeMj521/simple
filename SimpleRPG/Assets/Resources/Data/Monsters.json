@@ -1,6 +1,19 @@
 {
     "monsters": [
         {
+            "monsterId": "monster_1",
+            "monsterName": "와일드 피그",
+            "prefabPath": "Prefabs/Monster/WildPig",
+            "maxHP": 4000,
+            "level": 1,
+            "expReward": 10,
+            "goldReward": 5,
+            "dropTable": [
+                { "dropRate": 100.0, "itemId": "potion_hp" },
+                { "dropRate": 10.0, "itemId": "sword_iron" }
+            ]
+        },
+        {
             "monsterId": "monster_d3c5ae09",
             "monsterName": "고스트 퀸",
             "prefabPath": "Prefabs/Monster/GhostQueen",
