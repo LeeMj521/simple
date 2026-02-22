@@ -1,0 +1,22 @@
+{
+  "stages": [
+    {
+      "stageId": "stage_normal_0",
+      "stageName": "마당 훈련장",
+      "stageType": "normal",
+      "monsterIds": ["monster_0"]
+    },
+    {
+      "stageId": "stage_normal_1",
+      "stageName": "뒷산",
+      "stageType": "normal",
+      "monsterIds": ["monster_1", "monster_2"]
+    },
+    {
+      "stageId": "stage_challenge_1",
+      "stageName": "보스 도전",
+      "stageType": "challenge",
+      "monsterIds": ["monster_dccfa8a7", "monster_d3c5ae09"]
+    }
+  ]
+}

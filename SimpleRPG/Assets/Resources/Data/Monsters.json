@@ -1,6 +1,30 @@
 {
     "monsters": [
         {
+            "monsterId": "monster_0",
+            "monsterName": "훈련용 허수아비",
+            "prefabPath": "Prefabs/Monster/TrainingDummy",
+            "maxHP": 4000,
+            "level": 1,
+            "expReward": 10,
+            "goldReward": 5,
+            "dropTable": [
+                { "dropRate": 100.0, "itemId": "potion_hp" },
+                { "dropRate": 10.0, "itemId": "sword_iron" }
+            ]
+        },
+        {
+            "monsterId": "monster_2",
+            "monsterName": "고양이?",
+            "prefabPath": "Prefabs/Monster/Cat",
+            "maxHP": 4500,
+            "level": 1,
+            "expReward": 10,
+            "goldReward": 5,
+            "dropTable": [
+            ]
+        },
+        {
             "monsterId": "monster_1",
             "monsterName": "와일드 피그",
             "prefabPath": "Prefabs/Monster/WildPig",
@@ -31,17 +55,6 @@
             "monsterName": "디노",
             "prefabPath": "Prefabs/Monster/Dino",
             "maxHP": 10000,
-            "level": 1,
-            "expReward": 10,
-            "goldReward": 5,
-            "dropTable": [
-            ]
-        },
-        {
-            "monsterId": "monster_a462f4bd",
-            "monsterName": "고양이?",
-            "prefabPath": "Prefabs/Monster/Cat",
-            "maxHP": 4500,
             "level": 1,
             "expReward": 10,
             "goldReward": 5,

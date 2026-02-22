@@ -12,11 +12,13 @@ public class DataManager : MonoBehaviour
     [SerializeField] private string itemJsonPath = "Data/Items";
     [SerializeField] private string monsterJsonPath = "Data/Monsters";
     [SerializeField] private string skillJsonPath = "Data/Skills";
+    [SerializeField] private string stageJsonPath = "Data/Stages";
 
     private Dictionary<string, NPCData> loadedNPCs = new Dictionary<string, NPCData>();
     private Dictionary<string, ItemData> loadedItems = new Dictionary<string, ItemData>();
     private Dictionary<string, MonsterData> loadedMonsters = new Dictionary<string, MonsterData>();
     private Dictionary<string, SkillData> loadedSkills = new Dictionary<string, SkillData>();
+    private Dictionary<string, StageData> loadedStages = new Dictionary<string, StageData>();
     
     private void Awake()
     {
@@ -32,11 +34,13 @@ public class DataManager : MonoBehaviour
         loadedItems.Clear();
         loadedMonsters.Clear();
         loadedSkills.Clear();
+        loadedStages.Clear();
 
         LoadNPCsFromJSON();
         LoadItemsFromJSON();
         LoadMonstersFromJSON();
         LoadSkillsFromJSON();
+        LoadStagesFromJSON();
     }
     
     /// <summary>
@@ -246,6 +250,78 @@ public class DataManager : MonoBehaviour
     public SkillData GetSkill(string skillId)
     {
         return loadedSkills != null && loadedSkills.TryGetValue(skillId, out var data) ? data : null;
+    }
+
+    /// <summary>
+    /// JSON에서 스테이지 데이터 로드
+    /// </summary>
+    private void LoadStagesFromJSON()
+    {
+        TextAsset jsonFile = Resources.Load<TextAsset>(stageJsonPath);
+        if (jsonFile == null)
+        {
+            Debug.LogWarning($"스테이지 JSON 파일을 찾을 수 없습니다: {stageJsonPath}");
+            return;
+        }
+
+        try
+        {
+            StageJsonData jsonData = JsonUtility.FromJson<StageJsonData>(jsonFile.text);
+            if (jsonData != null && jsonData.stages != null)
+            {
+                foreach (var stageJson in jsonData.stages)
+                {
+                    StageData data = stageJson.ToRuntimeData();
+                    if (!string.IsNullOrEmpty(data.stageId) && !loadedStages.ContainsKey(data.stageId))
+                        loadedStages[data.stageId] = data;
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"스테이지 JSON 파싱 오류: {e.Message}\n{e.StackTrace}");
+        }
+    }
+
+    /// <summary>로드된 스테이지 딕셔너리</summary>
+    public Dictionary<string, StageData> GetLoadedStages()
+    {
+        return new Dictionary<string, StageData>(loadedStages);
+    }
+
+    /// <summary>특정 스테이지 데이터 가져오기</summary>
+    public StageData GetStage(string stageId)
+    {
+        return loadedStages != null && loadedStages.TryGetValue(stageId, out var data) ? data : null;
+    }
+}
+
+/// <summary>
+/// 스테이지 JSON 데이터 구조
+/// </summary>
+[Serializable]
+public class StageJsonData
+{
+    public List<StageJson> stages;
+}
+
+[Serializable]
+public class StageJson
+{
+    public string stageId;
+    public string stageName;
+    public string stageType;
+    public List<string> monsterIds;
+
+    public StageData ToRuntimeData()
+    {
+        StageType type = StageType.Normal;
+        if (!string.IsNullOrEmpty(stageType) &&
+            Enum.TryParse(stageType, true, out StageType parsed))
+            type = parsed;
+
+        List<string> ids = (monsterIds != null) ? new List<string>(monsterIds) : new List<string>();
+        return new StageData(stageId ?? "", stageName ?? "", type, ids);
     }
 }
 

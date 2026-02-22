@@ -9,8 +9,8 @@ public class MonsterManager : MonoBehaviour
 {
     [Header("스폰 설정")]
     [SerializeField] private Transform spawnPoint;
-    [Tooltip("몬스터 id, 비어 있으면 DataManager의 몬스터 목록 순서대로 사용")]
-    [SerializeField] private List<string> monsterIdOrder = new List<string>();
+    [Tooltip("스테이지 ID (DataManager의 Stages.json). 일반=랜덤 등장, 도전=순서대로 등장. 비어 있으면 전체 몬스터 순서대로.")]
+    [SerializeField] private string stageId;
 
     [Header("참조")]
     [SerializeField] private GameManager gameManager;
@@ -20,9 +20,22 @@ public class MonsterManager : MonoBehaviour
     private int _currentIndex;
     private MonsterObject _currentMonster;
     private bool _initialized;
+    private StageType _stageType = StageType.Challenge;
 
     /// <summary>현재 필드에 있는 몬스터 (없으면 null)</summary>
     public MonsterObject CurrentMonster => _currentMonster;
+
+    /// <summary>런타임에 스테이지 변경. 적용 후 즉시 새 스테이지 기준으로 몬스터를 스폰합니다.</summary>
+    public void SetStage(string newStageId)
+    {
+        stageId = newStageId ?? "";
+        _currentIndex = 0;
+        if (_initialized)
+        {
+            BuildSpawnOrder();
+            SpawnNext();
+        }
+    }
 
     private void Start()
     {
@@ -48,20 +61,32 @@ public class MonsterManager : MonoBehaviour
     private void BuildSpawnOrder()
     {
         _spawnOrder.Clear();
-        if (monsterIdOrder != null && monsterIdOrder.Count > 0)
+        var monsters = dataManager.GetLoadedMonsters();
+
+        if (!string.IsNullOrEmpty(stageId))
         {
-            var monsters = dataManager.GetLoadedMonsters();
-            foreach (string id in monsterIdOrder)
+            StageData stage = dataManager.GetStage(stageId);
+            if (stage == null)
             {
-                if (monsters.ContainsKey(id))
-                    _spawnOrder.Add(id);
+                Debug.LogWarning($"[MonsterManager] 스테이지 ID를 찾을 수 없습니다: '{stageId}'. Stages.json을 확인하세요. 전체 몬스터 순서로 대체합니다.");
+            }
+            else if (stage.monsterIds != null)
+            {
+                foreach (string id in stage.monsterIds)
+                {
+                    if (!string.IsNullOrEmpty(id) && monsters.ContainsKey(id))
+                        _spawnOrder.Add(id);
+                }
+                _stageType = stage.stageType;
+                if (_spawnOrder.Count == 0)
+                    Debug.LogWarning($"[MonsterManager] 스테이지 '{stageId}'에 유효한 몬스터가 없습니다. Monsters.json ID를 확인하세요.");
+                return;
             }
         }
-        else
-        {
-            foreach (var kv in dataManager.GetLoadedMonsters())
-                _spawnOrder.Add(kv.Key);
-        }
+
+        _stageType = StageType.Challenge;
+        foreach (var kv in monsters)
+            _spawnOrder.Add(kv.Key);
 
         if (_spawnOrder.Count == 0)
             Debug.LogWarning("[MonsterManager] 스폰할 몬스터가 없습니다. Monsters.json을 확인하세요.");
@@ -82,8 +107,14 @@ public class MonsterManager : MonoBehaviour
             _currentMonster = null;
         }
 
-        string monsterId = _spawnOrder[_currentIndex % _spawnOrder.Count];
-        _currentIndex++;
+        string monsterId;
+        if (_stageType == StageType.Normal)
+            monsterId = _spawnOrder[UnityEngine.Random.Range(0, _spawnOrder.Count)];
+        else
+        {
+            monsterId = _spawnOrder[_currentIndex % _spawnOrder.Count];
+            _currentIndex++;
+        }
 
         MonsterData data = dataManager.GetMonster(monsterId);
         if (data == null || data.prefab == null)
